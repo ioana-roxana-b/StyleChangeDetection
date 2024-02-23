@@ -1,16 +1,16 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
+import dataset
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    directory_path = 'Charles Dickens/Novels'
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    processor = dataset.TextProcessor(directory_path)
+    all_text_content = processor.read_text()
+    chapters = processor.split_into_chapters()
+    sentences = processor.split_into_phrases()
+
+    # Write the combined content to a new text file
+    output_file_path = 'output.txt'
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        for chapter_title in sentences.keys():
+            output_file.write(f"{chapter_title}\n")
+
+    print(f"All text content written to {output_file_path}")

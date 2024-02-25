@@ -41,9 +41,6 @@ def extract_lines(dir):
     for chapter_number, text in chapters.items():
         quoted_texts = re.findall(r'(["])([A-Za-z].*?)\1(?=[\s.,?!"])', text, re.DOTALL)
         updated_chapters[chapter_number] = [match[1] for match in quoted_texts]
-
-    print(updated_chapters)
-
     return updated_chapters
 
 def delete_punctuation(text):

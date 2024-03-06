@@ -12,21 +12,21 @@ def read_text(file_path):
     all_content += content + '\n'
     return all_content
 
-def split_into_chapters(dir):
-    text = read_text(dir)
-    sc = {}
-    limits = r'\b(\d{4})\s+(CHAPTER|Chapter|PREFACE|Preface)\s*'
-    lines = text.splitlines()
-    list_of_acts = [l for l in lines if re.match(limits, l)]
+def split_into_chapters(dir=None, text=None):
+    if dir:
+        text = read_text(dir)
 
-    lim = '|'.join(map(re.escape, list_of_acts))
-    text = re.split(lim, text)[1:]
+    pattern = r'\b(\d{4})\s+(CHAPTER|Chapter|PREFACE|Preface|EPILOGUE|Epilogue)[^\n]*'
+    matches = list(re.finditer(pattern, text))
+    chapters = {}
+    for i, match in enumerate(matches):
+        start_idx = match.end()
+        end_idx = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        chapter_title = match.group(0).strip()
+        chapter_text = text[start_idx:end_idx].strip()
+        chapters[chapter_title] = chapter_text
 
-    for (i, (j, scene)) in zip(range(len(list_of_acts)), enumerate(text)):
-        sc[list_of_acts[i]] = scene.strip()
-
-    return sc
-
+    return chapters
 def split_into_phrases(dir):
     chapters = split_into_chapters(dir)
     for i in chapters.keys():
@@ -35,56 +35,40 @@ def split_into_phrases(dir):
         chapters[i] = phrases
     return chapters
 
-def extract_lines(dir):
-    chapters = split_into_chapters(dir)
+def extract_lines(chapters):
     updated_chapters = {}
     for chapter_number, text in chapters.items():
         quoted_texts = re.findall(r'(["])([A-Za-z].*?)\1(?=[\s.,?!"])', text, re.DOTALL)
         updated_chapters[chapter_number] = [match[1] for match in quoted_texts]
     return updated_chapters
 
-def delete_punctuation(text):
-    for i in text.keys():
-        text[i] = text[i].translate(str.maketrans('', '', string.punctuation))
-        text[i] = text[i].replace('\n\n', ' ')
-    for i in text.keys():
-        text[i] = re.sub(r'\d+', '', text[i])
+def delete_punctuation_and_clean(text):
+    for key in text.keys():
+        text[key] = text[key].translate(str.maketrans('', '', string.punctuation + '0123456789'))
+        text[key] = text[key].replace('\n\n', ' ').replace('\n', ' ')
+        text[key] = re.sub(' +', ' ', text[key])
     return text
 
-def lower_case_no_punct(dir):
-    text = delete_punctuation(dir)
-    for i in text.keys():
-        text[i] = str.lower(text[i])
-    return text
+def lower_text(text_dict, include_punctuation = False):
+    for i in text_dict.keys():
+        text_dict[i] = str.lower(text_dict[i])
+    if include_punctuation == False:
+        text_dict = delete_punctuation_and_clean(text_dict)
+    return text_dict
 
-def lower_case_with_punct(text):
-    for i in text.keys():
-        text[i] = str.lower(text[i])
-    return text
+def tokenize_text(text_dict, remove_stopwords=False, include_punctuation=False):
+    stop_words = set(stopwords.words('english'))
+    text = lower_text(text_dict, include_punctuation)
+    for key in text_dict.keys():
+        tokens = nltk.word_tokenize(text[key])
+        if remove_stopwords:
+            tokens = [word for word in tokens if word not in stop_words]
+        text_dict[key] = tokens
+    return text_dict
 
-def text_tokenized_stopwords(text):
-    for i in text.keys():
-        text[i] = nltk.word_tokenize(text[i])
-    return text
+def pos_tag_text(text_dict):
+    text_dict = tokenize_text(text_dict, remove_stopwords=False, include_punctuation=False)
+    for key in text_dict.keys():
+        text_dict[key] = nltk.pos_tag(text_dict[key])
+    return text_dict
 
-def text_tokenized_no_stopwords(text):
-    text = text_tokenized_stopwords(text)
-    nltk_stopw = stopwords.words('english')
-    ia_stopw = [line.strip() for line in open('stop_words')]
-    for i in text.keys():
-        for j in text[i]:
-            if j in ia_stopw:
-                text[i].remove(j)
-    return text
-
-def text_tokenized_including_punctuation(text):
-    for i in text.keys():
-        text[i] = str.lower(text[i])
-        text[i] = nltk.word_tokenize(text[i])
-    return text
-
-def text_pos_tokenized_stopwords(text):
-    text = text_tokenized_stopwords(text)
-    for i in text.keys():
-        text[i] = nltk.pos_tag(text[i])
-    return text

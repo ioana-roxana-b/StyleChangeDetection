@@ -1,13 +1,6 @@
 import string
-from collections import Counter
 from nltk.corpus import stopwords
 import re
-
-def word_frequency(tokenized_text):
-    frequencies = {}
-    for chapter, word in tokenized_text.items():
-        frequencies[chapter] = Counter(word)
-    return frequencies
 
 def no_of_words(tokenized_text):
     no_of_w = {chapter: len(tokens) for chapter, tokens in tokenized_text.items()}

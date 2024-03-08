@@ -2,7 +2,7 @@ import copy
 import string
 import re
 
-import dataset
+import text_preprocessing
 import math
 import numpy as np
 from nltk import ngrams
@@ -54,12 +54,12 @@ def pos_idf(pos, scenes):
         return math.log(len(scenes) / num_scenes_with_pos)
 
 def tf_idf_feature(chapter, stop_words=False, pos = False, n_grams=False, n=2):
-    text = dataset.lower_text(text_dict=chapter, include_punctuation=False)
+    text = text_preprocessing.lower_text(text_dict=chapter, include_punctuation=False)
     l_text = copy.deepcopy(text)
     tf_idf = copy.deepcopy(l_text)
     if pos:
-        pos_set = dataset.create_vocab(l_text, stop_words=stop_words, pos=True)
-        tokens = dataset.pos_tag_text(text)
+        pos_set = text_preprocessing.create_vocab(l_text, stop_words=stop_words, pos=True)
+        tokens = text_preprocessing.pos_tag_text(text)
         pos_index = {}
         for i, pos in enumerate(pos_set):
             pos_index[pos] = i
@@ -74,12 +74,10 @@ def tf_idf_feature(chapter, stop_words=False, pos = False, n_grams=False, n=2):
                 idf = pos_idf(pos, tokens)
                 vec[pos_index[pos]] = tf * idf
             tf_idf_matrix[j] = vec
-        for (i, j) in zip(tf_idf.keys(), range(len(tf_idf))):
-            tf_idf[i] = tf_idf_matrix[j]
-        return tf_idf
+
     elif n_grams:
-        ngrams_set = dataset.create_vocab(l_text, n_grams=True, n=n)
-        tokens = dataset.tokenize_text(text, remove_stopwords=stop_words)
+        ngrams_set = text_preprocessing.create_vocab(l_text, n_grams=True, n=n)
+        tokens = text_preprocessing.tokenize_text(text, remove_stopwords=stop_words)
         word_index = {}
         for i, word in enumerate(ngrams_set):
             word_index[word] = i
@@ -94,12 +92,9 @@ def tf_idf_feature(chapter, stop_words=False, pos = False, n_grams=False, n=2):
                 idf = n_grams_idf(word, tf_idf)
                 vec[word_index[word]] = tf * idf
             tf_idf_matrix[j] = vec
-        for (i, j) in zip(tf_idf.keys(), range(len(tf_idf))):
-            tf_idf[i] = tf_idf_matrix[j]
-        return tf_idf
     else:
-        word_set = dataset.create_vocab(l_text, stop_words=stop_words)
-        tokens = dataset.tokenize_text(text, remove_stopwords=stop_words)
+        word_set = text_preprocessing.create_vocab(l_text, stop_words=stop_words)
+        tokens = text_preprocessing.tokenize_text(text, remove_stopwords=stop_words)
         word_index = {}
         for i, word in enumerate(word_set):
             word_index[word] = i
@@ -114,12 +109,12 @@ def tf_idf_feature(chapter, stop_words=False, pos = False, n_grams=False, n=2):
                 vec[word_index[word]] = tf * idf
             tf_idf_matrix[j] = vec
 
-        for (i,j) in zip(tf_idf.keys(),range(len(tf_idf))):
-            tf_idf[i] = tf_idf_matrix[j]
-        return tf_idf
+    for (i,j) in zip(tf_idf.keys(),range(len(tf_idf))):
+        tf_idf[i] = tf_idf_matrix[j]
+    return tf_idf
 
 def tf_idf_for_stopwords(chapter):
-    text = dataset.lower_text(text_dict=chapter, include_punctuation=False)
+    text = text_preprocessing.lower_text(text_dict=chapter, include_punctuation=False)
     word_set = stopwords.words('english')
     word_index = {}
     for i, word in enumerate(word_set):
@@ -150,7 +145,7 @@ def punct_idf(char, scenes):
     else:
         return math.log(len(scenes) / num_scenes_with_char)
 def tf_idf_punct(chapter):
-    text = dataset.lower_text(chapter, include_punctuation=True)
+    text = text_preprocessing.lower_text(chapter, include_punctuation=True)
     word_set = string.punctuation
     word_index = {}
     for i, word in enumerate(word_set):

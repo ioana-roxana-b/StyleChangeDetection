@@ -1,6 +1,13 @@
 import string
+from collections import Counter
 from nltk.corpus import stopwords
 import re
+
+def word_frequency(tokenized_text):
+    frequencies = {}
+    for chapter, word in tokenized_text.items():
+        frequencies[chapter] = Counter(word)
+    return frequencies
 
 def no_of_words(tokenized_text):
     no_of_w = {chapter: len(tokens) for chapter, tokens in tokenized_text.items()}
@@ -65,6 +72,12 @@ def lexical_diversity(tokenized_text):
         unique_words = set(tokens)
         diversity[chapter] = len(unique_words) / len(tokens) if tokens else 0
     return diversity
+
+def unique_word_count(tokenized_text):
+    unique_word = {}
+    for chapter, tokens in tokenized_text.items():
+        unique_word[chapter] = len(set(tokens))
+    return unique_word
 
 def count_syllables(word):
     word = word.lower()

@@ -3,6 +3,7 @@ import re
 import string
 
 import nltk
+from nltk import ngrams
 from nltk.corpus import stopwords
 
 def read_text(file_path):
@@ -72,3 +73,28 @@ def pos_tag_text(text_dict):
         text_dict[key] = nltk.pos_tag(text_dict[key])
     return text_dict
 
+def create_vocab(chapters, stop_words=False, pos=False, n_grams=False, n=2):
+    vocab = []
+    if pos:
+        text_pos = pos_tag_text(chapters)
+        for i in text_pos.keys():
+            for j in text_pos[i]:
+                word, pos = j
+                if pos not in vocab:
+                    vocab.append(pos)
+        return vocab
+    elif n_grams:
+        text = tokenize_text(chapters, remove_stopwords=stop_words)
+        for i in text.keys():
+            for ng in ngrams(text[i], n):
+                word = ' '.join(ng)
+                if word not in vocab:
+                    vocab.append(word)
+        return vocab
+    else:
+        text = tokenize_text(chapters, remove_stopwords=stop_words)
+        for i in text.keys():
+            for word in text[i]:
+                if word not in vocab:
+                    vocab.append(word)
+        return vocab

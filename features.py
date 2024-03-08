@@ -66,6 +66,33 @@ def lexical_diversity(tokenized_text):
         diversity[chapter] = len(unique_words) / len(tokens) if tokens else 0
     return diversity
 
+def count_syllables(word):
+    word = word.lower()
+    syllables = 0
+    vowel_sequences = re.findall(r'[aeiouy]+', word)
+    for vowel_sequence in vowel_sequences:
+        syllables += 1
+    if word.endswith("e"):
+        syllables -= 1
+    syllables = max(1, syllables)
+    return syllables
+def flesch_reading_ease(sentences):
+    reading_ease_score = {}
+    for i in sentences.keys():
+        all_words = [word for sentence in sentences[i] for word in sentence.split()]
+        syllables = sum(count_syllables(word) for word in all_words)
+
+        total_sentences = len(sentences[i])
+        total_words = len(all_words)
+        total_syllables = syllables
+
+        if total_sentences == 0 or total_words == 0:
+            reading_ease_score[i] = 0  # Avoid division by zero
+        else:
+            reading_ease_score[i] = 206.835 - 1.015 * (total_words / total_sentences) - 84.6 * (total_syllables / total_words)
+    return reading_ease_score
+
+
 ### SENTENCE FEATURES ###
 def sentence_length_by_characters(sentences):
     result = {key: {s: len(s) for s in sentences[key]} for key in sentences}
@@ -81,7 +108,7 @@ def sentence_avg_word_length(sentences):
         sentence_avg = {}
         for s in sentences[key]:
             words = s.split()
-            if words:  # Check if the list is not empty
+            if words:
                 sentence_avg[s] = sum(len(word) for word in words) / len(words)
             else:
                 sentence_avg[s] = 0

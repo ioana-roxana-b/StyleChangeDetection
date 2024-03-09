@@ -36,12 +36,15 @@ def split_into_phrases(dir):
         chapters[i] = phrases
     return chapters
 
+import re
+
 def extract_lines(chapters):
     updated_chapters = {}
     for chapter_number, text in chapters.items():
         quoted_texts = re.findall(r'(["])([A-Za-z].*?)\1(?=[\s.,?!"])', text, re.DOTALL)
-        updated_chapters[chapter_number] = [match[1] for match in quoted_texts]
+        updated_chapters[chapter_number] = '\n'.join([match[1] for match in quoted_texts])
     return updated_chapters
+
 
 def delete_punctuation_and_clean(text):
     for key in text.keys():

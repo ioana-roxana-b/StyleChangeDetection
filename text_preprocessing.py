@@ -1,5 +1,4 @@
-import os
-import re
+import copy
 import string
 
 import nltk
@@ -28,8 +27,7 @@ def split_into_chapters(dir=None, text=None):
         chapters[chapter_title] = chapter_text
 
     return chapters
-def split_into_phrases(dir):
-    chapters = split_into_chapters(dir)
+def split_into_phrases(chapters):
     for i in chapters.keys():
         phrases = re.split(r'[.!?]+', chapters[i])
         phrases = [phrase.strip() for phrase in phrases]
@@ -54,27 +52,30 @@ def delete_punctuation_and_clean(text):
     return text
 
 def lower_text(text_dict, include_punctuation = False):
+    new_dict = copy.deepcopy(text_dict)
     for i in text_dict.keys():
-        text_dict[i] = str.lower(text_dict[i])
+        new_dict[i] = str.lower(new_dict[i])
     if include_punctuation == False:
-        text_dict = delete_punctuation_and_clean(text_dict)
-    return text_dict
+        new_dict = delete_punctuation_and_clean(new_dict)
+    return new_dict
 
 def tokenize_text(text_dict, remove_stopwords=False, include_punctuation=False):
     stop_words = set(stopwords.words('english'))
-    text = lower_text(text_dict, include_punctuation)
+    new_dict = copy.deepcopy(text_dict)
+    text = lower_text(new_dict, include_punctuation)
     for key in text_dict.keys():
         tokens = nltk.word_tokenize(text[key])
         if remove_stopwords:
             tokens = [word for word in tokens if word not in stop_words]
-        text_dict[key] = tokens
-    return text_dict
+        new_dict[key] = tokens
+    return new_dict
 
 def pos_tag_text(text_dict):
-    text_dict = tokenize_text(text_dict, remove_stopwords=False, include_punctuation=False)
+    new_dict = copy.deepcopy(text_dict)
+    new_dict = tokenize_text(new_dict, remove_stopwords=False, include_punctuation=False)
     for key in text_dict.keys():
-        text_dict[key] = nltk.pos_tag(text_dict[key])
-    return text_dict
+        new_dict[key] = nltk.pos_tag(new_dict[key])
+    return new_dict
 
 def create_vocab(chapters, stop_words=False, pos=False, n_grams=False, n=2):
     vocab = []

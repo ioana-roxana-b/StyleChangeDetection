@@ -14,12 +14,13 @@ def no_of_stop_words(tokenized_text, tokenized_text_sw):
 
 def no_of_contracted_wordforms(tokenized_text):
     pattern = r"\b\w+'\w+\b"
+    new_dict = {}
     for i in tokenized_text.keys():
         text = ' '.join(tokenized_text[i])
         contracted_word_forms = re.findall(pattern, text)
         num_contracted_word_forms = len(contracted_word_forms)
-        tokenized_text[i] = num_contracted_word_forms
-    return tokenized_text
+        new_dict[i] = num_contracted_word_forms
+    return new_dict
 
 def no_of_characters(text):
     no_of_ch = {}
@@ -33,11 +34,12 @@ def no_of_sentences(phrases):
         no_of_s[i] = len(phrases[i])
     return no_of_s
 
-def avg_sentence_length(phrases, no_words):
+def avg_sentence_length(phrases, tokens):
+    new_dict = {}
     for i in phrases.keys():
-        avg_sentence_len = len(no_words[i]) / len(phrases[i])
-        phrases[i] = avg_sentence_len
-    return phrases
+        avg_sentence_len = len(tokens[i]) / len(phrases[i])
+        new_dict[i] = avg_sentence_len
+    return new_dict
 
 def no_of_punctuation(text):
     no_of_ch = {}

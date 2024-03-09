@@ -31,7 +31,7 @@ def split_into_chapters(dir=None, text=None):
         text = read_text(text)
 
     if isinstance(text, str):
-        pattern = r'\b(\d{4}|Shakespeare|Fletcher)\s+(CHAPTER|Chapter|PREFACE|Preface|EPILOGUE|Epilogue|Prologue|ACT|Act)[^\n]*'
+        pattern = r'\b(\d{4}|Shakespeare|Fletcher|DOS|TOL)\s+(CHAPTER|Chapter|PREFACE|Preface|EPILOGUE|Epilogue|Prologue|ACT|Act)[^\n]*'
         matches = list(re.finditer(pattern, text))
         chapters = {}
         for i, match in enumerate(matches):

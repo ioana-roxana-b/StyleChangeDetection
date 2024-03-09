@@ -19,7 +19,7 @@ def chapter_features(text):
                      'lexical_diversity': {'tokenized_text': tokenized_text},
                      'unique_word_count': {'tokenized_text': tokenized_text}
                      }
-    config = dataset.save_features(text, feature_specs=feature_specs)
+    config = dataset.save_features(feature_specs=feature_specs)
     labels = []
     values = []
     for i in config.items():
@@ -40,7 +40,7 @@ def sentence_features(text):
                      'sentence_length_by_word': {'sentences' : phrases},
                      'sentence_avg_word_length': {'sentences' : phrases},
                      'sentence_stopwords_count': {'sentences' : phrases}}
-    config = dataset.save_features(text, feature_specs=feature_specs)
+    config = dataset.save_features(feature_specs=feature_specs)
     labels = []
     values = []
     for i in config.items():
@@ -100,7 +100,8 @@ def tf_idf_features(text):
                      'tf_idf_feature': tf_idf_tri_grams,
                      'tf_idf_punct': {'chapter': text},
                      'tf_idf_for_stopwords': {'chapter': text}}
-    config = dataset.save_features(text, feature_specs=feature_specs)
+
+    config = dataset.save_features(feature_specs=feature_specs)
     labels = []
     values = []
     for i in config.items():

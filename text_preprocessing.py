@@ -1,9 +1,13 @@
 import copy
+import os
 import string
 
 import nltk
 from nltk import ngrams
 from nltk.corpus import stopwords
+
+import os
+import re
 
 def read_text(file_path):
     all_content = ""
@@ -14,19 +18,33 @@ def read_text(file_path):
 
 def split_into_chapters(dir=None, text=None):
     if dir:
-        text = read_text(dir)
+        text = ""
+        for filename in os.listdir(dir):
+            if filename.endswith(".txt"):
+                file_path = os.path.join(dir, filename)
+                try:
+                    with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
+                        text += file.read() + "\n"
+                except PermissionError:
+                    print(f"Permission denied: {file_path}")
+    elif text is not None:
+        text = read_text(text)
 
-    pattern = r'\b(\d{4})\s+(CHAPTER|Chapter|PREFACE|Preface|EPILOGUE|Epilogue)[^\n]*'
-    matches = list(re.finditer(pattern, text))
-    chapters = {}
-    for i, match in enumerate(matches):
-        start_idx = match.end()
-        end_idx = matches[i + 1].start() if i + 1 < len(matches) else len(text)
-        chapter_title = match.group(0).strip()
-        chapter_text = text[start_idx:end_idx].strip()
-        chapters[chapter_title] = chapter_text
+    if isinstance(text, str):
+        pattern = r'\b(\d{4}|Shakespeare|Fletcher)\s+(CHAPTER|Chapter|PREFACE|Preface|EPILOGUE|Epilogue|Prologue|ACT|Act)[^\n]*'
+        matches = list(re.finditer(pattern, text))
+        chapters = {}
+        for i, match in enumerate(matches):
+            start_idx = match.end()
+            end_idx = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+            chapter_title = match.group(0).strip()
+            chapter_text = text[start_idx:end_idx].strip()
+            chapters[chapter_title] = chapter_text
+    else:
+        chapters = {}
 
     return chapters
+
 def split_into_phrases(chapters):
     for i in chapters.keys():
         phrases = re.split(r'[.!?]+', chapters[i])

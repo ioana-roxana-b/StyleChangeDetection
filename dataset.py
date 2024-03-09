@@ -3,7 +3,7 @@ import numpy as np
 import features
 import tf_idf_features
 
-def save_features(text_data, feature_specs=None):
+def save_features(feature_specs=None):
     all_features = {}
     for feature_name, params in feature_specs.items():
         feature_func = globals().get(feature_name)

@@ -36,23 +36,30 @@ def chapter_features(text):
 
 def sentence_features(text):
     phrases = text_preprocessing.split_into_phrases(text)
-    feature_specs = {'sentence_length_by_characters' : {'sentences' : phrases},
-                     'sentence_length_by_word': {'sentences' : phrases},
-                     'sentence_avg_word_length': {'sentences' : phrases},
-                     'sentence_stopwords_count': {'sentences' : phrases}}
+    feature_specs = {'sentence_length_by_characters': {'sentences': phrases},
+                     'sentence_length_by_word': {'sentences': phrases},
+                     'sentence_avg_word_length': {'sentences': phrases},
+                     'sentence_stopwords_count': {'sentences': phrases}}
     config = dataset.save_features(feature_specs=feature_specs)
+
     labels = []
     values = []
-    for i in config.items():
-        labels.append(i[0])
-        values.append(i[1])
+    max_length = 0
+    for label, value in config.items():
+        labels.append(label)
+        values.append(value)
+        max_length = max(max_length, len(value))
 
-    X = np.array(values)
+    # Padding shorter lists with zeros to match the max_length
+    values_padded = [value + [0] * (max_length - len(value)) for value in values]
+
+    X = np.array(values_padded)
     y = np.array(labels)
 
     train_df = pd.DataFrame(X)
     train_df['label'] = y
     train_df.to_csv(f'sentence_features.csv', index=False)
+
     return config
 
 

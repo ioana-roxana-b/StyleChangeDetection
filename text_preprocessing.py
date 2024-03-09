@@ -46,11 +46,12 @@ def split_into_chapters(dir=None, text=None):
     return chapters
 
 def split_into_phrases(chapters):
+    new_dict = {}
     for i in chapters.keys():
         phrases = re.split(r'[.!?]+', chapters[i])
         phrases = [phrase.strip() for phrase in phrases]
-        chapters[i] = phrases
-    return chapters
+        new_dict[i] = phrases
+    return new_dict
 
 import re
 

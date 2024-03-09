@@ -9,6 +9,7 @@ def classification(c, data_df, pc=False,
 
     X = data_df.drop('label', axis=1).values
     y = data_df['label'].apply(lambda x: x.split()[0]).values
+
     skf = StratifiedKFold(n_splits=2, random_state=None, shuffle=True)
     for train_index, test_index in skf.split(X, y):
         X_train, X_test = X[train_index], X[test_index]

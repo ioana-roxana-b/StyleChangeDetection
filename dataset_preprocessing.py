@@ -53,6 +53,6 @@ def apply_preprocessing(method_name, X_train, X_test, y_train=None):
         'lasso_threshold': lambda: lasso_threshold(X_train, X_test, y_train),
     }
     if method_name in preprocessing_functions:
-        return preprocessing_functions[method_name](X_train, X_test, y_train)
+        return preprocessing_functions[method_name]()
     else:
         raise ValueError(f"Method {method_name} not recognized.")

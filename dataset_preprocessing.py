@@ -7,9 +7,9 @@ from sklearn.linear_model import Lasso
 def pca(X_train, X_test):
     pca = PCA(n_components=10)
     pca.fit(X_train)
-    new_X = pca.transform(X_train)
-    new_X_test = pca.transform(X_test)
-    return new_X, new_X_test
+    X_train = pca.transform(X_train)
+    X_test = pca.transform(X_test)
+    return X_train, X_test
 
 def minmax_sc(X_train, X_test):
     scaler = MinMaxScaler()
@@ -46,11 +46,11 @@ def lasso_threshold(X_train, X_test, y_train):
 
 def apply_preprocessing(method_name, X_train, X_test, y_train=None):
     preprocessing_functions = {
-        'pca': lambda X_train, X_test, y_train=None: pca(X_train, X_test),
-        'minmax_sc': lambda X_train, X_test, y_train=None: minmax_sc(X_train, X_test),
-        'stand_sc': lambda X_train, X_test, y_train=None: stand_sc(X_train, X_test),
-        'lasso': lambda X_train, X_test, y_train: lasso(X_train, X_test, y_train),
-        'lasso_threshold': lambda X_train, X_test, y_train: lasso_threshold(X_train, X_test, y_train),
+        'pca': lambda: pca(X_train, X_test),
+        'minmax_sc': lambda: minmax_sc(X_train, X_test),
+        'stand_sc': lambda: stand_sc(X_train, X_test),
+        'lasso': lambda: lasso(X_train, X_test, y_train),
+        'lasso_threshold': lambda: lasso_threshold(X_train, X_test, y_train),
     }
     if method_name in preprocessing_functions:
         return preprocessing_functions[method_name](X_train, X_test, y_train)

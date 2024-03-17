@@ -16,5 +16,5 @@ if __name__ == '__main__':
 
     data_path = f'Outputs/chapter_feature.csv'
     data_df = pd.read_csv(data_path)
-    classification.classification(type = 'u', classifiers=['kmeans'], data_df = data_df)
+    classification.classification(type = 'u', classifiers=['random_forest'], data_df = data_df)
 

@@ -22,5 +22,5 @@ if __name__ == '__main__':
 
     data_path = f'Outputs/chapter_feature.csv'
     data_df = pd.read_csv(data_path)
-    classification.classification(type = 'u', classifiers=['kmeans', 'pca'], data_df = data_df)
+    classification.classification(type = 's', classifiers=['random_forest'], data_df = data_df, preprocessing_methods = ['pca'])
 

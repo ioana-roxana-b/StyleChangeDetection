@@ -6,7 +6,6 @@ import dataset_preprocessing
 import supervised_models
 import unsupervised_models
 
-
 def classification(type, classifiers, data_df, preprocessing_methods = None):
 
     X = data_df.drop('label', axis=1).values
@@ -30,7 +29,6 @@ def classification(type, classifiers, data_df, preprocessing_methods = None):
         for c in classifiers:
             clf, y_pred = supervised_models.sup_models(X_train, y_train, X_test, c)
 
-            #Se calculează metricile de performanță și se salvează într-un fișier csv
             accuracy = accuracy_score(y_test, y_pred)
             precision = precision_score(y_test, y_pred, average='macro', zero_division=1)
             recall = recall_score(y_test, y_pred, average='macro', zero_division=1)
@@ -51,7 +49,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None):
                 'Recall': [recall],
                 'F1 Score': [f1]
             })
-            results_df.to_csv(f'results_{c}.csv', mode='a', index=False)
+            results_df.to_csv(f'Outputs/results_{c}.csv', mode='a', index=False)
     elif type == 'u':
         for c in classifiers:
             if c == 'kmeans':

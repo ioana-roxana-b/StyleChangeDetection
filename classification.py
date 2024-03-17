@@ -36,10 +36,6 @@ def classification(type, classifiers, data_df, preprocessing_methods = None):
 
             print("Real values: ", y_test)
             print("Pred values: ", y_pred)
-            print("Accuracy: ", accuracy)
-            print("Precision: ", precision)
-            print("Recall: ", recall)
-            print("F1-score: ", f1)
 
             results_df = pd.DataFrame({
                 'Classifier': [c],
@@ -55,7 +51,6 @@ def classification(type, classifiers, data_df, preprocessing_methods = None):
             if c == 'kmeans':
                 clusters = unsupervised_models.unsup_models(X, c)
                 unsupervised_models.visualize_clusters(c, X, clusters)
-
             elif c == 'pca':
                 X_reduced = unsupervised_models.unsup_models(X, c)
                 unsupervised_models.visualize_clusters(c, X_reduced, y_le)

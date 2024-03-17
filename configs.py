@@ -50,7 +50,6 @@ def sentence_features(text):
         values.append(value)
         max_length = max(max_length, len(value))
 
-    # Padding shorter lists with zeros to match the max_length
     values_padded = [value + [0] * (max_length - len(value)) for value in values]
 
     X = np.array(values_padded)
@@ -58,7 +57,7 @@ def sentence_features(text):
 
     train_df = pd.DataFrame(X)
     train_df['label'] = y
-    train_df.to_csv(f'sentence_features.csv', index=False)
+    train_df.to_csv(f'Outputs/sentence_features.csv', index=False)
 
     return config
 
@@ -120,5 +119,5 @@ def tf_idf_features(text):
 
     train_df = pd.DataFrame(X)
     train_df['label'] = y
-    train_df.to_csv(f'tf_idf_features.csv', index=False)
+    train_df.to_csv(f'Outputs/tf_idf_features.csv', index=False)
     return config

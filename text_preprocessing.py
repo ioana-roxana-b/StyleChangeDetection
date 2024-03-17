@@ -1,5 +1,4 @@
 import copy
-import os
 import string
 
 import nltk
@@ -7,7 +6,6 @@ from nltk import ngrams
 from nltk.corpus import stopwords
 
 import os
-import re
 
 def read_text(file_path):
     all_content = ""
@@ -16,7 +14,7 @@ def read_text(file_path):
     all_content += content + '\n'
     return all_content
 
-def split_into_chapters(dir=None, text=None):
+def split_into_chapters(dir=None, text=None, label = None):
     if dir:
         text = ""
         for filename in os.listdir(dir):
@@ -31,7 +29,7 @@ def split_into_chapters(dir=None, text=None):
         text = read_text(text)
 
     if isinstance(text, str):
-        pattern = r'\b(\d{4}|Shakespeare|Fletcher|DOS|TOL)\s+(CHAPTER|Chapter|PREFACE|Preface|EPILOGUE|Epilogue|Prologue|ACT|Act)[^\n]*'
+        pattern = fr'\b(\d{{4}}|{label})\s+(CHAPTER|Chapter|PREFACE|Preface|EPILOGUE|Epilogue|Prologue|ACT|Act)[^\n]*'
         matches = list(re.finditer(pattern, text))
         chapters = {}
         for i, match in enumerate(matches):

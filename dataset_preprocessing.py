@@ -11,20 +11,17 @@ def pca(X_train, X_test):
     new_X_test = pca.transform(X_test)
     return new_X, new_X_test
 
-
 def minmax_sc(X_train, X_test):
     scaler = MinMaxScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
     return X_train, X_test
 
-
 def stand_sc(X_train, X_test):
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
     return X_train, X_test
-
 
 def lasso(X_train, X_test, y_train):
     lass = Lasso(alpha=0.01, max_iter=10000)
@@ -47,4 +44,15 @@ def lasso_threshold(X_train, X_test, y_train):
 
     return X_train, X_test
 
-
+def apply_preprocessing(method_name, X_train, X_test, y_train=None):
+    preprocessing_functions = {
+        'pca': lambda X_train, X_test, y_train=None: pca(X_train, X_test),
+        'minmax_sc': lambda X_train, X_test, y_train=None: minmax_sc(X_train, X_test),
+        'stand_sc': lambda X_train, X_test, y_train=None: stand_sc(X_train, X_test),
+        'lasso': lambda X_train, X_test, y_train: lasso(X_train, X_test, y_train),
+        'lasso_threshold': lambda X_train, X_test, y_train: lasso_threshold(X_train, X_test, y_train),
+    }
+    if method_name in preprocessing_functions:
+        return preprocessing_functions[method_name](X_train, X_test, y_train)
+    else:
+        raise ValueError(f"Method {method_name} not recognized.")

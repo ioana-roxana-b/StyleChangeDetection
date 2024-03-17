@@ -31,7 +31,7 @@ def chapter_features(text):
 
     train_df = pd.DataFrame(X)
     train_df['label'] = y
-    train_df.to_csv(f'chapter_feature.csv', index=False)
+    train_df.to_csv(f'Outputs/chapter_feature.csv', index=False)
     return config
 
 def sentence_features(text):

@@ -24,16 +24,12 @@ def save_features(feature_specs=None):
                         all_features.setdefault(key, []).extend(value_to_add)
             else:
                 feature_vector = feature_func(**params if params else {})
-
                 for key, value in feature_vector.items():
                     if isinstance(value, np.ndarray):
                         value = value.tolist()
-                    # Append values instead of overwriting for keys that already exist
                     if key in all_features:
-                        # Ensure existing data is in list form
                         if not isinstance(all_features[key], list):
                             all_features[key] = [all_features[key]]
-                        # Append new data
                         if isinstance(value, list):
                             all_features[key].extend(value)
                         else:

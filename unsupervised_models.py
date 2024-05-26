@@ -14,9 +14,9 @@ def kmeans(X, n_clusters = 2):
     kmeans.fit(X)
     return kmeans
 
-def unsup_models(X, c=None):
+def unsup_models(X, c=None, n=2):
     model_functions = {
-        'kmeans': lambda: kmeans(X, n_clusters=2),
+        'kmeans': lambda: kmeans(X, n_clusters=n),
         'pca': lambda: pca_dimension_reduction(X, n_components=2),
     }
 

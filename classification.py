@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import StratifiedKFold
@@ -6,10 +7,14 @@ import dataset_preprocessing
 import supervised_models
 import unsupervised_models
 
-def classification(type, classifiers, data_df, preprocessing_methods = None):
+def classification(type, classifiers, data_df, preprocessing_methods = None, dialog=False):
 
-    X = data_df.drop('label', axis=1).values
-    y = data_df['label'].apply(lambda x: x.split()[0]).values
+    if dialog:
+        X = data_df.drop('label', axis=1).values
+        y = data_df['label']
+    else:
+        X = data_df.drop('label', axis=1).values
+        y = data_df['label'].apply(lambda x: x.split()[0]).values
 
     skf = StratifiedKFold(n_splits=2, random_state=None, shuffle=True)
     for train_index, test_index in skf.split(X, y):
@@ -47,9 +52,10 @@ def classification(type, classifiers, data_df, preprocessing_methods = None):
             })
             results_df.to_csv(f'Outputs/results_{c}.csv', mode='a', index=False)
     elif type == 'u':
+        print((np.unique(y)))
         for c in classifiers:
             if c == 'kmeans':
-                clusters = unsupervised_models.unsup_models(X, c)
+                clusters = unsupervised_models.unsup_models(X, c, len(np.unique(y)))
                 unsupervised_models.visualize_clusters(c, X, clusters)
             elif c == 'pca':
                 X_reduced = unsupervised_models.unsup_models(X, c)

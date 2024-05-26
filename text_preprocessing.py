@@ -1,12 +1,12 @@
 import copy
+import re
 import string
-
+import pandas as pd
 import nltk
 from nltk import ngrams
 from nltk.corpus import stopwords
 
 import os
-
 def read_text(file_path):
     all_content = ""
     with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
@@ -46,12 +46,10 @@ def split_into_chapters(dir=None, text=None, label = None):
 def split_into_phrases(chapters):
     new_dict = {}
     for i in chapters.keys():
-        phrases = re.split(r'[.!?]+', chapters[i])
-        phrases = [phrase.strip() for phrase in phrases]
+        phrases = re.split(r'(?<=[.!?])\s+', chapters[i])
+        phrases = [phrase.strip() for phrase in phrases if phrase.strip()]
         new_dict[i] = phrases
     return new_dict
-
-import re
 
 def extract_lines(chapters):
     updated_chapters = {}
@@ -119,3 +117,35 @@ def create_vocab(chapters, stop_words=False, pos=False, n_grams=False, n=2):
                 if word not in vocab:
                     vocab.append(word)
         return vocab
+
+def extract_and_save_dialogues(quotation_info_path, character_info_path, output_file_path):
+    quotation_info = pd.read_csv(quotation_info_path)
+    character_info = pd.read_csv(character_info_path)
+
+    # Create a dictionary to store dialogues for each character
+    dialogues = {}
+
+    # Extract dialogues for each character
+    for _, row in quotation_info.iterrows():
+        character = row['speaker']
+        quotation = row['quoteText']
+
+        if character not in dialogues:
+            dialogues[character] = ""
+
+        dialogues[character] += quotation + " "
+
+    # Ensure the output directory exists
+    output_dir = os.path.dirname(output_file_path)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # Save dialogues to a text file, annotated with character names
+    with open(output_file_path, 'w', encoding='utf-8') as output_file:
+        for character, quotes in dialogues.items():
+            output_file.write(f"{character} DIALOGUES\n")
+            output_file.write(f"{quotes}\n\n")
+
+    print(f"Dialogues saved to {output_file_path}")
+
+    return dialogues

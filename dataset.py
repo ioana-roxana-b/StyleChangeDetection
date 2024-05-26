@@ -20,8 +20,9 @@ def save_features(feature_specs=None):
                         value_to_add = feature_vector[key][value]
                         if not isinstance(value_to_add, list):
                             value_to_add = [value_to_add]
+
                         # Append values instead of overwriting
-                        all_features.setdefault(key, []).extend(value_to_add)
+                        all_features.setdefault((key, value), []).extend(value_to_add)
             else:
                 feature_vector = feature_func(**params if params else {})
                 for key, value in feature_vector.items():

@@ -46,7 +46,7 @@ def sentence_features(text):
     values = []
     max_length = 0
     for label, value in config.items():
-        labels.append(label)
+        labels.append(label[0])
         values.append(value)
         max_length = max(max_length, len(value))
 

@@ -1,0 +1,25 @@
+Character ID,Main Name,Aliases,Gender,Category
+0,Anne Steele,"{'Anne', 'Nancy', 'Anne Steele'}",F,intermediate
+1,Charlotte,"{'Mrs. Palmer', 'Charlotte Palmer', 'Charlotte'}",F,intermediate
+2,Colonel Brandon,"{'The Colonel', 'Colonel', 'Colonel Brandon', 'Brandon'}",M,intermediate
+3,Edward Ferrars,"{'Edward Ferrars', 'Mr. Ferrars', 'Ferrars', 'Edward', 'Robert'}",M,intermediate
+4,Elinor,"{'Miss Dashwood', 'Elinor'}",F,major
+5,Fanny,"{'Fanny', 'Mrs. John Dashwood'}",F,minor
+6,John Dashwood,"{'Dashwood', 'John Dashwood', 'Mr. Dashwood'}",M,intermediate
+7,John Middleton,"{'John Middleton', 'Sir John', 'Sir John Middleton'}",M,intermediate
+8,Lady Middleton,"{'Lady Middleton', 'Mary'}",F,minor
+9,Lucy Steele,"{'Miss Steele', 'Lucy', 'Mrs. Robert Ferrars', 'Lucy Steele'}",F,intermediate
+10,Margaret,{'Margaret'},F,minor
+11,Marianne,"{'Marianne', 'Miss Marianne'}",F,major
+12,Mr. Willoughby,"{'Willoughby', 'Mr. Willoughby'}",M,intermediate
+13,Mrs. Dashwood,{'Mrs. Dashwood'},F,intermediate
+14,Mrs. Ferrars,{'Mrs. Ferrars'},F,minor
+15,Mrs. Jennings,{'Mrs. Jennings'},F,intermediate
+16,Robert Ferrars,{'Robert Ferrars'},M,minor
+17,Mr. Palmer,"{'Thomas', 'Man-servant', 'Palmer', 'Mr. Palmer'}",M,minor
+18,_group,['_group'],X,minor
+19,_unknowable,['_unknowable'],X,minor
+20,Mr. Pratt,['Mr. Pratt'],M,minor
+21,Footman,{'Footman'},M,minor
+22,Eliza Williams,['Eliza Williams'],X,minor
+23,Harry,['Harry'],X,minor

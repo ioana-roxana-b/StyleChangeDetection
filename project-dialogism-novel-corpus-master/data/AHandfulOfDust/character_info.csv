@@ -1,0 +1,105 @@
+Character ID,Main Name,Aliases,Gender,Category
+0,The Coloured Archdeacon,"{'A Coloured Archdeacon', 'The Coloured Archdeacon'}",M,minor
+1,A Little Old Woman,['A Little Old Woman'],F,minor
+2,Agnes,{'Agnes'},F,minor
+3,Allan,{'Allan'},M,minor
+4,Ambrose,['Ambrose'],X,minor
+5,John Beaver,"{'Beaver', 'The Voice', 'John', 'John Beaver', 'Mr. Beaver', ""Mrs Beaver'S Son""}",M,major
+6,Ben,"{'Mr Hacket', 'Mr. Hacket', 'Ben', 'Ben Hacket'}",M,intermediate
+7,Brenda,"{'Brenda', 'Lady Brenda'}",F,major
+8,Daisy,{'Daisy'},F,minor
+9,Dr Messinger,"{'Dr Mesinger', 'Dr Messinger'}",M,intermediate
+10,Jenny Abdul Akbar,"{'Jenny Abdul Akbar', 'Princess Abdul Akbar'}",F,intermediate
+11,Jock Grant-Menzies,"{'Mr. Grant-Menzies', 'Jock', 'Jock Grant-Menzies'}",M,minor
+12,John Andrew,"{'Johnny-Boy', 'John Last', 'John Andrew'}",M,intermediate
+13,Lady St. Cloud,"{'Lady St Cloud', 'Lady St. Cloud'}",F,minor
+14,Margot,['Margot'],X,minor
+15,Marjorie,{'Marjorie'},F,intermediate
+16,Milly,{'Milly'},F,intermediate
+17,Molly Last,"{'Molly', 'Molly Last'}",F,minor
+18,Mr Graceful,{'Mr Graceful'},M,minor
+19,Mr Todd,{'Mr Todd'},M,intermediate
+20,Mrs Arnold Fischbaum,['Mrs Arnold Fischbaum'],F,minor
+21,Mrs Last,{'Mrs Last'},F,minor
+22,Rosa,{'Rosa'},F,intermediate
+23,Polly Cockpurse,"{'Polly Cockpurse', 'Polly', 'Lady Cockpurse'}",F,intermediate
+24,Reggie St Cloud,{'Reggie St Cloud'},M,intermediate
+25,Richard Last,"{'Mr Last', 'Richard Last'}",M,minor
+26,Souki,{'Souki'},F,minor
+27,Teddy Last,"{'Teddy Last', 'Teddy'}",M,minor
+28,The Black Boy,{'The Black Boy'},M,minor
+29,The Genial Passenger,{'The Genial Passenger'},M,minor
+30,The Under-Secretary,"{'The Under-Secretary', 'Under-Secretary'}",M,minor
+31,The Waiter,{'The Waiter'},M,minor
+32,The Wife Of The Archdeacon,['The Wife Of The Archdeacon'],X,minor
+33,Therese De Vitre,"{'Thérèse De Vitré', 'Therese De Vitre'}",F,intermediate
+34,Thérèse De Vitré'S Father,"[""Thérèse De Vitré'S Father""]",M,minor
+35,Tony Last,"{'Tony', 'Tony Last', 'Mr. Last'}",M,major
+36,Unknowable,"{'Unknowable', 'Unknown'}",U,intermediate
+37,Veronica,{'Veronica'},F,minor
+38,Winnie,{'Winnie'},F,intermediate
+39,Elderly Gentleman Near Tours,['Elderly Gentleman Near Tours'],X,minor
+40,Ernie,['Ernie'],X,minor
+41,A Kindly Young Lady,"{'A Kindly Young Lady', 'Young Lady'}",F,minor
+42,A Page,{'A Page'},M,minor
+43,Albert,{'Albert'},M,minor
+44,Angela,{'Angela'},F,minor
+45,Angela'S Husband,"[""Angela'S Husband""]",X,minor
+46,Audrey,['Audrey'],X,minor
+47,Babe,['Babe'],X,minor
+48,Babs,{'Babs'},F,minor
+49,Billy Angmering,['Billy Angmering'],X,minor
+50,Brenda'S Solicitor,"{""Brenda'S Solicitor""}",M,minor
+51,Chambers,['Chambers'],X,minor
+52,Colonel Inch,['Colonel Inch'],X,minor
+53,Dan,{'Dan'},M,minor
+54,Dan'S Friend,"{""Dan'S Friend""}",M,minor
+55,Dan'S Girl,"{""Dan'S Girl"", 'Baby'}",F,minor
+56,Dawson,['Dawson'],X,minor
+57,De Trommet,['De Trommet'],X,minor
+58,Aunt Frances,"{'Aunt Frances', 'Frances'}",F,minor
+59,Grimshawe,{'Grimshawe'},F,minor
+60,The Detective Colleague,"{'The Detective Colleague', 'Mr. James', 'Junior Detective', 'His Colleague', 'Mr James', 'The Junior Detective'}",M,minor
+61,Joyce,{'Joyce'},F,minor
+62,Mama,['Mama'],X,minor
+63,Mary,['Mary'],X,minor
+64,Miss Ripon,{'Miss Ripon'},F,minor
+65,The Vicar'S Sister,"{""The Vicar'S Sister"", ""Vicar'S Sister"", 'Miss Tendril'}",F,minor
+66,Moulay,['Moulay'],X,minor
+67,Mr Cruttwell,['Mr Cruttwell'],X,minor
+68,Mr Ripon,['Mr Ripon'],X,minor
+69,Mr Tendril,['Mr Tendril'],X,minor
+70,Mr Westmacott,['Mr Westmacott'],X,minor
+71,Mrs. Northcote,"{'Mrs Northcote', 'Mrs. Northcote'}",F,minor
+72,Mrs. Rattery,"{'Mrs. Rattery', 'Mrs Rattery'}",F,intermediate
+73,Mrs Shutter,['Mrs Shutter'],F,minor
+74,Mrs Tipping,{'Mrs Tipping'},F,minor
+75,Mrs. Beaver,"{'Mrs. Beaver', 'Mrs Beaver', 'Mumsy'}",F,minor
+76,Nanny,{'Nanny'},F,intermediate
+77,Reggie,['Reggie'],X,minor
+78,Robin Beaseley,['Robin Beaseley'],X,minor
+79,Sam Brace,['Sam Brace'],X,minor
+80,Sam Brace'S Wife,"[""Sam Brace'S Wife""]",X,minor
+81,Sheila Shrub,['Sheila Shrub'],X,minor
+82,Simon,['Simon'],X,minor
+83,Sonia,['Sonia'],X,minor
+84,Souki De Foucald-Esterhazy,['Souki De Foucald-Esterhazy'],X,minor
+85,Sybil,{'Sybil'},F,minor
+86,Sylvia Newport,['Sylvia Newport'],X,minor
+87,The Barman,"{'The Barman', 'Macdougal'}",M,minor
+88,The Beach Attendant,"{'The Beach Attendant', 'Beach Attendant'}",M,minor
+89,The Detective,"{'Blenkinsop', 'Senior Detective', 'The Detective', 'The Senior Detective'}",M,minor
+90,The Doctor,"{'Doctor', 'The Doctor'}",M,minor
+91,The Footman,"{'Footman', 'The Footman'}",M,minor
+92,The Mayor,['The Mayor'],X,minor
+93,The Porter,{'The Porter'},M,minor
+94,The Reception Clerk,"{'Reception Clerk', 'The Clerk', 'The Reception Clerk'}",M,minor
+95,The Seedy Commissionaire,['The Seedy Commissionaire'],X,minor
+96,The Soliciter,"{'The Soliciter', 'The Lawyer', 'The Solicitor'}",M,minor
+97,The Stationmaster,"{'The Stationmaster', 'Stationmaster'}",M,minor
+98,The Vicar,{'The Vicar'},M,minor
+99,The Woman At Whose House She Was Dining,"{'Mrs. Jimmy Deane', 'The Woman At Whose House She Was Dining'}",F,minor
+100,Married Couple,['Married Couple'],X,minor
+101,A Gardener'S Wife,"{""A Gardener'S Wife""}",F,minor
+102,Brenda'S Mother,"[""Brenda'S Mother""]",F,minor
+103,Rupert,['Rupert'],X,minor

@@ -1,0 +1,51 @@
+Character ID,Main Name,Aliases,Gender,Category
+0,A Commercial Traveler,{'A Commercial Traveler'},M,minor
+1,A Small Girl,{'A Small Girl'},F,minor
+2,"A Thin, Elderly Gentleman","{'A Thin, Elderly Gentleman'}",M,minor
+3,Richard Alardyce,['Richard Alardyce'],X,minor
+4,Augustus Pelham,['Augustus Pelham'],X,minor
+5,Mrs. Milvain,"{'Celia', 'Mrs. Milvain', 'Aunt Celia'}",F,intermediate
+6,Aunt Eleanor,{'Aunt Eleanor'},F,minor
+7,Cassandra Otway,"{'Cassandra', 'Cassandra Otway'}",F,intermediate
+8,Christopher,{'Christopher'},M,minor
+9,Cousin Caroline,{'Cousin Caroline'},F,minor
+10,Cyril,['Cyril'],X,minor
+11,Dorothy,['Dorothy'],X,minor
+12,Edward,{'Edward'},M,minor
+13,Elizabeth,{'Elizabeth'},F,minor
+14,Henry Otway,"{'Otway', 'Henry Otway', 'Henry'}",M,intermediate
+15,Hester,{'Hester'},F,minor
+16,James,{'James'},M,minor
+17,Joan,{'Joan'},F,intermediate
+18,Johnnie,{'Johnnie'},M,minor
+19,Katharine Hilbery,"{'Katharine Hilbery', 'Miss Hilbery', 'Katharine'}",F,major
+20,Lady Otway,"{'Charlotte', 'Lady Otway', 'Aunt Charlotte'}",F,minor
+21,Mary Datchet,"{'Mary', 'Mary Datchet', 'Miss Datchet'}",F,major
+22,Miss Markham,"{'Kit Markham', 'Kit', 'Miss Markham'}",F,minor
+23,Molly,['Molly'],X,minor
+24,Mr. Basnett,{'Mr. Basnett'},M,minor
+25,Mr. Clacton,{'Mr. Clacton'},M,intermediate
+26,Mr. Datchet,"{'Mr. Datchet', 'Reverend Wyndham Datchet'}",M,minor
+27,Mr. Fortescue,{'Mr. Fortescue'},M,minor
+28,Mr. Hilbery,"{'Mr. Hilbery', 'Trevor', 'Uncle Trevor'}",M,intermediate
+29,Mr. Peyton,{'Mr. Peyton'},M,minor
+30,Aunt Millicent,"{'Aunt Millicent', 'Mrs. Cosham'}",F,intermediate
+31,Mrs. Denham,"{'Mrs. Denham', ""Ralph'S Mother""}",F,minor
+32,Mrs. Hilbery,"{'Aunt Maggie', 'Mrs. Hilbery', 'Maggie'}",F,major
+33,Mrs. Seal,"{'Sally', 'Mrs. Seal'}",F,intermediate
+34,Mrs. Vermont Bankes,"{'Mrs. Vermont Bankes', 'Mrs. Bankes', 'The American'}",F,minor
+35,Ralph Denham,"{'Ralph Denham', 'Ralph', 'Mr. Denham'}",M,major
+36,Harry Sandys,"{'Sandys', 'Harry Sandys'}",M,minor
+37,Sir Francis,['Sir Francis'],M,minor
+38,Parlor-Maid,"{'Parlor-Maid', 'The Maid', 'The Girl', 'The Parlor-Maid'}",F,minor
+39,Uncle Aubrey,{'Uncle Aubrey'},M,minor
+40,William Rodney,"{'Mr. Rodney', 'William Rodney', 'William'}",M,major
+41,_group,['_group'],X,minor
+42,A Voice From Within,"{'A Voice', 'A Voice From Within', 'Unknowable', '_unknowable'}",F,minor
+43,Aunt Emily,['Aunt Emily'],X,minor
+44,Charles,['Charles'],X,minor
+45,Heaven,['Heaven'],X,minor
+46,Mostyn Henry,['Mostyn Henry'],X,minor
+47,Shakespeare,['Shakespeare'],X,minor
+48,Sir Richard Warburton,['Sir Richard Warburton'],M,minor
+49,Uncle John,['Uncle John'],X,minor

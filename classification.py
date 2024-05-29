@@ -8,6 +8,7 @@ import supervised_models
 import unsupervised_models
 
 def classification(type, classifiers, data_df, preprocessing_methods = None, dialog=False):
+    le = LabelEncoder()
 
     if dialog:
         X = data_df.drop('label', axis=1).values
@@ -16,19 +17,30 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
         X = data_df.drop('label', axis=1).values
         y = data_df['label'].apply(lambda x: x.split()[0]).values
 
-    skf = StratifiedKFold(n_splits=2, random_state=None, shuffle=True)
-    for train_index, test_index in skf.split(X, y):
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
-
-    le = LabelEncoder()
     y_le = le.fit_transform(y)
-    y_train = le.fit_transform(y_train)
-    y_test = le.transform(y_test)
 
-    if preprocessing_methods != None:
-        for m in preprocessing_methods:
-            dataset_preprocessing.apply_preprocessing(m, X_train, X_test, y_train)
+    if type != 'u':
+        skf = StratifiedKFold(n_splits=2, random_state=None, shuffle=True)
+        for train_index, test_index in skf.split(X, y):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = y[train_index], y[test_index]
+
+            y_train = le.fit_transform(y_train)
+            y_test = le.transform(y_test)
+
+        if preprocessing_methods is not None:
+            for m in preprocessing_methods:
+                X_train, X_test = dataset_preprocessing.apply_preprocessing(m, X_train, X_test, y_train)
+
+    else:  # Apply preprocessing to the entire dataset for unsupervised learning
+        if preprocessing_methods is not None:
+            for m in preprocessing_methods:
+                X, _ = dataset_preprocessing.apply_preprocessing(m, X, y_train=y_le)
+
+
+
+    unsupervised_models.elbow_method(X, max_clusters=30)
+
 
     if type == 's':
         for c in classifiers:
@@ -52,11 +64,14 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
             })
             results_df.to_csv(f'Outputs/results_{c}.csv', mode='a', index=False)
     elif type == 'u':
-        print((np.unique(y)))
+        #print((np.unique(y)))
         for c in classifiers:
             if c == 'kmeans':
-                clusters = unsupervised_models.unsup_models(X, c, len(np.unique(y)))
+                unsupervised_models.elbow_method(X, max_clusters=30)  # Plot the elbow method
+                best_num_clusters = unsupervised_models.grid_search_kmeans(X, min_clusters=2, max_clusters=30)  # Determine the best number of clusters
+                clusters =  unsupervised_models.unsup_models(X, c, best_num_clusters)
                 unsupervised_models.visualize_clusters(c, X, clusters)
+                unsupervised_models.evaluate_clustering(X, y_le, clusters)
             elif c == 'pca':
                 X_reduced = unsupervised_models.unsup_models(X, c)
                 unsupervised_models.visualize_clusters(c, X_reduced, y_le)

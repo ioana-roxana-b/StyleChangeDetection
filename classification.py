@@ -18,6 +18,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
         y = data_df['label'].apply(lambda x: x.split()[0]).values
 
     y_le = le.fit_transform(y)
+    labels = y_le
 
     if type != 'u':
         skf = StratifiedKFold(n_splits=2, random_state=None, shuffle=True)
@@ -36,11 +37,6 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
         if preprocessing_methods is not None:
             for m in preprocessing_methods:
                 X, _ = dataset_preprocessing.apply_preprocessing(m, X, y_train=y_le)
-
-
-
-    unsupervised_models.elbow_method(X, max_clusters=30)
-
 
     if type == 's':
         for c in classifiers:
@@ -67,11 +63,13 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
         #print((np.unique(y)))
         for c in classifiers:
             if c == 'kmeans':
-                unsupervised_models.elbow_method(X, max_clusters=30)  # Plot the elbow method
-                best_num_clusters = unsupervised_models.grid_search_kmeans(X, min_clusters=2, max_clusters=30)  # Determine the best number of clusters
+                #unsupervised_models.elbow_method(X, max_clusters=30)  # Plot the elbow method
+                best_num_clusters = unsupervised_models.grid_search_kmeans(X, min_clusters=2, max_clusters=20)  # Determine the best number of clusters
                 clusters =  unsupervised_models.unsup_models(X, c, best_num_clusters)
-                unsupervised_models.visualize_clusters(c, X, clusters)
-                unsupervised_models.evaluate_clustering(X, y_le, clusters)
+                print(np.unique(clusters.labels_))
+                print(np.unique(labels))
+                unsupervised_models.evaluate_clustering(X, labels, clusters)
+                unsupervised_models.visualize_clusters_v2(c, X, clusters, np.unique(y))
             elif c == 'pca':
                 X_reduced = unsupervised_models.unsup_models(X, c)
                 unsupervised_models.visualize_clusters(c, X_reduced, y_le)

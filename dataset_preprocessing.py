@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Lasso
 
 def pca(X_train, X_test=None):
-    pca = PCA(n_components=4)
+    pca = PCA(n_components=2)
     pca.fit(X_train)
     X_train = pca.transform(X_train)
     if X_test is not None:
@@ -27,7 +27,7 @@ def stand_sc(X_train, X_test=None):
     return X_train, X_test
 
 def lasso(X_train, X_test=None, y_train=None):
-    lass = Lasso(alpha=0.01, max_iter=10000)
+    lass = Lasso(alpha=0.1, max_iter=10000)
     lass.fit(X_train, y_train)
     coef = lass.coef_
     idx_nonzero = np.nonzero(coef)[0]
@@ -37,8 +37,8 @@ def lasso(X_train, X_test=None, y_train=None):
     return X_train, X_test
 
 def lasso_threshold(X_train, X_test=None, y_train=None):
-    threshold = 0.01
-    lasso = Lasso(alpha=0.01, max_iter=100000, tol=1e-4)
+    threshold = 0.1
+    lasso = Lasso(alpha=0.01, max_iter=10000, tol=1e-4)
     lasso.fit(X_train, y_train)
     coef = lasso.coef_
 

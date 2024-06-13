@@ -122,31 +122,27 @@ def tf_idf_features(text):
     train_df.to_csv(f'Outputs/tf_idf_features.csv', index=False)
     return config, train_df
 
-def all_features(text):
-    _, chapter_df = chapter_features(text)
-    _, tf_idf_df = tf_idf_features(text)
 
-    if 'label' not in chapter_df.columns or 'label' not in tf_idf_df.columns:
-        raise ValueError("All DataFrames must contain a 'label' column")
+def all_features(chapter_path, tf_idf_path):
+    chapter_df = pd.read_csv(chapter_path)
+    tf_idf_df = pd.read_csv(tf_idf_path)
 
-    labels = tf_idf_df['label']
+    chapter_df.set_index('label', inplace=True)
+    tf_idf_df.set_index('label', inplace=True)
 
-    df_chapter = chapter_df.drop(columns=['label'])
-    df_tf_idf = tf_idf_df.drop(columns=['label'])
+    # Combine the dataframes, adding suffixes to overlapping columns
+    combined_df = chapter_df.join(tf_idf_df, how='left', lsuffix='_chapter', rsuffix='_tfidf')
 
-    df_chapter.index = labels.index
-    df_tf_idf.index = labels.index
-
-    combined_df = pd.concat([df_chapter, df_tf_idf], axis=1)
-
-    combined_df['label'] = labels.values
+    # Reset the index to move 'label' back to a column
+    combined_df.reset_index(inplace=True)
 
     combined_df.fillna(0, inplace=True)
-    combined_df = combined_df.apply(pd.to_numeric, errors='coerce').fillna(0)
+    for col in combined_df.columns:
+        if col != 'label':
+            combined_df[col] = pd.to_numeric(combined_df[col], errors='coerce').fillna(0)
 
     combined_df.to_csv('Outputs/all_features.csv', index=False)
     return combined_df
-
 
 def all_features_v2(sentence_path, chapter_path, tf_idf_path):
     # Load data from CSV files
@@ -176,3 +172,52 @@ def all_features_v2(sentence_path, chapter_path, tf_idf_path):
 
     return combined_df
 
+def tf_idf_bigrams(text):
+    tf_idf_bi_grams = {
+        'chapter': text,
+        'stop_words': False,
+        'pos': False,
+        'n_grams': True,
+        'n': 2
+    }
+
+    feature_specs = {'tf_idf_feature': tf_idf_bi_grams}
+
+    config = dataset.save_features(feature_specs=feature_specs)
+    labels = []
+    values = []
+    for i in config.items():
+        labels.append(i[0])
+        values.append(i[1])
+
+    X = np.array(values)
+    y = np.array(labels)
+
+    train_df = pd.DataFrame(X)
+    train_df['label'] = y
+    train_df.to_csv(f'Outputs/tf_idf_bigrams_features.csv', index=False)
+    return config, train_df
+
+
+def all_features_v3(sentence_path, tf_idf_path):
+    # Load data from CSV files
+    sentence_df = pd.read_csv(sentence_path)
+    tf_idf_df = pd.read_csv(tf_idf_path)
+
+    # Ensure 'label' is the first column, else reset it to be so
+    sentence_df.set_index('label', inplace=True)
+    tf_idf_df.set_index('label', inplace=True)
+
+    # Join the dataframes
+    combined_df = sentence_df.join(tf_idf_df, how='left',lsuffix='_sent', rsuffix='_tfidf')
+
+    combined_df.reset_index(inplace=True)
+
+    combined_df.fillna(0, inplace=True)
+    for col in combined_df.columns:
+        if col != 'label':
+            combined_df[col] = pd.to_numeric(combined_df[col], errors='coerce').fillna(0)
+    # Save the combined DataFrame
+    combined_df.to_csv('Outputs/all_features_sent.csv', index=False)
+
+    return combined_df

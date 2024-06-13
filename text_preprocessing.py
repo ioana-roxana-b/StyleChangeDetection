@@ -118,9 +118,8 @@ def create_vocab(chapters, stop_words=False, pos=False, n_grams=False, n=2):
                     vocab.append(word)
         return vocab
 
-def extract_and_save_dialogues(quotation_info_path, character_info_path, output_file_path):
+def extract_and_save_dialogues(quotation_info_path, output_file_path):
     quotation_info = pd.read_csv(quotation_info_path)
-    character_info = pd.read_csv(character_info_path)
 
     # Create a dictionary to store dialogues for each character
     dialogues = {}

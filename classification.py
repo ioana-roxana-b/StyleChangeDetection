@@ -7,33 +7,34 @@ import dataset_preprocessing
 import supervised_models
 import unsupervised_models
 
-def classification(type, classifiers, data_df, preprocessing_methods = None, dialog=False):
+def classification(type, classifiers, data_df, preprocessing_methods=None, dialog=False):
     le = LabelEncoder()
 
-    if dialog:
-        X = data_df.drop('label', axis=1).values
-        y = data_df['label']
-    else:
-        X = data_df.drop('label', axis=1).values
-        y = data_df['label'].apply(lambda x: x.split()[0]).values
-
+    y = data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else data_df['label']
     y_le = le.fit_transform(y)
     labels = y_le
+    class_names = le.classes_
+
+    X = data_df.drop('label', axis=1).values
 
     if type != 'u':
-        skf = StratifiedKFold(n_splits=2, random_state=None, shuffle=True)
-        for train_index, test_index in skf.split(X, y):
-            X_train, X_test = X[train_index], X[test_index]
-            y_train, y_test = y[train_index], y[test_index]
+        if dialog == False:
+            unique_classes, class_counts = np.unique(y_le, return_counts=True)
+            n_splits = min(2, len(unique_classes))
 
-            y_train = le.fit_transform(y_train)
-            y_test = le.transform(y_test)
+            skf = StratifiedKFold(n_splits=n_splits, random_state=None, shuffle=False)
+            for train_index, test_index in skf.split(X, y_le):
+                X_train, X_test = X[train_index], X[test_index]
+                y_train, y_test = y_le[train_index], y_le[test_index]
+        else:
+            X_train, X_test = X, X
+            y_train, y_test = y_le, y_le
 
         if preprocessing_methods is not None:
             for m in preprocessing_methods:
                 X_train, X_test = dataset_preprocessing.apply_preprocessing(m, X_train, X_test, y_train)
 
-    else:  # Apply preprocessing to the entire dataset for unsupervised learning
+    else:
         if preprocessing_methods is not None:
             for m in preprocessing_methods:
                 X, _ = dataset_preprocessing.apply_preprocessing(m, X, y_train=y_le)
@@ -50,6 +51,11 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
             print("Real values: ", y_test)
             print("Pred values: ", y_pred)
 
+            print("Accuracy: ", accuracy)
+            print("Precision: ", precision)
+            print("Recall: ", recall)
+            print("F1: ", f1)
+
             results_df = pd.DataFrame({
                 'Classifier': [c],
                 'Preprocessing methods': [preprocessing_methods],
@@ -60,18 +66,17 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
             })
             results_df.to_csv(f'Outputs/results_{c}.csv', mode='a', index=False)
     elif type == 'u':
-        #print((np.unique(y)))
         for c in classifiers:
             if c == 'kmeans':
-                #unsupervised_models.elbow_method(X, max_clusters=30)  # Plot the elbow method
-                best_num_clusters = unsupervised_models.grid_search_kmeans(X, min_clusters=2, max_clusters=20)  # Determine the best number of clusters
-                clusters =  unsupervised_models.unsup_models(X, c, best_num_clusters)
-                print(np.unique(clusters.labels_))
+                best_num_clusters = unsupervised_models.grid_search_kmeans(X, min_clusters=2, max_clusters=25)
+                pred_labels = unsupervised_models.kmeans(X, n_clusters=best_num_clusters)
                 print(np.unique(labels))
-                unsupervised_models.evaluate_clustering(X, labels, clusters)
-                unsupervised_models.visualize_clusters_v2(c, X, clusters, np.unique(y))
+                print(np.unique(pred_labels))
+                unsupervised_models.evaluate_clustering(X, labels, pred_labels)
+                unsupervised_models.visualize_clusters_tsne_label(X, pred_labels, y_le, class_names)
             elif c == 'pca':
-                X_reduced = unsupervised_models.unsup_models(X, c)
+                """NOT GOOD"""
+                X_reduced = unsupervised_models.pca_dimension_reduction(X)
                 unsupervised_models.visualize_clusters(c, X_reduced, y_le)
 
     return 0

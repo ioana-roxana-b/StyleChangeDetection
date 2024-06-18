@@ -8,7 +8,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import VotingClassifier
 
 def random_forest(X_train, y_train, X_test):
-    clf = RandomForestClassifier(n_estimators=1000, random_state=500)
+    clf = RandomForestClassifier(n_estimators=1000)
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     return clf, y_pred

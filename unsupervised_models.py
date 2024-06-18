@@ -1,12 +1,12 @@
 import numpy as np
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, DBSCAN
 from sklearn.manifold import TSNE
 from sklearn.metrics import silhouette_score, adjusted_rand_score, silhouette_samples, normalized_mutual_info_score, \
     fowlkes_mallows_score
 from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from sklearn.metrics import davies_bouldin_score, calinski_harabasz_score
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 
 def elbow_method(X, max_clusters=30):
@@ -74,14 +74,30 @@ def evaluate_clustering(X, true_labels, predicted_labels):
     print(f'Normalized Mutual Information: {nmi}')
     print(f'Fowlkes-Mallows Index: {fmi}')
 
-def unsup_models(X, c=None, n=2):
+def dbscan_clustering(X, eps=0.5, min_samples=5):
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+
+    dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+    cluster_labels = dbscan.fit_predict(X_scaled)
+
+    n_clusters = len(set(cluster_labels)) - (1 if -1 in cluster_labels else 0)
+    n_noise = list(cluster_labels).count(-1)
+
+    print(f'Estimated number of clusters: {n_clusters}')
+    print(f'Estimated number of noise points: {n_noise}')
+
+    return cluster_labels
+
+# Add DBSCAN to the model functions dictionary
+def unsup_models(X, c=None, n=2, eps=0.5, min_samples=5):
     model_functions = {
         'kmeans': lambda: kmeans(X, n_clusters=n),
         'pca': lambda: pca_dimension_reduction(X, n_components=2),
+        'dbscan': lambda: dbscan_clustering(X, eps=eps, min_samples=min_samples)
     }
 
     result = model_functions[c]()
-
     return result
 
 
@@ -140,7 +156,7 @@ def visualize_clusters_tsne(X, cluster_labels, actual_labels, class_names):
 
 def visualize_clusters_tsne_label(X, cluster_labels, actual_labels, class_names):
     # Apply t-SNE reduction
-    tsne = TSNE(n_components=2, random_state=42, perplexity=50)
+    tsne = TSNE(n_components=2, random_state=42, perplexity=5)
     X_reduced = tsne.fit_transform(X)
 
     plt.figure(figsize=(18, 9))  # Adjust the figure size as necessary

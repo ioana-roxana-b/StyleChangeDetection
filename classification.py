@@ -6,16 +6,32 @@ from sklearn.preprocessing import LabelEncoder
 import dataset_preprocessing
 import supervised_models
 import unsupervised_models
+from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import train_test_split
 
 def classification(type, classifiers, data_df, preprocessing_methods=None, dialog=False):
-    le = LabelEncoder()
+    if dialog:
+        label_counts = data_df['label'].value_counts()
 
-    y = data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else data_df['label']
-    y_le = le.fit_transform(y)
-    labels = y_le
-    class_names = le.classes_
+        labels_to_keep = label_counts[label_counts >= 20].index
 
-    X = data_df.drop('label', axis=1).values
+        filtered_data_df = data_df[data_df['label'].isin(labels_to_keep)]
+
+        le = LabelEncoder()
+        y = filtered_data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else filtered_data_df['label']
+        y_le = le.fit_transform(y)
+        labels = y_le
+        class_names = le.classes_
+        X = filtered_data_df.drop('label', axis=1).values
+    else:
+        le = LabelEncoder()
+
+        y = data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else data_df['label']
+        y_le = le.fit_transform(y)
+        labels = y_le
+        class_names = le.classes_
+
+        X = data_df.drop('label', axis=1).values
 
     if type != 'u':
         if dialog == False:
@@ -27,14 +43,17 @@ def classification(type, classifiers, data_df, preprocessing_methods=None, dialo
                 X_train, X_test = X[train_index], X[test_index]
                 y_train, y_test = y_le[train_index], y_le[test_index]
         else:
-            X_train, X_test = X, X
-            y_train, y_test = y_le, y_le
+            shuffle_split = ShuffleSplit(n_splits=4, test_size=0.4, random_state=42)
+            for train_index, test_index in shuffle_split.split(X):
+                X_train, X_test = X[train_index], X[test_index]
+                y_train, y_test = y_le[train_index], y_le[test_index]
 
         if preprocessing_methods is not None:
             for m in preprocessing_methods:
                 X_train, X_test = dataset_preprocessing.apply_preprocessing(m, X_train, X_test, y_train)
 
     else:
+        X_train, X_test, y_train, y_test = train_test_split(X, y_le, test_size=0.4, random_state=42)
         if preprocessing_methods is not None:
             for m in preprocessing_methods:
                 X, _ = dataset_preprocessing.apply_preprocessing(m, X, y_train=y_le)
@@ -48,8 +67,8 @@ def classification(type, classifiers, data_df, preprocessing_methods=None, dialo
             recall = recall_score(y_test, y_pred, average='macro', zero_division=1)
             f1 = f1_score(y_test, y_pred, average='macro')
 
-            print("Real values: ", y_test)
-            print("Pred values: ", y_pred)
+           # print("Real values: ", y_test)
+           # print("Pred values: ", y_pred)
 
             print("Accuracy: ", accuracy)
             print("Precision: ", precision)

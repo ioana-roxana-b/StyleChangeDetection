@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Lasso
 
 def pca(X_train, X_test=None):
-    pca = PCA(n_components=2)
+    pca = PCA(n_components=5)
     pca.fit(X_train)
     X_train = pca.transform(X_train)
     if X_test is not None:

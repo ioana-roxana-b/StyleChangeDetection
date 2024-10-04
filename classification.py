@@ -3,11 +3,12 @@ import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import LabelEncoder
-import dataset_preprocessing
-import supervised_models
-import unsupervised_models
 from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import train_test_split
+
+from models import supervised_models
+from models import unsupervised_models
+from features import feature_engineering
 
 def classification(type, classifiers, data_df, preprocessing_methods=None, dialog=False):
     if dialog:
@@ -50,13 +51,13 @@ def classification(type, classifiers, data_df, preprocessing_methods=None, dialo
 
         if preprocessing_methods is not None:
             for m in preprocessing_methods:
-                X_train, X_test = dataset_preprocessing.apply_preprocessing(m, X_train, X_test, y_train)
+                X_train, X_test = feature_engineering.apply_preprocessing(m, X_train, X_test, y_train)
 
     else:
         X_train, X_test, y_train, y_test = train_test_split(X, y_le, test_size=0.4, random_state=42)
         if preprocessing_methods is not None:
             for m in preprocessing_methods:
-                X, _ = dataset_preprocessing.apply_preprocessing(m, X, y_train=y_le)
+                X, _ = feature_engineering.apply_preprocessing(m, X, y_train=y_le)
 
     if type == 's':
         for c in classifiers:

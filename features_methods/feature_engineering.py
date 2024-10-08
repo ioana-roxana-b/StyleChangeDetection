@@ -40,7 +40,7 @@ def minmax_sc(X_train, X_test = None):
 
 def stand_sc(X_train, X_test = None):
     """
-    Applies Standard Scaling to standardize the features to have a mean of 0 and variance of 1.
+    Applies Standard Scaling to standardize the features_methods to have a mean of 0 and variance of 1.
     Params:
         X_train (array-like): Training data.
         X_test (array-like, optional): Test data to transform using the same scaler.
@@ -56,10 +56,10 @@ def stand_sc(X_train, X_test = None):
 
 def lasso(X_train, X_test = None, y_train = None):
     """
-    Applies Lasso regression for feature selection by removing features with zero coefficients.
+    Applies Lasso regression for feature selection by removing features_methods with zero coefficients.
     Params:
         X_train (array-like): Training data.
-        X_test (array-like, optional): Test data to transform using the selected features.
+        X_test (array-like, optional): Test data to transform using the selected features_methods.
         y_train (array-like): Target values for training data.
     Returns:
         tuple: Transformed training data, and transformed test data (if provided).
@@ -69,7 +69,7 @@ def lasso(X_train, X_test = None, y_train = None):
     coef = lass.coef_
     idx_nonzero = np.nonzero(coef)[0]
 
-    # Select features with non-zero coefficients
+    # Select features_methods with non-zero coefficients
     X_train = X_train[:, idx_nonzero]
     if X_test is not None:
         X_test = X_test[:, idx_nonzero]
@@ -81,7 +81,7 @@ def lasso_threshold(X_train, X_test = None, y_train = None):
     Applies Lasso regression for feature selection based on a coefficient threshold.
     Params:
         X_train (array-like): Training data.
-        X_test (array-like, optional): Test data to transform using the selected features.
+        X_test (array-like, optional): Test data to transform using the selected features_methods.
         y_train (array-like): Target values for training data.
     Returns:
         tuple: Transformed training data, and transformed test data (if provided).
@@ -91,7 +91,7 @@ def lasso_threshold(X_train, X_test = None, y_train = None):
     lasso.fit(X_train, y_train)
     coef = lasso.coef_
 
-    # Select indices of features with coefficients above the threshold
+    # Select indices of features_methods with coefficients above the threshold
     idx_above_threshold = np.where(np.abs(coef) > threshold)[0]
     X_train = X_train[:, idx_above_threshold]
 

@@ -118,7 +118,7 @@ def pos_idf(pos, texts):
 
 def tf_idf_feature(chapter, stop_words = False, pos = False, n_grams = False, n = 2):
     """
-    Calculates the TF-IDF features for text based on words, POS tags, or n-grams.
+    Calculates the TF-IDF features_methods for text based on words, POS tags, or n-grams.
     Params:
         chapter (dict): Dictionary containing the chapter text.
         stop_words (bool): Whether to exclude stopwords in the calculation.

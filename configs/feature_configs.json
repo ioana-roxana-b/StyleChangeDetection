@@ -1,59 +1,156 @@
 {
   "chapter_features": {
-    "no_of_words": {"tokenized_text": "tokenized_text"},
-    "no_of_stop_words": {"tokenized_text": "tokenized_text", "tokenized_text_sw": "tokenized_text_no_sw"},
-    "no_of_contracted_wordforms": {"tokenized_text": "tokenized_text_punct"},
-    "no_of_characters": {"text": "text"},
-    "no_of_sentences": {"phrases": "phrases"},
-    "avg_sentence_length": {"phrases": "phrases", "tokens": "tokenized_text"},
-    "no_of_punctuation": {"text": "text"},
-    "avg_word_length": {"tokenized_text": "tokenized_text"},
-    "lexical_diversity": {"tokenized_text": "tokenized_text"},
-    "unique_word_count": {"tokenized_text": "tokenized_text"}
+    "no_of_words": {
+      "function": "no_of_words",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    },
+    "no_of_stop_words": {
+      "function": "no_of_stop_words",
+      "params": {
+        "tokenized_text": "tokenized_text",
+        "tokenized_text_sw": "tokenized_text_no_sw"
+      }
+    },
+    "no_of_contracted_wordforms": {
+      "function": "no_of_contracted_wordforms",
+      "params": {
+        "tokenized_text": "tokenized_text_punct"
+      }
+    },
+    "no_of_characters": {
+      "function": "no_of_characters",
+      "params": {
+        "text": "text"
+      }
+    },
+    "no_of_sentences": {
+      "function": "no_of_sentences",
+      "params": {
+        "phrases": "phrases"
+      }
+    },
+    "avg_sentence_length": {
+      "function": "avg_sentence_length",
+      "params": {
+        "phrases": "phrases",
+        "tokens": "tokenized_text"
+      }
+    },
+    "no_of_punctuation": {
+      "function": "no_of_punctuation",
+      "params": {
+        "text": "text"
+      }
+    },
+    "avg_word_length": {
+      "function": "avg_word_length",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    },
+    "lexical_diversity": {
+      "function": "lexical_diversity",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    },
+    "unique_word_count": {
+      "function": "unique_word_count",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    }
   },
   "sentence_features": {
-    "sentence_length_by_characters": {"sentences": "phrases"},
-    "sentence_length_by_word": {"sentences": "phrases"},
-    "sentence_avg_word_length": {"sentences": "phrases"},
-    "sentence_stopwords_count": {"sentences": "phrases"}
+    "sentence_length_by_characters": {
+      "function": "sentence_length_by_characters",
+      "params": {
+        "sentences": "phrases"
+      }
+    },
+    "sentence_length_by_word": {
+      "function": "sentence_length_by_word",
+      "params": {
+        "sentences": "phrases"
+      }
+    },
+    "sentence_avg_word_length": {
+      "function": "sentence_avg_word_length",
+      "params": {
+        "sentences": "phrases"
+      }
+    },
+    "sentence_stopwords_count": {
+      "function": "sentence_stopwords_count",
+      "params": {
+        "sentences": "phrases"
+      }
+    }
   },
   "tf_idf_features": {
     "tf_idf_with_sw": {
-      "chapter": "text",
-      "stop_words": false,
-      "pos": false,
-      "n_grams": false,
-      "n": 2
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": false,
+        "n": 2
+      }
     },
     "tf_idf_without_sw": {
-      "chapter": "text",
-      "stop_words": true,
-      "pos": false,
-      "n_grams": false,
-      "n": 2
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": true,
+        "pos": false,
+        "n_grams": false,
+        "n": 2
+      }
     },
     "tf_idf_pos": {
-      "chapter": "text",
-      "stop_words": false,
-      "pos": true,
-      "n_grams": false,
-      "n": 2
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": true,
+        "n_grams": false,
+        "n": 2
+      }
     },
     "tf_idf_bi_grams": {
-      "chapter": "text",
-      "stop_words": false,
-      "pos": false,
-      "n_grams": true,
-      "n": 2
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": true,
+        "n": 2
+      }
     },
     "tf_idf_tri_grams": {
-      "chapter": "text",
-      "stop_words": false,
-      "pos": false,
-      "n_grams": true,
-      "n": 3
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": true,
+        "n": 3
+      }
     },
-    "tf_idf_punct": {"chapter": "text"},
-    "tf_idf_for_stopwords": {"chapter": "text"}
+    "tf_idf_punct": {
+      "function": "tf_idf_punct",
+      "params": {
+        "chapter": "text"
+      }
+    },
+    "tf_idf_for_stopwords": {
+      "function": "tf_idf_for_stopwords",
+      "params": {
+        "chapter": "text"
+      }
+    }
   }
 }

@@ -1,5 +1,4 @@
+from test import test
+
 if __name__ == '__main__':
-    print("AAAA")
-
-
-
+    test.non_dialog()

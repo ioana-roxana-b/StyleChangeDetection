@@ -8,9 +8,37 @@ from sklearn.model_selection import train_test_split
 
 from models import supervised_models
 from models import unsupervised_models
-from features import feature_engineering
+from features_methods import feature_engineering
 
-def classification(type, classifiers, data_df, preprocessing_methods=None, dialog=False):
+def classification(type, classifiers, data_df, preprocessing_methods = None, dialog = False):
+    """
+      Performs classification using specified supervised or unsupervised models on the given data.
+      It preprocesses the data, splits it into training and test sets, applies the specified models, and evaluates their
+      performance using metrics such as accuracy, precision, recall, and F1 score for supervised learning, or clustering
+      metrics for unsupervised models. Optionally, it also visualizes the results.
+
+      Params:
+          type (str): Specifies whether to perform 's' (supervised) or 'u' (unsupervised) classification.
+          classifiers (list): List of classifier names to be applied (e.g., ['random_forest', 'svm'] for supervised or
+                              ['kmeans', 'pca'] for unsupervised).
+          data_df (pd.DataFrame): Input data in the form of a DataFrame, where the last column ('label') is used as target labels.
+          preprocessing_methods (list, optional): List of preprocessing methods to apply (e.g., ['pca', 'minmax_sc']).
+          dialog (bool): Flag to indicate if the labels should be filtered based on a minimum frequency (used for dialogism corpus).
+      Returns:
+          int: Always returns 0 after execution.
+
+      Workflow:
+          1. If `dialog` is True, filter labels with at least 20 occurrences (keep only characters with at least 20 lines of dialogue).
+          2. Encode labels using `LabelEncoder`.
+          3. Perform data preprocessing and train-test splitting based on the `type` parameter:
+             - For supervised models ('s'), use `StratifiedKFold` or `ShuffleSplit`.
+             - For unsupervised models ('u'), use `train_test_split`.
+          4. Apply specified preprocessing methods.
+          5. Run the specified models and evaluate:
+             - For supervised models: Compute and print accuracy, precision, recall, and F1 score.
+             - For unsupervised models: Perform clustering and visualize results using t-SNE or PCA.
+      """
+
     if dialog:
         label_counts = data_df['label'].value_counts()
 
@@ -24,6 +52,7 @@ def classification(type, classifiers, data_df, preprocessing_methods=None, dialo
         labels = y_le
         class_names = le.classes_
         X = filtered_data_df.drop('label', axis=1).values
+
     else:
         le = LabelEncoder()
 

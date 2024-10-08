@@ -13,7 +13,7 @@ from features_methods import feature_engineering
 def classification(type, classifiers, data_df, preprocessing_methods = None, dialog = False):
     """
       Performs classification using specified supervised or unsupervised models on the given data.
-      It preprocesses the data, splits it into training and test sets, applies the specified models, and evaluates their
+      It preprocesses the data, splits it into training and test_scripts sets, applies the specified models, and evaluates their
       performance using metrics such as accuracy, precision, recall, and F1 score for supervised learning, or clustering
       metrics for unsupervised models. Optionally, it also visualizes the results.
 
@@ -30,7 +30,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
       Workflow:
           1. If `dialog` is True, filter labels with at least 20 occurrences (keep only characters with at least 20 lines of dialogue).
           2. Encode labels using `LabelEncoder`.
-          3. Perform data preprocessing and train-test splitting based on the `type` parameter:
+          3. Perform data preprocessing and train-test_scripts splitting based on the `type` parameter:
              - For supervised models ('s'), use `StratifiedKFold` or `ShuffleSplit`.
              - For unsupervised models ('u'), use `train_test_split`.
           4. Apply specified preprocessing methods.

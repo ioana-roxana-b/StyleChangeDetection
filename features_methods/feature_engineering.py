@@ -11,7 +11,7 @@ def pca(X_train, X_test = None):
         X_train (array-like): Training data.
         X_test (array-like, optional): Test data to transform using the same PCA model.
     Returns:
-        tuple: Transformed training data, and transformed test data (if provided).
+        tuple: Transformed training data, and transformed test_scripts data (if provided).
     """
     pca = PCA(n_components = 5)
     pca.fit(X_train)
@@ -29,7 +29,7 @@ def minmax_sc(X_train, X_test = None):
         X_train (array-like): Training data.
         X_test (array-like, optional): Test data to transform using the same scaler.
     Returns:
-        tuple: Scaled training data, and scaled test data (if provided).
+        tuple: Scaled training data, and scaled test_scripts data (if provided).
     """
     scaler = MinMaxScaler()
     X_train = scaler.fit_transform(X_train)
@@ -45,7 +45,7 @@ def stand_sc(X_train, X_test = None):
         X_train (array-like): Training data.
         X_test (array-like, optional): Test data to transform using the same scaler.
     Returns:
-        tuple: Standardized training data, and standardized test data (if provided).
+        tuple: Standardized training data, and standardized test_scripts data (if provided).
     """
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
@@ -62,7 +62,7 @@ def lasso(X_train, X_test = None, y_train = None):
         X_test (array-like, optional): Test data to transform using the selected features_methods.
         y_train (array-like): Target values for training data.
     Returns:
-        tuple: Transformed training data, and transformed test data (if provided).
+        tuple: Transformed training data, and transformed test_scripts data (if provided).
     """
     lass = Lasso(alpha=0.1, max_iter=10000)
     lass.fit(X_train, y_train)
@@ -84,7 +84,7 @@ def lasso_threshold(X_train, X_test = None, y_train = None):
         X_test (array-like, optional): Test data to transform using the selected features_methods.
         y_train (array-like): Target values for training data.
     Returns:
-        tuple: Transformed training data, and transformed test data (if provided).
+        tuple: Transformed training data, and transformed test_scripts data (if provided).
     """
     threshold = 0.1
     lasso = Lasso(alpha=0.01, max_iter=10000, tol=1e-4)
@@ -109,7 +109,7 @@ def apply_preprocessing(method_name, X_train, X_test = None, y_train = None):
         X_test (array-like, optional): Test data (if applicable).
         y_train (array-like, optional): Target values for training data (if applicable).
     Returns:
-        tuple: Transformed training data, and transformed test data (if provided).
+        tuple: Transformed training data, and transformed test_scripts data (if provided).
     """
 
     # Dictionary to map method names to their respective functions

@@ -81,7 +81,7 @@ def get_voting_classifier(X_train, y_train, X_test):
 
 def sup_models(X_train, y_train, X_test, c = None):
     """
-    Applies a specified supervised learning model to the given training and test data.
+    Applies a specified supervised learning model to the given training and test_scripts data.
 
     Params:
         X_train (array-like): Training feature matrix.
@@ -93,7 +93,7 @@ def sup_models(X_train, y_train, X_test, c = None):
     Returns:
         tuple:
             clf (model object): The trained classifier.
-            y_pred (array-like): Predicted labels for the test data.
+            y_pred (array-like): Predicted labels for the test_scripts data.
     """
 
     model_functions = {

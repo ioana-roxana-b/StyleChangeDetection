@@ -10,6 +10,8 @@ from models import supervised_models
 from models import unsupervised_models
 from features_methods import feature_engineering
 
+THRESHOLD = 20
+
 def classification(type, classifiers, data_df, preprocessing_methods = None, dialog = False):
     """
       Performs classification using specified supervised or unsupervised models on the given data.
@@ -41,13 +43,17 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
 
     if dialog:
         label_counts = data_df['label'].value_counts()
+        #print("Label counts before filtering:\n", label_counts)
 
-        labels_to_keep = label_counts[label_counts >= 20].index
-
+        labels_to_keep = label_counts[label_counts >= THRESHOLD].index
         filtered_data_df = data_df[data_df['label'].isin(labels_to_keep)]
+        #print("DataFrame shape after filtering:", filtered_data_df.shape)
+
+        if filtered_data_df.empty:
+            raise ValueError("No data available after filtering. Adjust the threshold or check the data.")
 
         le = LabelEncoder()
-        y = filtered_data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else filtered_data_df['label']
+        y = filtered_data_df['label']
         y_le = le.fit_transform(y)
         labels = y_le
         class_names = le.classes_
@@ -73,7 +79,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
                 X_train, X_test = X[train_index], X[test_index]
                 y_train, y_test = y_le[train_index], y_le[test_index]
         else:
-            shuffle_split = ShuffleSplit(n_splits=4, test_size=0.4, random_state=42)
+            shuffle_split = ShuffleSplit(n_splits=2, test_size=0.4, random_state=42)
             for train_index, test_index in shuffle_split.split(X):
                 X_train, X_test = X[train_index], X[test_index]
                 y_train, y_test = y_le[train_index], y_le[test_index]

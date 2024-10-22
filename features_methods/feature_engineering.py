@@ -13,7 +13,7 @@ def pca(X_train, X_test = None):
     Returns:
         tuple: Transformed training data, and transformed test_scripts data (if provided).
     """
-    pca = PCA(n_components = 5)
+    pca = PCA(n_components = 7)
     pca.fit(X_train)
     X_train = pca.transform(X_train)
 

@@ -234,7 +234,7 @@ def visualize_clusters_tsne_label(X, cluster_labels, actual_labels, class_names)
             None: Displays a t-SNE scatter plot of the clusters with annotated class labels.
     """
     # Apply t-SNE reduction
-    tsne = TSNE(n_components=2, random_state=42, perplexity=5)
+    tsne = TSNE(n_components=2, random_state=42, perplexity=100)
     X_reduced = tsne.fit_transform(X)
 
     plt.figure(figsize=(18, 9))  # Adjust the figure size as necessary

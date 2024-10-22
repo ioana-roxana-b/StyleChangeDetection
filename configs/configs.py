@@ -254,6 +254,6 @@ def all_features_v2(sentence_path, chapter_path, tf_idf_path):
             combined_df[col] = pd.to_numeric(combined_df[col], errors='coerce').fillna(0)
 
     # Save the combined DataFrame
-    combined_df.to_csv('Outputs/Fict_Nonfict/all_features_combined.csv', index=False)
+    combined_df.to_csv('Outputs/all_features_combined.csv', index=False)
 
     return combined_df

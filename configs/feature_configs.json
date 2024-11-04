@@ -99,6 +99,18 @@
         "n_grams": false,
         "n": 2
       }
+    }
+  },
+  "all_tf_idf_features": {
+    "tf_idf_with_sw": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": false,
+        "n": 2
+      }
     },
     "tf_idf_without_sw": {
       "function": "tf_idf_feature",

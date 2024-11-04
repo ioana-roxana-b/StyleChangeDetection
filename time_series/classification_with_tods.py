@@ -6,15 +6,45 @@ import matplotlib.pyplot as plt
 from features_methods import feature_engineering
 from tods.sk_interface.detection_algorithm.IsolationForest_skinterface import IsolationForestSKI
 from tods.sk_interface.detection_algorithm.LSTMODetector_skinterface import LSTMODetectorSKI
+from tods.sk_interface.data_processing.TimeIntervalTransform_skinterface import TimeIntervalTransformSKI
+from tods.sk_interface.data_processing.TimeStampValidation_skinterface import TimeStampValidationSKI
+from tods.sk_interface.timeseries_processing.SKAxiswiseScaler_skinterface import SKAxiswiseScalerSKI
 
 THRESHOLD = 20
 classifier_mapping = {
     'IsolationForestSKI': IsolationForestSKI,
     'LSTMODetectorSKI': LSTMODetectorSKI,
-    # Add other classifiers here
 }
+
+# Mapping preprocessing methods for time-series from TODS
+preprocessing_mapping_tods = {
+    'TimeIntervalTransformSKI': TimeIntervalTransformSKI,
+    'TimeStampValidationSKI': TimeStampValidationSKI
+}
+
+time_series_processing_mapping = {
+    'SKAxiswiseScalerSKI': SKAxiswiseScalerSKI,
+}
+
 def classification_with_tods(classifiers, data_df, dialog=False, as_time_series=False,
-                             preprocessing_methods=None, preprocessing_with_tods=None):
+                             preprocessing_methods=None, processing_methods_from_tods=None, time_series_preprocessing=None):
+    """
+    Executes anomaly detection or time-series classification using specified TODS classifiers on a dataset.
+    Applies optional preprocessing methods and handles data splitting into training and testing sets.
+
+    Params:
+        classifiers (list): List of classifier names to be applied (e.g., ['IsolationForestSKI', 'LSTMODetectorSKI']).
+        data_df (pd.DataFrame): Input data with the last column ('label') as target labels.
+        dialog (bool): If True, filters labels based on minimum frequency (e.g., dialog corpus).
+        as_time_series (bool): If True, reshapes data to 3D format for time-series analysis.
+        preprocessing_methods (list, optional): List of custom preprocessing methods to apply to the data.
+        processing_methods_from_tods (list, optional): List of TODS-specific preprocessing methods to apply to the data.
+        time_series_preprocessing (list, optional): List of time-series-specific TODS methods to preprocess the data.
+
+    Returns:
+        int: Always returns 0 after execution.
+    """
+
     if dialog:
         label_counts = data_df['label'].value_counts()
         labels_to_keep = label_counts[label_counts >= THRESHOLD].index
@@ -32,7 +62,6 @@ def classification_with_tods(classifiers, data_df, dialog=False, as_time_series=
 
     else:
         le = LabelEncoder()
-
         y = data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else data_df['label']
         y_le = le.fit_transform(y)
         labels = y_le
@@ -50,13 +79,30 @@ def classification_with_tods(classifiers, data_df, dialog=False, as_time_series=
 
     # Apply custom preprocessing methods if provided
     if preprocessing_methods is not None:
-        for method in preprocessing_methods:
-            X_train, X_test = feature_engineering.apply_preprocessing(method, X_train, X_test, y_train)
+        for m in preprocessing_methods:
+            X_train, X_test = feature_engineering.apply_preprocessing(m, X_train, X_test, y_train)
 
-    # Convert data to time-series format if as_time_series is True
     if as_time_series:
-        X_train = np.expand_dims(X_train, axis=2)
-        X_test = np.expand_dims(X_test, axis=2)
+        # Apply TODS time-series preprocessing methods if provided
+        if time_series_preprocessing is not None:
+            for method_name in time_series_preprocessing:
+                method_class = time_series_processing_mapping.get(method_name)
+                if method_class is not None:
+                    print(f"Applying time-series preprocessing: {method_name}")
+                    method_instance = method_class()
+                    X_train = method_instance.fit_transform(X_train)
+                    X_test = method_instance.transform(X_test)
+
+    # Apply TODS preprocessing methods if provided
+    if processing_methods_from_tods:
+        for method_name in processing_methods_from_tods:
+            method_class = preprocessing_mapping_tods.get(method_name)
+            if method_class:
+                print(f"Applying TODS preprocessing method: {method_name}")
+                method_instance = method_class()
+                # Transform the training and testing data using 'produce()'
+                X_train = method_instance.produce(X_train).value
+                X_test = method_instance.produce(X_test).value
 
     # Apply TODS classifiers
     for classifier_name in classifiers:

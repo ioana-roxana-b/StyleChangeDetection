@@ -1,8 +1,7 @@
 import json
 import pandas as pd
-from text_preprocessing import text_preprocessing
-from configs import configs
 from classification import classification
+
 
 def dialog():
     """
@@ -118,5 +117,4 @@ def non_dialog():
             preprocessing_methods=preprocessing_methods,
             dialog=dialog
         )
-
 

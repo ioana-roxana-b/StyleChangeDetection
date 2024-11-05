@@ -37,7 +37,7 @@ def dialog():
     # configs.all_features_v2(sentence_path, chapter_path, tf_idf_path)
 
     # Path to the combined features file
-    data_path = f'Outputs/all_features_combined.csv'
+    data_path = f'Outputs/Winnie/all_features_combined.csv'
     data_df = pd.read_csv(data_path)
 
     # Load classifier configurations from the JSON file

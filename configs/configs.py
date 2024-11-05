@@ -147,7 +147,7 @@ def tf_idf_features(text, config_file='feature_config.json'):
         config = json.load(f)
 
     # Extract feature_specs
-    feature_specs = config.get('all_tf_idf_features', {})
+    feature_specs = config.get('tf_idf_features', {})
 
     # Prepare variables
     variables = {}
@@ -184,7 +184,7 @@ def tf_idf_features(text, config_file='feature_config.json'):
 
     train_df = pd.DataFrame(X)
     train_df['label'] = y
-    train_df.to_csv('Outputs/TNK/tf_idf_features.csv', index = False)
+    train_df.to_csv('Outputs/Dos_Tol/tf_idf_features.csv', index = False)
     return config, train_df
 
 
@@ -215,7 +215,7 @@ def all_features(chapter_path, tf_idf_path):
         if col != 'label':
             combined_df[col] = pd.to_numeric(combined_df[col], errors='coerce').fillna(0)
 
-    combined_df.to_csv('Outputs/TNK/all_features.csv', index=False)
+    combined_df.to_csv('Outputs/Dos_Tol/all_features.csv', index=False)
     return combined_df
 
 def all_features_v2(sentence_path, chapter_path, tf_idf_path):
@@ -254,6 +254,6 @@ def all_features_v2(sentence_path, chapter_path, tf_idf_path):
             combined_df[col] = pd.to_numeric(combined_df[col], errors='coerce').fillna(0)
 
     # Save the combined DataFrame
-    combined_df.to_csv('Outputs/TNK/all_features_combined.csv', index=False)
+    combined_df.to_csv('Outputs/Dos_Tol/all_features_combined.csv', index=False)
 
     return combined_df

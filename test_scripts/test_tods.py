@@ -21,9 +21,9 @@ def tods_test():
     classifier_config_path = 'time_series/tods_classifiers_config.json'
 
 
-    # Split the text into chapters with appropriate labels
+    # # Split the text into chapters with appropriate labels
     # chapters = text_preprocessing.split_into_chapters(
-    #     text='Corpus/New folder/The_Two_Noble_Kinsmen.txt',
+    #     text='Corpus/New folder/Dos_Tol.txt',
     #     label='DOS|TOL|FICTION|NONFICTION|Shakespeare|Fletcher'
     # )
     #
@@ -34,17 +34,18 @@ def tods_test():
     # #
     # # Define the paths to the feature CSV files
     # sentence_path = 'Outputs/TNK/sentence_features.csv'
-    chapter_path = 'Outputs/Dos_Tol/chapter_feature.csv'
-    tf_idf_path = 'Outputs/Dos_Tol/tf_idf_features.csv'
+    # chapter_path = 'Outputs/Dos_Tol/chapter_feature.csv'
+    # tf_idf_path = 'Outputs/Dos_Tol/tf_idf_features.csv'
     #
     # #Combine all features into a single DataFrame
-    # configs.all_features(chapter_path, tf_idf_path)
+    # configs.all_features_v2(sentence_path,chapter_path, tf_idf_path)
 
     # Path to the combined features file
-    data_path = 'Outputs/Dos_Tol/tf_idf_features.csv'
+    data_path = 'Outputs/Dos_Tol/all_features_combined.csv'
 
     # Load the dataset into a DataFrame
-    data_df = pd.read_csv(data_path)
+    data_df = pd.read_csv(data_path, dtype={'column_name': 'float32'}, low_memory=True)
+
 
     # Load classifier configurations from the JSON file
     with open(classifier_config_path, 'r') as f:

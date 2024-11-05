@@ -18,7 +18,6 @@ def tods_test():
 
     # The path to the data file and classifier configuration JSON file
     config_path = 'configs/feature_configs.json'
-    data_path = 'Outputs/Dos_Tol/tf_idf_features.csv'
     classifier_config_path = 'time_series/tods_classifiers_config.json'
 
 
@@ -35,14 +34,14 @@ def tods_test():
     # #
     # # Define the paths to the feature CSV files
     # sentence_path = 'Outputs/TNK/sentence_features.csv'
-    # chapter_path = 'Outputs/TNK/chapter_feature.csv'
-    # tf_idf_path = 'Outputs/TNK/tf_idf_features.csv'
+    chapter_path = 'Outputs/Dos_Tol/chapter_feature.csv'
+    tf_idf_path = 'Outputs/Dos_Tol/tf_idf_features.csv'
     #
     # #Combine all features into a single DataFrame
-    # configs.all_features_v2(sentence_path,chapter_path, tf_idf_path)
+    # configs.all_features(chapter_path, tf_idf_path)
 
     # Path to the combined features file
-    data_path = 'Outputs/TNK/all_features_combined.csv'
+    data_path = 'Outputs/Dos_Tol/tf_idf_features.csv'
 
     # Load the dataset into a DataFrame
     data_df = pd.read_csv(data_path)

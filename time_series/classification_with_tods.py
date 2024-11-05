@@ -1,5 +1,7 @@
 import numpy as np
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_curve, auc
+import pandas as pd
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, roc_curve, auc, precision_score, \
+    recall_score, f1_score
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import StratifiedKFold
 import matplotlib.pyplot as plt
@@ -126,6 +128,25 @@ def classification_with_tods(classifiers, data_df, dialog=False, as_time_series=
             print("Accuracy:", accuracy_score(y_test, y_pred))
             print("Classification Report:\n", classification_report(y_test, y_pred))
             print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+
+            # Calculate evaluation metrics
+            accuracy = accuracy_score(y_test, y_pred)
+            precision = precision_score(y_test, y_pred, average='weighted')
+            recall = recall_score(y_test, y_pred, average='weighted')
+            f1 = f1_score(y_test, y_pred, average='weighted')
+
+            # Save results to a DataFrame
+            results_df = pd.DataFrame({
+                'Classifier': [classifier_name],
+                'Preprocessing methods': [preprocessing_methods],
+                'Accuracy': [accuracy],
+                'Precision': [precision],
+                'Recall': [recall],
+                'F1 Score': [f1]
+            })
+
+            # Save the DataFrame to a CSV file named after the classifier
+            results_df.to_csv(f'Outputs/Results/results_{classifier_name}.csv', mode='a', index=False)
 
             # ROC Curve
             fpr, tpr, thresholds = roc_curve(y_test, y_score)

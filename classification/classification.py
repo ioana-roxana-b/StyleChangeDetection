@@ -119,7 +119,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
                 'Recall': [recall],
                 'F1 Score': [f1]
             })
-            results_df.to_csv(f'Outputs/results_{c}.csv', mode='a', index=False)
+            results_df.to_csv(f'Outputs/Results/results_{c}.csv', mode='a', index=False)
     elif type == 'u':
         for c in classifiers:
             if c == 'kmeans':

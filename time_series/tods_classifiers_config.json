@@ -2,15 +2,15 @@
     "IsolationForestSKI": {
         "classifiers": ["IsolationForestSKI"],
         "as_time_series": false,
-        "preprocessing_methods": ["lasso"],
-        "preprocessing_with_tods": ["SKAxiswiseScalerSKI"],
+        "preprocessing_methods": [],
+        "preprocessing_with_tods": [],
         "time_series_preprocessing" : []
     },
     "LSTMODetectorSKI": {
         "classifiers": ["LSTMODetectorSKI"],
         "as_time_series": false,
-        "preprocessing_methods": ["lasso"],
-        "preprocessing_with_tods": ["SKAxiswiseScalerSKI"],
+        "preprocessing_methods": ["pca"],
+        "preprocessing_with_tods": [],
         "time_series_preprocessing" : []
     }
 }

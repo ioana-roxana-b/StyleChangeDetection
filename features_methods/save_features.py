@@ -4,7 +4,7 @@ from features_methods import features
 from features_methods import tf_idf_features
 
 
-def save_features(feature_specs=None):
+def save_features(feature_specs = None):
     """
     Extracts features based on the given specifications and aggregates them into a dictionary.
     Params:
@@ -13,10 +13,6 @@ def save_features(feature_specs=None):
     Returns:
         dict: A dictionary containing all the extracted features.
     """
-    import numpy as np
-    from features_methods import features
-    from features_methods import tf_idf_features
-
     all_features = {}
 
     # Iterate over each feature specification

@@ -6,8 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import ShuffleSplit
 from sklearn.model_selection import train_test_split
 
-from models import supervised_models
-from models import unsupervised_models
+from models import supervised_models, unsupervised_models, visualization
 from features_methods import feature_engineering
 
 THRESHOLD = 20
@@ -128,10 +127,11 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
                 print(np.unique(labels))
                 print(np.unique(pred_labels))
                 unsupervised_models.evaluate_clustering(X, labels, pred_labels)
-                unsupervised_models.visualize_clusters_tsne_label(X, pred_labels, y_le, class_names)
+                visualization.visualize_clusters_tsne_label(X, pred_labels, y_le, class_names)
+                #visualization.visualize_clusters_opentsne_label(X, pred_labels, y_le, class_names)
             elif c == 'pca':
                 """NOT GOOD"""
                 X_reduced = unsupervised_models.pca_dimension_reduction(X)
-                unsupervised_models.visualize_clusters(c, X_reduced, y_le)
+                visualization.visualize_clusters(c, X_reduced, y_le)
 
     return 0

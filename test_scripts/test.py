@@ -1,7 +1,10 @@
 import json
 import pandas as pd
 from classification import classification
-
+from features_methods import extract_all_features
+from configs import configs
+from features_methods.extract_all_features import create_dfs
+from text_preprocessing import text_preprocessing
 
 def dialog():
     """
@@ -11,55 +14,38 @@ def dialog():
     Returns:
         None: Outputs the classification results and stores them in CSV files.
     """
-
-    # Define the paths for configuration files
-    config_path = 'configs/feature_configs.json'
     classifier_config_path = 'classification/classifiers_config_dialog.json'
 
     # Specify the paths for dialog data extraction and output
-    quotation_info_path = 'Corpus/project-dialogism-novel-corpus-master/data/WinnieThePooh/quotation_info.csv'
-    output_file_path = 'Outputs/dialogue.txt'
+    text_path = 'Corpus/project-dialogism-novel-corpus-master/data/Emma/quotation_info.csv'
+    output_file_path = 'Outputs/Q2/Emma/'
 
-    # Extract and save dialogues from the corpus to an output file
-    # dialogues = text_preprocessing.extract_and_save_dialogues(quotation_info_path, output_file_path)
-    #
-    # Extract features using the configurations defined in `feature_configs.json`
-    # configs.chapter_features(dialogues, config_path)
-    # configs.sentence_features(dialogues, config_path)
-    # configs.tf_idf_features(dialogues, config_path)
-
-    # Define the paths to the feature CSV files generated in the previous steps
-    # sentence_path = 'Outputs/sentence_features.csv'
-    # chapter_path = 'Outputs/chapter_feature.csv'
-    # tf_idf_path = 'Outputs/tf_idf_features.csv'
-
-    # Combine all features into a single DataFrame
-    # configs.all_features_v2(sentence_path, chapter_path, tf_idf_path)
+    create_dfs(text_path=text_path, output_file_path=output_file_path, dialogue=True)
 
     # Path to the combined features file
-    data_path = f'Outputs/Winnie/all_features_combined.csv'
-    data_df = pd.read_csv(data_path)
-
-    # Load classifier configurations from the JSON file
-    with open(classifier_config_path, 'r') as f:
-        classifiers_config = json.load(f)
-
-    # Iterate over each classifier defined in the configuration
-    for classifier_name, params in classifiers_config.items():
-        # Extract parameters for the classifier
-        classification_type = params.get('type', 's')
-        classifiers_list = params.get('classifiers', [classifier_name])
-        preprocessing_methods = params.get('preprocessing_methods', [])
-        dialog = params.get('dialog', True)
-
-        # Call the classification function with the extracted parameters
-        classification.classification(
-            type=classification_type,
-            classifiers=classifiers_list,
-            data_df=data_df,
-            preprocessing_methods=preprocessing_methods,
-            dialog=dialog
-        )
+    # data_path = f'{output_file_path}/all_features.csv'
+    # data_df = pd.read_csv(data_path)
+    #
+    # # Load classifier configurations from the JSON file
+    # with open(classifier_config_path, 'r') as f:
+    #     classifiers_config = json.load(f)
+    #
+    # # Iterate over each classifier defined in the configuration
+    # for classifier_name, params in classifiers_config.items():
+    #     # Extract parameters for the classifier
+    #     classification_type = params.get('type', 's')
+    #     classifiers_list = params.get('classifiers', [classifier_name])
+    #     preprocessing_methods = params.get('preprocessing_methods', [])
+    #     dialog = params.get('dialog', True)
+    #
+    #     # Call the classification function with the extracted parameters
+    #     classification.classification(
+    #         type=classification_type,
+    #         classifiers=classifiers_list,
+    #         data_df=data_df,
+    #         preprocessing_methods=preprocessing_methods,
+    #         dialog=dialog
+    #     )
 
 
 def non_dialog():
@@ -71,50 +57,39 @@ def non_dialog():
            None: Outputs classification results and stores them in CSV files.
        """
     # Define the paths for configuration files
-    config_path = 'configs/feature_configs.json'
     classifier_config_path = 'classification/classifiers_config.json'
 
-    # Split the text into chapters with appropriate labels
-    # chapters = text_preprocessing.split_into_chapters(
-    #     text='Corpus/New folder/dickens.txt',
-    #     label='DOS|TOL|FICTION|NONFICTION'
-    # )
-    #
-    # # Extract features using the configurations
-    # configs.chapter_features(chapters, config_path)
-    # configs.sentence_features(chapters, config_path)
-    # configs.tf_idf_features(chapters, config_path)
-    #
-    # # Define the paths to the feature CSV files
-    sentence_path = 'Outputs/Fict_Nonfict/sentence_features.csv'
-    chapter_path = 'Outputs/Fict_Nonfict/chapter_feature.csv'
-    tf_idf_path = 'Outputs/Fict_Nonfict/tf_idf_features.csv'
+    text_path = 'Corpus/Combined_texts/David_Oliver.txt'
+    output_file_path = 'Outputs/Q1/David_Oliver/'
 
-    # Combine all features into a single DataFrame
-    # configs.all_features(chapter_path, tf_idf_path)
+    # Split the text into chapters with appropriate labels
+    chapters = text_preprocessing.split_into_chapters(text=text_path,label='DOS|TOL|FICTION|NONFICTION'
+    )
+
+    create_dfs(text_path=text_path, output_file_path=output_file_path, dialogue=True)
 
     # Path to the combined features file
-    # data_path = 'Outputs/Fict_Nonfict/all_features_combined.csv'
-    data_df = pd.read_csv(chapter_path)
-
-    # Load classifier configurations from JSON file
-    with open(classifier_config_path, 'r') as f:
-        classifiers_config = json.load(f)
-
-    # Iterate over each classifier in the configuration
-    for classifier_name, params in classifiers_config.items():
-        # Extract parameters for the classifier
-        classification_type = params.get('type', 's')
-        classifiers_list = params.get('classifiers', [classifier_name])
-        preprocessing_methods = params.get('preprocessing_methods', [])
-        dialog = params.get('dialog', False)
-
-        # Call the classification function with the extracted parameters
-        classification.classification(
-            type=classification_type,
-            classifiers=classifiers_list,
-            data_df=data_df,
-            preprocessing_methods=preprocessing_methods,
-            dialog=dialog
-        )
+    # data_path = f'{output_file_path}/chapter_features.csv'
+    # data_df = pd.read_csv(data_path)
+    #
+    # # Load classifier configurations from JSON file
+    # with open(classifier_config_path, 'r') as f:
+    #     classifiers_config = json.load(f)
+    #
+    # # Iterate over each classifier in the configuration
+    # for classifier_name, params in classifiers_config.items():
+    #     # Extract parameters for the classifier
+    #     classification_type = params.get('type', 's')
+    #     classifiers_list = params.get('classifiers', [classifier_name])
+    #     preprocessing_methods = params.get('preprocessing_methods', [])
+    #     dialog = params.get('dialog', False)
+    #
+    #     # Call the classification function with the extracted parameters
+    #     classification.classification(
+    #         type=classification_type,
+    #         classifiers=classifiers_list,
+    #         data_df=data_df,
+    #         preprocessing_methods=preprocessing_methods,
+    #         dialog=dialog
+    #     )
 

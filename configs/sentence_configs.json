@@ -1,0 +1,28 @@
+{
+  "sentence_features": {
+    "sentence_length_by_characters": {
+      "function": "sentence_length_by_characters",
+      "params": {
+        "sentences": "phrases"
+      }
+    },
+    "sentence_length_by_word": {
+      "function": "sentence_length_by_word",
+      "params": {
+        "sentences": "phrases"
+      }
+    },
+    "sentence_avg_word_length": {
+      "function": "sentence_avg_word_length",
+      "params": {
+        "sentences": "phrases"
+      }
+    },
+    "sentence_stopwords_count": {
+      "function": "sentence_stopwords_count",
+      "params": {
+        "sentences": "phrases"
+      }
+    }
+  }
+}

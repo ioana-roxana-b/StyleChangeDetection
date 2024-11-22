@@ -17,7 +17,7 @@ def tods_test():
     """
 
     # The path to the data file and classifier configuration JSON file
-    config_path = 'configs/feature_configs.json'
+    config_path = 'configs/chapter_configs.json'
     classifier_config_path = 'time_series/tods_classifiers_config.json'
 
 

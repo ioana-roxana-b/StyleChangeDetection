@@ -1,0 +1,156 @@
+{
+  "tf_idf_with_sw": {
+    "tf_idf_with_sw": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": false,
+        "n": 2
+      }
+    }
+  },
+
+
+  "tf_idf_without_sw": {
+    "tf_idf_without_sw": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": false,
+        "n": 2
+      }
+    }
+  },
+
+
+  "tf_idf_pos": {
+    "tf_idf_pos": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": true,
+        "n_grams": false,
+        "n": 2
+      }
+    }
+  },
+
+
+  "tf_idf_bi_grams": {
+    "tf_idf_bi_grams": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": true,
+        "n": 2
+      }
+    }
+  },
+
+
+  "tf_idf_tri_grams": {
+    "tf_idf_tri_grams": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": true,
+        "n": 3
+      }
+    }
+  },
+
+
+  "tf_idf_punct": {
+    "tf_idf_punct": {
+      "function": "tf_idf_punct",
+      "params": {
+        "chapter": "text"
+      }
+    }
+  },
+
+
+  "tf_idf_for_stopwords": {
+    "tf_idf_for_stopwords": {
+      "function": "tf_idf_for_stopwords",
+      "params": {
+        "chapter": "text"
+      }
+    }
+  },
+
+
+  "tf_idf_features": {
+    "tf_idf_with_sw": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": false,
+        "n": 2
+      }
+    },
+    "tf_idf_without_sw": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": true,
+        "pos": false,
+        "n_grams": false,
+        "n": 2
+      }
+    },
+    "tf_idf_pos": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": true,
+        "n_grams": false,
+        "n": 2
+      }
+    },
+    "tf_idf_bi_grams": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": true,
+        "n": 2
+      }
+    },
+    "tf_idf_tri_grams": {
+      "function": "tf_idf_feature",
+      "params": {
+        "chapter": "text",
+        "stop_words": false,
+        "pos": false,
+        "n_grams": true,
+        "n": 3
+      }
+    },
+    "tf_idf_punct": {
+      "function": "tf_idf_punct",
+      "params": {
+        "chapter": "text"
+      }
+    },
+    "tf_idf_for_stopwords": {
+      "function": "tf_idf_for_stopwords",
+      "params": {
+        "chapter": "text"
+      }
+    }
+  }
+}

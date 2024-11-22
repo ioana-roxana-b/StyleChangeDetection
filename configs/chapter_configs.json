@@ -1,0 +1,66 @@
+{
+  "chapter_features": {
+    "no_of_words": {
+      "function": "no_of_words",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    },
+    "no_of_stop_words": {
+      "function": "no_of_stop_words",
+      "params": {
+        "tokenized_text": "tokenized_text",
+        "tokenized_text_sw": "tokenized_text_no_sw"
+      }
+    },
+    "no_of_contracted_wordforms": {
+      "function": "no_of_contracted_wordforms",
+      "params": {
+        "tokenized_text": "tokenized_text_punct"
+      }
+    },
+    "no_of_characters": {
+      "function": "no_of_characters",
+      "params": {
+        "text": "text"
+      }
+    },
+    "no_of_sentences": {
+      "function": "no_of_sentences",
+      "params": {
+        "phrases": "phrases"
+      }
+    },
+    "avg_sentence_length": {
+      "function": "avg_sentence_length",
+      "params": {
+        "phrases": "phrases",
+        "tokens": "tokenized_text"
+      }
+    },
+    "no_of_punctuation": {
+      "function": "no_of_punctuation",
+      "params": {
+        "text": "text"
+      }
+    },
+    "avg_word_length": {
+      "function": "avg_word_length",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    },
+    "lexical_diversity": {
+      "function": "lexical_diversity",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    },
+    "unique_word_count": {
+      "function": "unique_word_count",
+      "params": {
+        "tokenized_text": "tokenized_text"
+      }
+    }
+  }
+}

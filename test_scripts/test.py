@@ -72,7 +72,7 @@ def dialog(text = 'WinnieThePooh', config = 'all', viz = 'tsne'):
     text_path = f'Corpus/project-dialogism-novel-corpus-master/data/{text}/quotation_info.csv'
     output_file_path = f'Outputs/Q2/{text}/'
 
-    create_dfs(text_path=text_path, output_file_path=output_file_path, dialogue=True)
+    #create_dfs(text_path=text_path, output_file_path=output_file_path, dialogue=True)
 
     # Path to the combined features file
     data_path = f'{output_file_path}/sentence_tf_idf.csv'
@@ -85,7 +85,7 @@ def dialog(text = 'WinnieThePooh', config = 'all', viz = 'tsne'):
     # Call the function to process the loaded JSON configuration
     process_classifier_config(f'{config}', classifiers_config, data_df, viz)
 
-def non_dialog():
+def non_dialog(text='Crime_Anna', config='all', viz='tsne'):
     """
        Processes non-dialog-based text features and performs classification using specified classifiers.
        Params:
@@ -94,12 +94,12 @@ def non_dialog():
            None: Outputs classification results and stores them in CSV files.
        """
     # Define the paths for configuration files
-    classifier_config_path = 'classification_configs/classifiers_config.json'
+    classifier_config_path = f'classification_configs/{text}_classifiers_config.json'
 
-    text_path = 'Corpus/Shakespeare/The_Two_Noble_Kinsmen.txt'
-    output_file_path = 'Outputs/Q0/TNK/'
+    text_path = f'Corpus/Combined_texts/{text}.txt'
+    output_file_path = f'Outputs/Q0/{text}/'
 
-    create_dfs(text_path=text_path, output_file_path=output_file_path)
+    #create_dfs(text_path=text_path, output_file_path=output_file_path)
 
     # Path to the combined features file
     data_path = f'{output_file_path}/chapter_features.csv'
@@ -110,5 +110,5 @@ def non_dialog():
         classifiers_config = json.load(f)
 
     # Call the function to process the loaded JSON configuration
-    process_classifier_config('all', classifiers_config, data_df)
+    process_classifier_config(f'{config}', classifiers_config, data_df, viz)
 

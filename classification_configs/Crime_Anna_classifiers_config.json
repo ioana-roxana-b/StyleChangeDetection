@@ -4,47 +4,39 @@
       "type": "s",
       "classifiers": ["random_forest"],
       "preprocessing_methods": [
-         {"method": "pca", "parameters": {"n_components": 3}},
-         {"method": "stand_sc", "parameters": {}}
       ],
-      "parameters": {"n_estimators": 100},
+      "parameters": {"n_estimators": 500},
       "dialog": false
     },
     "grad_boost": {
       "type": "s",
       "classifiers": ["grad_boost"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 3}},
-        {"method": "stand_sc", "parameters": {}}
       ],
-      "parameters": {"n_estimators": 100},
+      "parameters": {"n_estimators": 500},
       "dialog": false
     },
     "knn": {
       "type": "s",
       "classifiers": ["knn"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 5}},
-        {"method": "stand_sc", "parameters": {}}
       ],
-      "parameters": {"n_neighbors": 3},
+      "parameters": {"n_neighbors":2},
       "dialog": false
     },
     "svm": {
       "type": "s",
       "classifiers": ["svm"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 5}},
-        {"method": "stand_sc", "parameters": {}}
       ],
-      "parameters": {"kernel": "sigmoid", "C": 1, "gamma": "scale"},
+      "parameters": {"kernel": "linear", "C": 1, "gamma": "scale"},
       "dialog": false
     },
     "naive_bayes": {
       "type": "s",
       "classifiers": ["naive_bayes"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 3}},
+        {"method": "pca", "parameters": {"n_components": 2}},
         {"method": "stand_sc", "parameters": {}}
       ],
       "parameters": {},
@@ -54,8 +46,6 @@
       "type": "u",
       "classifiers": ["kmeans"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 7}},
-        {"method": "minmax_sc", "parameters": {}}
       ],
       "parameters": {},
       "dialog": false
@@ -69,8 +59,6 @@
       "type": "s",
       "classifiers": ["random_forest"],
       "preprocessing_methods": [
-         {"method": "pca", "parameters": {"n_components": 3}},
-         {"method": "stand_sc", "parameters": {}}
       ],
       "parameters": {"n_estimators": 100},
       "dialog": false
@@ -83,8 +71,6 @@
       "type": "s",
       "classifiers": ["grad_boost"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 3}},
-        {"method": "stand_sc", "parameters": {}}
       ],
       "parameters": {"n_estimators": 100},
       "dialog": false
@@ -97,10 +83,9 @@
       "type": "s",
       "classifiers": ["knn"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 5}},
-        {"method": "stand_sc", "parameters": {}}
+        {"method": "pca", "parameters": {"n_components": 2}}
       ],
-      "parameters": {"n_neighbors": 3},
+      "parameters": {"n_neighbors": 5},
       "dialog": false
     }
   },
@@ -111,8 +96,6 @@
       "type": "s",
       "classifiers": ["lightGBM"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 5}},
-        {"method": "stand_sc", "parameters": {}}
       ],
       "parameters": {"n_estimators": 200, "max_depth": 5},
       "dialog": false
@@ -125,8 +108,6 @@
       "type": "s",
       "classifiers": ["svm"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 5}},
-        {"method": "stand_sc", "parameters": {}}
       ],
       "parameters": {"kernel": "sigmoid", "C": 1, "gamma": "scale"},
       "dialog": false
@@ -139,8 +120,6 @@
       "type": "s",
       "classifiers": ["naive_bayes"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 3}},
-        {"method": "stand_sc", "parameters": {}}
       ],
       "parameters": {},
       "dialog": false
@@ -153,8 +132,6 @@
       "type": "u",
       "classifiers": ["kmeans"],
       "preprocessing_methods": [
-        {"method": "pca", "parameters": {"n_components": 10}},
-        {"method": "minmax_sc", "parameters": {}}
       ],
       "parameters": {},
       "dialog": false

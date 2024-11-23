@@ -56,25 +56,32 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
         X = filtered_data_df.drop('label', axis=1).values
     else:
         le = LabelEncoder()
-        y = data_df['label']
+        y = data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else data_df['label']
         y_le = le.fit_transform(y)
         labels = y_le
         class_names = le.classes_
         X = data_df.drop('label', axis=1).values
 
     if type != 'u':
-        shuffle_split = ShuffleSplit(n_splits=2, test_size=0.2, random_state=50)
-        for train_index, test_index in shuffle_split.split(X):
-            X_train, X_test = X[train_index], X[test_index]
-            y_train, y_test = y_le[train_index], y_le[test_index]
+        if dialog == False:
+            unique_classes, class_counts = np.unique(y_le, return_counts=True)
+            n_splits = min(2, len(unique_classes))
+
+            skf = StratifiedKFold(n_splits=n_splits, random_state=None, shuffle=False)
+            for train_index, test_index in skf.split(X, y_le):
+                X_train, X_test = X[train_index], X[test_index]
+                y_train, y_test = y_le[train_index], y_le[test_index]
+        else:
+            shuffle_split = ShuffleSplit(n_splits=2, test_size=0.2, random_state=42)
+            for train_index, test_index in shuffle_split.split(X):
+                X_train, X_test = X[train_index], X[test_index]
+                y_train, y_test = y_le[train_index], y_le[test_index]
 
         if preprocessing_methods is not None:
             for preprocessing in preprocessing_methods:
                 method = preprocessing["method"]
                 params = preprocessing["parameters"]
-                X_train, X_test = feature_engineering.apply_preprocessing(
-                    method, X_train, X_test, y_train, **params
-                )
+                X_train, X_test = feature_engineering.apply_preprocessing(method, X_train, X_test, y_train, **params)
 
     else:
         X_train, X_test, y_train, y_test = train_test_split(X, y_le, test_size=0.4, random_state=42)

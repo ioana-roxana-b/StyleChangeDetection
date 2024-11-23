@@ -1,0 +1,159 @@
+{
+  "all": {
+    "random_forest": {
+      "type": "s",
+      "classifiers": ["random_forest"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    },
+    "grad_boost": {
+      "type": "s",
+      "classifiers": ["grad_boost"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    },
+    "lightGBM": {
+      "type": "s",
+      "classifiers": ["lightGBM"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    },
+    "knn": {
+      "type": "s",
+      "classifiers": ["knn"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    },
+    "svm": {
+      "type": "s",
+      "classifiers": ["svm"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    },
+    "naive_bayes": {
+      "type": "s",
+      "classifiers": ["naive_bayes"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    },
+    "kmeans": {
+      "type": "u",
+      "classifiers": ["kmeans"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 7}},
+        {"method": "minmax_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  },
+
+
+  "random_forest":
+  {
+    "random_forest": {
+      "type": "s",
+      "classifiers": ["random_forest"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  },
+
+
+  "grad_boost": {
+    "grad_boost": {
+      "type": "s",
+      "classifiers": ["grad_boost"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  },
+
+
+  "knn": {
+    "knn": {
+      "type": "s",
+      "classifiers": ["knn"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  },
+
+
+  "lightGBM": {
+    "lightGBM": {
+      "type": "s",
+      "classifiers": ["lightGBM"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  },
+
+
+   "svm": {
+    "svm": {
+      "type": "s",
+      "classifiers": ["svm"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  },
+
+
+  "naive_bayes": {
+    "naive_bayes": {
+      "type": "s",
+      "classifiers": ["naive_bayes"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 5}},
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  },
+
+
+  "kmeans": {
+    "kmeans": {
+      "type": "u",
+      "classifiers": ["kmeans"],
+      "preprocessing_methods": [
+        {"method": "pca", "parameters": {"n_components": 7}},
+        {"method": "minmax_sc", "parameters": {}}
+      ],
+      "dialog": false
+    }
+  }
+}

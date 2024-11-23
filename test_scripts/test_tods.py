@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 
-from configs import configs
+from feature_configs import configs
 from text_preprocessing import text_preprocessing
 from time_series import classification_with_tods
 
@@ -17,7 +17,7 @@ def tods_test():
     """
 
     # The path to the data file and classifier configuration JSON file
-    config_path = 'configs/chapter_configs.json'
+    config_path = 'feature_configs/chapter_configs.json'
     classifier_config_path = 'time_series/tods_classifiers_config.json'
 
 
@@ -28,9 +28,9 @@ def tods_test():
     # )
     #
     # # Extract features using the configurations
-    # configs.chapter_features(chapters, config_path)
-    # configs.sentence_features(chapters, config_path)
-    # configs.tf_idf_features(chapters, config_path)
+    # feature_configs.chapter_features(chapters, config_path)
+    # feature_configs.sentence_features(chapters, config_path)
+    # feature_configs.tf_idf_features(chapters, config_path)
     # #
     # # Define the paths to the feature CSV files
     # sentence_path = 'Outputs/TNK/sentence_features.csv'
@@ -38,7 +38,7 @@ def tods_test():
     # tf_idf_path = 'Outputs/Dos_Tol/tf_idf_features.csv'
     #
     # #Combine all features into a single DataFrame
-    # configs.all_features_v2(sentence_path,chapter_path, tf_idf_path)
+    # feature_configs.all_features_v2(sentence_path,chapter_path, tf_idf_path)
 
     # Path to the combined features file
     data_path = 'Outputs/Dos_Tol/all_features_combined.csv'

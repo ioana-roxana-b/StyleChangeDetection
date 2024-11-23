@@ -1,6 +1,6 @@
 import pandas as pd
 
-from configs import configs
+from feature_configs import configs
 from text_preprocessing import text_preprocessing
 
 def extract_all_features(text_path, output_path, dialogue = False):
@@ -21,13 +21,13 @@ def extract_all_features(text_path, output_path, dialogue = False):
     output_file_path = 'Outputs/dialogue.txt'
 
     chapter_config = 'chapter_features'
-    chapter_config_file = 'configs/chapter_configs.json'
+    chapter_config_file = 'feature_configs/chapter_configs.json'
 
     sentence_config = 'sentence_features'
-    sentence_config_file = 'configs/sentence_configs.json'
+    sentence_config_file = 'feature_configs/sentence_configs.json'
 
-    tf_idf_config = 'all_tf_idf_features'
-    tf_idf_config_file = 'configs/tf_idf_configs.json'
+    tf_idf_config = 'tf_idf_with_sw'
+    tf_idf_config_file = 'feature_configs/tf_idf_configs.json'
 
     if dialogue:
         # Extract and save dialogues from the corpus to an output file
@@ -54,17 +54,11 @@ def create_dfs(text_path, output_file_path, dialogue=False):
            None: The function saves the resulting combined DataFrames to the output directory.
     """
 
-    sentence_df = pd.read_csv(f'{output_file_path}/sentence_features.csv')
-    tf_idf_df = pd.read_csv(f'{output_file_path}/tf_idf_features.csv')
-    chapter_df = pd.read_csv(f'{output_file_path}/chapter_features.csv')
+    chapter_df, sentence_df, tf_idf_df = extract_all_features(text_path=text_path, output_path=output_file_path, dialogue=dialogue)
 
-    #chapter_df, sentence_df, tf_idf_df = extract_all_features(text_path=text_path, output_path=output_file_path, dialogue=dialogue)
+    # Combine features into a single DataFrame
+    #configs.chapter_tf_idf(chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
+    configs.sentence_tf_idf(sentence_df = sentence_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
+    #configs.sentence_chapter(sentence_df = sentence_df, chapter_df = chapter_df, output_path = output_file_path)
+    #configs.all_features(sentence_df = sentence_df, chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
 
-    if dialogue:
-        # Combine features into a single DataFrame
-        # configs.chapter_tf_idf(chapter_df, tf_idf_df, output_path=output_file_path)
-        # configs.sentence_tf_idf(sentence_df, tf_idf_df, output_path=output_file_path)
-        # configs.sentence_chapter(sentence_df, chapter_df, output_path=output_file_path)
-        configs.all_features(sentence_df, chapter_df, tf_idf_df, output_path=output_file_path)
-    else:
-        configs.sentence_chapter(sentence_df, chapter_df, output_path=output_file_path)

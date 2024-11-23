@@ -11,7 +11,7 @@ from features_methods import feature_engineering
 
 THRESHOLD = 20
 
-def classification(type, classifiers, data_df, preprocessing_methods = None, dialog = False):
+def classification(type, classifiers, data_df, preprocessing_methods = None, dialog = False, parameters=None, viz = 'tsne'):
     """
       Performs classification using specified supervised or unsupervised models on the given data.
       It preprocesses the data, splits it into training and test_scripts sets, applies the specified models, and evaluates their
@@ -25,6 +25,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
           data_df (pd.DataFrame): Input data in the form of a DataFrame, where the last column ('label') is used as target labels.
           preprocessing_methods (list, optional): List of preprocessing methods to apply (e.g., ['pca', 'minmax_sc']).
           dialog (bool): Flag to indicate if the labels should be filtered based on a minimum frequency (used for dialogism corpus).
+          parameters (dict, optional): Parameters for the classifiers.
       Returns:
           int: Always returns 0 after execution.
 
@@ -42,12 +43,8 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
 
     if dialog:
         label_counts = data_df['label'].value_counts()
-        #print("Label counts before filtering:\n", label_counts)
-
         labels_to_keep = label_counts[label_counts >= THRESHOLD].index
         filtered_data_df = data_df[data_df['label'].isin(labels_to_keep)]
-        #print("DataFrame shape after filtering:", filtered_data_df.shape)
-
         if filtered_data_df.empty:
             raise ValueError("No data available after filtering. Adjust the threshold or check the data.")
 
@@ -57,45 +54,40 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
         labels = y_le
         class_names = le.classes_
         X = filtered_data_df.drop('label', axis=1).values
-
     else:
         le = LabelEncoder()
-
-        y = data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else data_df['label']
+        y = data_df['label']
         y_le = le.fit_transform(y)
         labels = y_le
         class_names = le.classes_
-
         X = data_df.drop('label', axis=1).values
 
     if type != 'u':
-        if dialog == False:
-            unique_classes, class_counts = np.unique(y_le, return_counts=True)
-            n_splits = min(2, len(unique_classes))
-
-            skf = StratifiedKFold(n_splits=n_splits, random_state=None, shuffle=False)
-            for train_index, test_index in skf.split(X, y_le):
-                X_train, X_test = X[train_index], X[test_index]
-                y_train, y_test = y_le[train_index], y_le[test_index]
-        else:
-            shuffle_split = ShuffleSplit(n_splits=2, test_size=0.4, random_state=42)
-            for train_index, test_index in shuffle_split.split(X):
-                X_train, X_test = X[train_index], X[test_index]
-                y_train, y_test = y_le[train_index], y_le[test_index]
+        shuffle_split = ShuffleSplit(n_splits=2, test_size=0.2, random_state=50)
+        for train_index, test_index in shuffle_split.split(X):
+            X_train, X_test = X[train_index], X[test_index]
+            y_train, y_test = y_le[train_index], y_le[test_index]
 
         if preprocessing_methods is not None:
-            for m in preprocessing_methods:
-                X_train, X_test = feature_engineering.apply_preprocessing(m, X_train, X_test, y_train)
+            for preprocessing in preprocessing_methods:
+                method = preprocessing["method"]
+                params = preprocessing["parameters"]
+                X_train, X_test = feature_engineering.apply_preprocessing(
+                    method, X_train, X_test, y_train, **params
+                )
 
     else:
         X_train, X_test, y_train, y_test = train_test_split(X, y_le, test_size=0.4, random_state=42)
         if preprocessing_methods is not None:
-            for m in preprocessing_methods:
-                X, _ = feature_engineering.apply_preprocessing(m, X, y_train=y_le)
+            for preprocessing in preprocessing_methods:
+                method = preprocessing["method"]
+                params = preprocessing["parameters"]
+                X, _ = feature_engineering.apply_preprocessing(method, X, y_train=y_le, **params)
 
     if type == 's':
         for c in classifiers:
-            clf, y_pred = supervised_models.sup_models(X_train, y_train, X_test, c)
+            params = parameters.get(c, {})  # Extract parameters for this classifier
+            clf, y_pred = supervised_models.sup_models(X_train, y_train, X_test, c=c, **params)
 
             accuracy = accuracy_score(y_test, y_pred)
             precision = precision_score(y_test, y_pred, average='macro', zero_division=1)
@@ -105,6 +97,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
            # print("Real values: ", y_test)
            # print("Pred values: ", y_pred)
 
+            print("\nCassifier", c)
             print("Accuracy: ", accuracy)
             print("Precision: ", precision)
             print("Recall: ", recall)
@@ -127,8 +120,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
                 print(np.unique(labels))
                 print(np.unique(pred_labels))
                 unsupervised_models.evaluate_clustering(X, labels, pred_labels)
-                visualization.visualize_clusters_tsne_label(X, pred_labels, y_le, class_names)
-                #visualization.visualize_clusters_opentsne_label(X, pred_labels, y_le, class_names)
+                visualization.visualize_clusters(X, pred_labels, y_le, class_names, viz)
             elif c == 'pca':
                 """NOT GOOD"""
                 X_reduced = unsupervised_models.pca_dimension_reduction(X)

@@ -188,7 +188,7 @@ def tf_idf_features(text, output_path, tf_idf_config = 'tf_idf_features', config
 
     train_df = pd.DataFrame(X)
     train_df['label'] = y
-    train_df.to_csv(f'{output_path}/{tf_idf_features}.csv', index = False)
+    train_df.to_csv(f'{output_path}/{tf_idf_config}.csv', index = False)
     return train_df
 
 

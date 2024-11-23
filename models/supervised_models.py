@@ -7,39 +7,40 @@ import lightgbm as lgb
 from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import VotingClassifier
 
-def random_forest(X_train, y_train, X_test):
-    clf = RandomForestClassifier(n_estimators = 1000)
+def random_forest(X_train, y_train, X_test, **params):
+    clf = RandomForestClassifier(**params)
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     return clf, y_pred
 
-def grad_boost(X_train, y_train, X_test):
-    clf = GradientBoostingClassifier(n_estimators = 1000, random_state = 500)
+def grad_boost(X_train, y_train, X_test, **params):
+    clf = GradientBoostingClassifier(**params)
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     return clf, y_pred
 
-def lightGBM(X_train, y_train, X_test):
-    clf = lgb.LGBMClassifier(n_estimators = 500, random_state = 50)
+def lightGBM(X_train, y_train, X_test, **params):
+    clf = lgb.LGBMClassifier(**params)
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     return clf, y_pred
 
-def svm(X_train, y_train, X_test):
-    tuned_parameters = [{'kernel': ['linear'], 'C': [1]}]
-    clf = GridSearchCV(SVC(probability=False, cache_size = 1024, degree = 2), tuned_parameters, scoring = 'accuracy')
+def svm(X_train, y_train, X_test, **params):
+    #tuned_parameters = [{'kernel': ['linear'], 'C': [1]}]
+    #clf = GridSearchCV(SVC(probability=False, cache_size = 1024, degree = 2), tuned_parameters, scoring = 'accuracy')
+    clf = SVC(probability=False, cache_size=1024, **params)
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     return clf, y_pred
 
-def knn(X_train, y_train, X_test, n_neighbors = 5):
-    clf = KNeighborsClassifier(n_neighbors = n_neighbors)
+def knn(X_train, y_train, X_test, **params):
+    clf = KNeighborsClassifier( **params)
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     return clf, y_pred
 
-def naive_bayes(X_train, y_train, X_test):
-    clf = GaussianNB()
+def naive_bayes(X_train, y_train, X_test, **params):
+    clf = GaussianNB( **params)
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
     return clf, y_pred
@@ -79,7 +80,7 @@ def get_voting_classifier(X_train, y_train, X_test):
     clf, y_pred = voting(X_train, y_train, X_test, clf1, clf2, clf3, clf4, clf5, clf6)
     return clf, y_pred
 
-def sup_models(X_train, y_train, X_test, c = None):
+def sup_models(X_train, y_train, X_test, c = None, **params):
     """
     Applies a specified supervised learning model to the given training and test_scripts data.
 
@@ -89,6 +90,7 @@ def sup_models(X_train, y_train, X_test, c = None):
         X_test (array-like): Test feature matrix.
         c (str, optional): Name of the supervised learning model to apply. Must be one of the following:
                            'random_forest', 'grad_boost', 'lightGBM', 'knn', 'naive_bayes', 'svm', or 'voting'.
+        **params: Parameters for the specified classifier.
 
     Returns:
         tuple:
@@ -97,14 +99,17 @@ def sup_models(X_train, y_train, X_test, c = None):
     """
 
     model_functions = {
-        'random_forest': lambda: random_forest(X_train, y_train, X_test),
-        'grad_boost': lambda: grad_boost(X_train, y_train, X_test),
-        'lightGBM': lambda: lightGBM(X_train, y_train, X_test),
-        'knn': lambda: knn(X_train, y_train, X_test),
-        'naive_bayes': lambda: naive_bayes(X_train, y_train, X_test),
-        'svm': lambda: svm(X_train, y_train, X_test),
+        'random_forest': lambda: random_forest(X_train, y_train, X_test, **params),
+        'grad_boost': lambda: grad_boost(X_train, y_train, X_test, **params),
+        'lightGBM': lambda: lightGBM(X_train, y_train, X_test, **params),
+        'knn': lambda: knn(X_train, y_train, X_test, **params),
+        'naive_bayes': lambda: naive_bayes(X_train, y_train, X_test, **params),
+        'svm': lambda: svm(X_train, y_train, X_test, **params),
         'voting': lambda: get_voting_classifier(X_train, y_train, X_test)
     }
+
+    if c not in model_functions:
+        raise ValueError(f"Classifier '{c}' is not recognized.")
 
     clf, y_pred = model_functions[c]()
 

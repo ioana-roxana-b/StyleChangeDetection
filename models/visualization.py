@@ -1,7 +1,7 @@
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE as sk_tsne, Isomap, MDS
 import numpy as np
-from openTSNE import TSNE
+#from openTSNE import TSNE
 import matplotlib.pyplot as plt
 
 
@@ -61,59 +61,59 @@ def visualize_clusters_tsne(X, cluster_labels, actual_labels, class_names):
     plt.show()
 
 
-def visualize_clusters_opentsne(X, cluster_labels, actual_labels, class_names):
-    """
-        Visualizes clusters using OpenTSNE and places annotations with class labels and centroids for each cluster.
-        Params:
-            X (array-like): Input data to be reduced using OpenTSNE.
-            cluster_labels (array-like): Cluster labels for each data point.
-            actual_labels (array-like): True class labels for the data.
-            class_names (list): List of class names corresponding to each cluster label.
-        Returns:
-            None: Displays an OpenTSNE scatter plot of the clusters with annotated class labels.
-    """
-    # Apply OpenTSNE reduction
-    tsne = TSNE(n_jobs=-1, perplexity=50, random_state=42)
-    X_reduced = tsne.fit(X)
-
-    plt.figure(figsize=(18, 9))  # Adjust the figure size as necessary
-    cmap = plt.get_cmap('viridis', len(np.unique(cluster_labels)))
-    scatter = plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=cluster_labels, cmap=cmap, edgecolor='k', s=60)
-
-    unique_labels = np.unique(cluster_labels)
-    centroids = {}
-    cluster_to_class = {}
-
-    for label in unique_labels:
-        indices = np.where(cluster_labels == label)
-        if len(indices[0]) > 0:
-            most_common_label = np.bincount(actual_labels[indices]).argmax()
-            cluster_to_class[label] = class_names[most_common_label]
-            centroids[label] = np.mean(X_reduced[indices], axis=0)
-        else:
-            cluster_to_class[label] = "Unknown"
-
-    # Customize the ticks to make grid less dense
-    plt.xticks(ticks=np.linspace(np.min(X_reduced[:, 0]), np.max(X_reduced[:, 0]), num=10))
-    plt.yticks(ticks=np.linspace(np.min(X_reduced[:, 1]), np.max(X_reduced[:, 1]), num=10))
-    plt.grid(True, linestyle='--', linewidth=0.5, alpha=0.5)  # Lighter grid
-
-    # Legend outside the plot
-    handles = [plt.Line2D([0], [0], marker='o', color=cmap(i / max(cluster_labels)), linestyle='', markersize=10,
-                          markeredgecolor='k') for i in unique_labels]
-    labels = [f"{cluster_to_class[label]} ({np.count_nonzero(cluster_labels == label)})" for label in unique_labels]
-    plt.legend(handles, labels, title='Classes', loc='center left', bbox_to_anchor=(1, 0.5), fontsize='large')
-
-    # Place text annotations
-    for label, centroid in centroids.items():
-        plt.text(centroid[0], centroid[1], cluster_to_class[label], fontsize=9, ha='center', va='center',
-                 bbox=dict(facecolor='white', alpha=0.8, edgecolor='none', boxstyle='round,pad=0.5'))
-
-    plt.title('OpenTSNE Visualization of Clusters')
-    plt.xlabel('t-SNE Component 1')
-    plt.ylabel('t-SNE Component 2')
-    plt.tight_layout()
-    plt.show()
+# def visualize_clusters_opentsne(X, cluster_labels, actual_labels, class_names):
+#     """
+#         Visualizes clusters using OpenTSNE and places annotations with class labels and centroids for each cluster.
+#         Params:
+#             X (array-like): Input data to be reduced using OpenTSNE.
+#             cluster_labels (array-like): Cluster labels for each data point.
+#             actual_labels (array-like): True class labels for the data.
+#             class_names (list): List of class names corresponding to each cluster label.
+#         Returns:
+#             None: Displays an OpenTSNE scatter plot of the clusters with annotated class labels.
+#     """
+#     # Apply OpenTSNE reduction
+#     tsne = TSNE(n_jobs=-1, perplexity=50, random_state=42)
+#     X_reduced = tsne.fit(X)
+#
+#     plt.figure(figsize=(18, 9))  # Adjust the figure size as necessary
+#     cmap = plt.get_cmap('viridis', len(np.unique(cluster_labels)))
+#     scatter = plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=cluster_labels, cmap=cmap, edgecolor='k', s=60)
+#
+#     unique_labels = np.unique(cluster_labels)
+#     centroids = {}
+#     cluster_to_class = {}
+#
+#     for label in unique_labels:
+#         indices = np.where(cluster_labels == label)
+#         if len(indices[0]) > 0:
+#             most_common_label = np.bincount(actual_labels[indices]).argmax()
+#             cluster_to_class[label] = class_names[most_common_label]
+#             centroids[label] = np.mean(X_reduced[indices], axis=0)
+#         else:
+#             cluster_to_class[label] = "Unknown"
+#
+#     # Customize the ticks to make grid less dense
+#     plt.xticks(ticks=np.linspace(np.min(X_reduced[:, 0]), np.max(X_reduced[:, 0]), num=10))
+#     plt.yticks(ticks=np.linspace(np.min(X_reduced[:, 1]), np.max(X_reduced[:, 1]), num=10))
+#     plt.grid(True, linestyle='--', linewidth=0.5, alpha=0.5)  # Lighter grid
+#
+#     # Legend outside the plot
+#     handles = [plt.Line2D([0], [0], marker='o', color=cmap(i / max(cluster_labels)), linestyle='', markersize=10,
+#                           markeredgecolor='k') for i in unique_labels]
+#     labels = [f"{cluster_to_class[label]} ({np.count_nonzero(cluster_labels == label)})" for label in unique_labels]
+#     plt.legend(handles, labels, title='Classes', loc='center left', bbox_to_anchor=(1, 0.5), fontsize='large')
+#
+#     # Place text annotations
+#     for label, centroid in centroids.items():
+#         plt.text(centroid[0], centroid[1], cluster_to_class[label], fontsize=9, ha='center', va='center',
+#                  bbox=dict(facecolor='white', alpha=0.8, edgecolor='none', boxstyle='round,pad=0.5'))
+#
+#     plt.title('OpenTSNE Visualization of Clusters')
+#     plt.xlabel('t-SNE Component 1')
+#     plt.ylabel('t-SNE Component 2')
+#     plt.tight_layout()
+#     plt.show()
 
 
 def visualize_clusters_pca(X, cluster_labels, true_labels, class_names):
@@ -257,8 +257,8 @@ def visualize_clusters(X, cluster_labels, actual_labels, class_names, viz):
         visualize_clusters_tsne(X, cluster_labels, actual_labels, class_names)
     elif viz == 'pca':
         visualize_clusters_pca(X, cluster_labels, actual_labels, class_names)
-    elif viz == 'opentsne':
-        visualize_clusters_opentsne(X, cluster_labels, actual_labels, class_names)
+    # elif viz == 'opentsne':
+    #     visualize_clusters_opentsne(X, cluster_labels, actual_labels, class_names)
     elif viz == 'isomap':
         visualize_clusters_isomap(X, cluster_labels, actual_labels, class_names)
     elif viz == 'mds':

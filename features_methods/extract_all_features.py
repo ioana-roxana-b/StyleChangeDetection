@@ -26,14 +26,14 @@ def extract_all_features(text_path, output_path, dialogue = False):
     sentence_config = 'sentence_features'
     sentence_config_file = 'feature_configs/sentence_configs.json'
 
-    tf_idf_config = 'tf_idf_with_sw'
+    tf_idf_config = 'tf_idf_features'
     tf_idf_config_file = 'feature_configs/tf_idf_configs.json'
 
     if dialogue:
         # Extract and save dialogues from the corpus to an output file
         text = text_preprocessing.extract_and_save_dialogues(text_path, output_file_path)
     else:
-        text = text_preprocessing.split_into_chapters(text = text_path, label='DOS|TOL|FICTION|NONFICTION')
+        text = text_preprocessing.split_into_chapters(text = text_path, label='Fletcher|Shakespeare|DOS|TOL|FICTION|NONFICTION')
 
     # Extract features using the configurations defined in `chapter_configs.json`
     chapter_df = configs.chapter_features(text = text, output_path = output_path, chapter_config = chapter_config, config_file = chapter_config_file)
@@ -57,7 +57,7 @@ def create_dfs(text_path, output_file_path, dialogue=False):
     chapter_df, sentence_df, tf_idf_df = extract_all_features(text_path=text_path, output_path=output_file_path, dialogue=dialogue)
 
     # Combine features into a single DataFrame
-    #configs.chapter_tf_idf(chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
+    configs.chapter_tf_idf(chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
     #configs.sentence_tf_idf(sentence_df = sentence_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
     #configs.sentence_chapter(sentence_df = sentence_df, chapter_df = chapter_df, output_path = output_file_path)
     #configs.all_features(sentence_df = sentence_df, chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)

@@ -8,22 +8,6 @@ from nltk.corpus import stopwords
 
 import os
 
-def read_text(file_path):
-    """
-    Reads the content of a text file.
-    Params:
-        file_path (str): Path to the text file.
-    Returns:
-        str: The content of the file as a string.
-    """
-
-    all_content = ""
-    with open(file_path, 'r', encoding='utf-8', errors='ignore') as file:
-        content = file.read()
-    all_content += content + '\n'
-
-    return all_content
-
 def split_into_chapters(dir = None, text = None, label = None):
     """
     Splits a large text into chapters based on chapter headers.
@@ -50,7 +34,12 @@ def split_into_chapters(dir = None, text = None, label = None):
 
     elif text is not None:
         # If a single text file is provided, read its content
-        text = read_text(text)
+        all_content = ""
+        with open(text, 'r', encoding='utf-8', errors='ignore') as file:
+            content = file.read()
+        all_content += content + '\n'
+        text = all_content
+        #text = read_text(text)
 
     if isinstance(text, str):
 

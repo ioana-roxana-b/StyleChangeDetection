@@ -1,0 +1,73 @@
+{
+  "all": {
+     "random_forest": {
+      "type": "s",
+      "classifiers": ["random_forest"],
+      "preprocessing_methods": [
+         {"method": "stand_sc", "parameters": {}}
+      ],
+      "parameters": {"n_estimators": 100},
+      "dialog": false
+    },
+    "grad_boost": {
+      "type": "s",
+      "classifiers": ["grad_boost"],
+      "preprocessing_methods": [
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "parameters": {"n_estimators": 100},
+      "dialog": false
+    },
+    "knn": {
+      "type": "s",
+      "classifiers": ["knn"],
+      "preprocessing_methods": [
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "parameters": {"n_neighbors": 3},
+      "dialog": false
+    },
+    "svm": {
+      "type": "s",
+      "classifiers": ["svm"],
+      "preprocessing_methods": [
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "parameters": {"kernel": "sigmoid", "C": 1, "gamma": "scale"},
+      "dialog": false
+    },
+    "naive_bayes": {
+      "type": "s",
+      "classifiers": ["naive_bayes"],
+      "preprocessing_methods": [
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "parameters": {},
+      "dialog": false
+    }
+  },
+
+  "random_forest":
+  {
+    "random_forest": {
+      "type": "s",
+      "classifiers": ["random_forest"],
+      "preprocessing_methods": [
+         {"method": "minmax_sc", "parameters": {}}
+      ],
+      "parameters": {"n_estimators": 100},
+      "dialog": false
+    }
+  },
+  "svm": {
+    "svm": {
+      "type": "s",
+      "classifiers": ["svm"],
+      "preprocessing_methods": [
+        {"method": "stand_sc", "parameters": {}}
+      ],
+      "parameters": {"kernel": "sigmoid", "C": 1, "gamma": "scale"},
+      "dialog": false
+    }
+   }
+}

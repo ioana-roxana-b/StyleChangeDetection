@@ -54,6 +54,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
         labels = y_le
         class_names = le.classes_
         X = filtered_data_df.drop('label', axis=1).values
+
     else:
         le = LabelEncoder()
         y = data_df['label'].apply(lambda x: x.split()[0]).values if not dialog else data_df['label']

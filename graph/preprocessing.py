@@ -1,8 +1,10 @@
+import json
 import os
 import pickle
 import re
 
 from matplotlib import pyplot as plt
+from nltk import pos_tag
 from nltk.corpus import stopwords as nltk_stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -85,44 +87,141 @@ def preprocessing(text=None, stopwords=False, lemmatizer=False, punctuations=Fal
 
     return processed_text
 
+def construct_wans(text=None, output_dir="dos_wans", include_pos=False):
+    if text is None or not isinstance(text, dict):
+        raise ValueError("Input 'text' must be a dictionary with scenes as keys.")
 
-def construct_wans(text=None, output_dir="wans"):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
     wans = {}
 
-    # Iterate through scenes in the text
-    for scene in text:
-        wan = nx.Graph()
+    for scene, sentences in text.items():
+        wan = nx.DiGraph()
 
-        # Iterate through sentences in the scene
-        for sentence in text[scene]:
-            words = sentence.split()
+        for sentence in sentences:
+            words = word_tokenize(sentence)
 
-            # Add edges only between adjacent words
+            # Add edges between adjacent words
             for i in range(len(words) - 1):
-                word1 = words[i]
-                word2 = words[i + 1]
-                wan.add_node(word1)
-                wan.add_node(word2)
+                word1, word2 = words[i].lower(), words[i + 1].lower()
                 if wan.has_edge(word1, word2):
                     wan[word1][word2]['weight'] += 1
                 else:
                     wan.add_edge(word1, word2, weight=1)
 
-        # Store WAN in the dictionary
+            # Add POS tagging if enabled
+            if include_pos:
+                pos_tags = pos_tag(words)
+                for word, pos in pos_tags:
+                    if word.lower() in wan.nodes:
+                        wan.nodes[word.lower()]['pos'] = pos
+
+        wan.remove_edges_from(nx.selfloop_edges(wan))
         wans[scene] = wan
 
-        # Save each WAN as a pickle file
-        with open(f"{output_dir}/{scene}.pkl", "wb") as f:
-            pickle.dump(wan, f)
+        # Save WAN as a pickle file
+        try:
+            with open(f"{output_dir}/{scene}.pkl", "wb") as f:
+                pickle.dump(wan, f)
+        except IOError as e:
+            print(f"Error saving {scene}: {e}")
+
+    try:
+        json_wans = {scene: nx.node_link_data(wan) for scene, wan in wans.items()}
+        with open("wans_rus.json", "w") as f:
+            json.dump(json_wans, f, indent=4)
+    except IOError as e:
+        print(f"Error saving WANs as JSON: {e}")
 
     print(f"WANs saved in {output_dir}")
     return wans
 
+def plotly_visualize_wan(wan, scene_name, max_hover_connections=10):
+    """
+    Create an interactive WAN visualization using Plotly with directional edges and hover limits.
 
-def load_wan(scene, input_dir="wans"):
+    Parameters:
+        wan (networkx.DiGraph): The word association network to visualize.
+        scene_name (str): The name of the scene for labeling.
+        max_hover_connections (int): Maximum number of connections to display in hover text.
+    """
+    pos = nx.spring_layout(wan, seed=42, k=0.4)  # Spread nodes further apart
+
+    # Extract node and edge positions
+    node_x = [pos[node][0] for node in wan.nodes]
+    node_y = [pos[node][1] for node in wan.nodes]
+
+    edge_x = []
+    edge_y = []
+    edge_text = []
+
+    for edge in wan.edges(data=True):
+        x0, y0 = pos[edge[0]]
+        x1, y1 = pos[edge[1]]
+        edge_x += [x0, x1, None]
+        edge_y += [y0, y1, None]
+        edge_text.append(f"{edge[0]} → {edge[1]} (Weight: {edge[2]['weight']})")
+
+    # Create edge trace
+    edge_trace = go.Scatter(
+        x=edge_x, y=edge_y,
+        line=dict(width=0.5, color='#888'),
+        hoverinfo='text',
+        mode='lines',
+        text=edge_text
+    )
+
+    # Create node trace with detailed hover information
+    node_adjacencies = []
+    node_text = []
+
+    for node in wan.nodes:
+        out_edges = list(wan.successors(node))  # Nodes this node points to
+        in_edges = list(wan.predecessors(node))  # Nodes pointing to this node
+
+        pos_tag = wan.nodes[node].get('pos', 'Unknown')
+
+        out_connections = ', '.join(out_edges[:max_hover_connections])
+        in_connections = ', '.join(in_edges[:max_hover_connections])
+
+        out_more = len(out_edges) - max_hover_connections if len(out_edges) > max_hover_connections else 0
+        in_more = len(in_edges) - max_hover_connections if len(in_edges) > max_hover_connections else 0
+
+        out_text = f"Followed by: {out_connections} and {out_more} more..." if out_more else f"Followed by: {out_connections}"
+        in_text = f"Follows: {in_connections} and {in_more} more..." if in_more else f"Follows: {in_connections}"
+
+        node_adjacencies.append(len(out_edges) + len(in_edges))
+        node_text.append(f"<b>{node}</b><br>POS: {pos_tag}<br>{out_text}<br>{in_text}")
+
+    node_trace = go.Scatter(
+        x=node_x, y=node_y,
+        mode='markers+text',
+        text=[str(node) for node in wan.nodes],
+        hoverinfo='text',
+        marker=dict(
+            size=10,
+            color=node_adjacencies,
+            colorscale='Viridis',
+            showscale=True,
+            colorbar=dict(title="Node Degree")
+        ),
+        textposition='top center',
+        hovertext=node_text  # Use the formatted hover text here
+    )
+
+    # Create the figure
+    fig = go.Figure(data=[edge_trace, node_trace])
+    fig.update_layout(
+        title=f"WAN for Scene: {scene_name}",
+        showlegend=False,
+        xaxis=dict(showgrid=False, zeroline=False),
+        yaxis=dict(showgrid=False, zeroline=False)
+    )
+
+    fig.show()
+
+def load_wan(scene, input_dir="dos_wans"):
     filepath = f"{input_dir}/{scene}.pkl"
     if os.path.exists(filepath):
         with open(filepath, "rb") as f:
@@ -132,6 +231,18 @@ def load_wan(scene, input_dir="wans"):
         return None
 
 
+def load_wans(json_file="wans.json"):
+    try:
+        with open(json_file, "r") as f:
+            json_wans = json.load(f)
+
+        # Convert back to NetworkX graphs
+        wans = {scene: nx.node_link_graph(data) for scene, data in json_wans.items()}
+        print("WANs successfully loaded.")
+        return wans
+    except IOError as e:
+        print(f"Error loading WANs from JSON: {e}")
+        return None
 def visualize_wan(wan, scene_name):
 
     plt.figure(figsize=(10, 8))
@@ -179,74 +290,3 @@ def create_interactive_wan(wan, output_path="interactive_wan.html"):
     print(f"Interactive WAN saved to {output_path}")
 
 
-
-def plotly_visualize_wan(wan, scene_name):
-    """
-    Create an interactive WAN visualization using Plotly.
-
-    Parameters:
-        wan (networkx.Graph): The word association network to visualize.
-        scene_name (str): The name of the scene for labeling.
-    """
-    pos = nx.spring_layout(wan, seed=42)
-
-    # Extract node and edge positions
-    node_x = [pos[node][0] for node in wan.nodes]
-    node_y = [pos[node][1] for node in wan.nodes]
-    edge_x = []
-    edge_y = []
-    edge_weights = []
-    edge_text = []
-
-    for edge in wan.edges(data=True):
-        x0, y0 = pos[edge[0]]
-        x1, y1 = pos[edge[1]]
-        edge_x += [x0, x1, None]
-        edge_y += [y0, y1, None]
-        edge_weights.append(edge[2]['weight'])
-        edge_text.append(f"{edge[0]} ↔ {edge[1]} (Weight: {edge[2]['weight']})")
-
-    # Create edge trace
-    edge_trace = go.Scatter(
-        x=edge_x, y=edge_y,
-        line=dict(width=0.5, color='#888'),
-        hoverinfo='text',
-        mode='lines',
-        text=edge_text
-    )
-
-    # Create node trace with custom hover information
-    node_adjacencies = []
-    node_text = []
-    for node in wan.nodes:
-        adjacencies = list(wan[node])
-        node_adjacencies.append(len(adjacencies))
-        connected_nodes = ', '.join(adjacencies)
-        node_text.append(f"{node}<br>Connected to: {connected_nodes}")
-
-    node_trace = go.Scatter(
-        x=node_x, y=node_y,
-        mode='markers+text',
-        text=[str(node) for node in wan.nodes],
-        hoverinfo='text',
-        marker=dict(
-            size=10,
-            color=node_adjacencies,
-            colorscale='Viridis',
-            showscale=True,
-            colorbar=dict(title="Node Degree")
-        ),
-        textposition='top center',
-        hovertext=node_text
-    )
-
-    # Create the figure
-    fig = go.Figure(data=[edge_trace, node_trace])
-    fig.update_layout(
-        title=f"WAN for Scene: {scene_name}",
-        showlegend=False,
-        xaxis=dict(showgrid=False, zeroline=False),
-        yaxis=dict(showgrid=False, zeroline=False)
-    )
-
-    fig.show()

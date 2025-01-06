@@ -50,33 +50,37 @@ def save_features_to_json(features, filename="features_en.json"):
 
     with open(filename, "w") as f:
         json.dump(cleaned_features, f, indent=4)
-    print(f"Features saved to {filename}")
+    #print(f"Features saved to {filename}")
 
-def extract_lexical_syntactic_features(features, top_n=10, filename = "graph_features.csv"):
+def extract_lexical_syntactic_features(features, top_n=10, filename="graph_features.csv"):
     feature_vectors = {}
 
     for scene, scene_features in features.items():
-        vector = Counter()
+        vector = {}
 
         # Degree Centrality: Extract Top-N Collocations
         degree_top_words = sorted(scene_features['degree_centrality'].items(),
                                   key=lambda x: x[1], reverse=True)[:top_n]
-        vector.update([word for word, _ in degree_top_words])
+        for i, (_, value) in enumerate(degree_top_words, start=1):
+            vector[f'degree_centrality_{i}'] = value
 
         # Closeness Centrality: Extract Top-N Chunk Phrases
         closeness_top_words = sorted(scene_features['closeness_centrality'].items(),
                                      key=lambda x: x[1], reverse=True)[:top_n]
-        vector.update([word for word, _ in closeness_top_words])
+        for i, (_, value) in enumerate(closeness_top_words, start=1):
+            vector[f'closeness_centrality_{i}'] = value
 
         # Betweenness Centrality: Extract Bigrams/Trigrams
         betweenness_top_words = sorted(scene_features['betweenness_centrality'].items(),
                                        key=lambda x: x[1], reverse=True)[:top_n]
-        vector.update([word for word, _ in betweenness_top_words])
+        for i, (_, value) in enumerate(betweenness_top_words, start=1):
+            vector[f'betweenness_centrality_{i}'] = value
 
         # Eigenvector Centrality: Extract Relevant Words
         eigenvector_top_words = sorted(scene_features['eigenvector_centrality'].items(),
                                        key=lambda x: x[1], reverse=True)[:top_n]
-        vector.update([word for word, _ in eigenvector_top_words])
+        for i, (_, value) in enumerate(eigenvector_top_words, start=1):
+            vector[f'eigenvector_centrality_{i}'] = value
 
         # Include Graph-Level Metrics
         vector['average_degree'] = scene_features['average_degree']
@@ -88,9 +92,12 @@ def extract_lexical_syntactic_features(features, top_n=10, filename = "graph_fea
         edge_weights = list(scene_features['edge_weights'].values())
         vector['edge_weights_mean'] = sum(edge_weights) / len(edge_weights) if edge_weights else 0
 
-        feature_vectors[scene] = dict(vector)
+        feature_vectors[scene] = vector
 
+    # Create a DataFrame from the feature vectors and save it to CSV
     df = pd.DataFrame.from_dict(feature_vectors, orient='index').fillna(0)
     df.index.name = 'label'
     df.to_csv(filename, index=True)
+
     return feature_vectors
+

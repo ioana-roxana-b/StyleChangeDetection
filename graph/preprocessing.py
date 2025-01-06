@@ -1,8 +1,5 @@
 import json
-import os
-import pickle
 import re
-
 from matplotlib import pyplot as plt
 from nltk import pos_tag
 from nltk.corpus import stopwords as nltk_stopwords
@@ -129,12 +126,12 @@ def construct_wans(text=None, output_dir="dos_wans", include_pos=False):
 
     try:
         json_wans = {scene: nx.node_link_data(wan) for scene, wan in wans.items()}
-        with open("wans_rus.json", "w") as f:
+        with open(f"{output_dir}.json", "w") as f:
             json.dump(json_wans, f, indent=4)
     except IOError as e:
         print(f"Error saving WANs as JSON: {e}")
 
-    print(f"WANs saved in {output_dir}")
+    #print(f"WANs saved in {output_dir}")
     return wans
 
 def plotly_visualize_wan(wan, scene_name, max_hover_connections=10):

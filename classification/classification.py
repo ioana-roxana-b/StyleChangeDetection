@@ -105,7 +105,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
            # print("Real values: ", y_test)
            # print("Pred values: ", y_pred)
 
-            print("\nCassifier", c)
+            print("\nClassifier", c)
             print("Accuracy: ", accuracy)
             print("Precision: ", precision)
             print("Recall: ", recall)

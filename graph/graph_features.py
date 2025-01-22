@@ -25,7 +25,7 @@ def extract_features(wans):
         scene_features['out_degree'] = dict(wan.out_degree())
         scene_features['betweenness_centrality'] = nx.betweenness_centrality(wan)
         scene_features['closeness_centrality'] = nx.closeness_centrality(wan)
-        scene_features['eigenvector_centrality'] = nx.eigenvector_centrality(wan, max_iter=500)
+        scene_features['eigenvector_centrality'] = nx.eigenvector_centrality(wan, max_iter=50000)
 
         # Edge-Level Metrics
         edge_weights = {edge: data['weight'] for edge, data in wan.edges.items()}

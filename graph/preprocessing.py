@@ -10,15 +10,28 @@ import os
 import networkx as nx
 import pickle
 from pyvis.network import Network
+import spacy
+from spacy.lang.ru.examples import sentences
+import stopwordsiso as stopwords
 
-def process_sentence(sentence, stop_words=None, lemmatizer_instance=None, remove_punctuations=False):
+# Load Russian stopwords using stopwords-iso
+stopwords_ru = stopwords.stopwords("ru")
+
+# Load SpaCy model for Russian
+nlp_ru = spacy.load("ru_core_news_md")
+
+
+def process_sentence(
+    sentence, stop_words=None, lemmatizer_instance=None, remove_punctuations=False, language="en"
+):
     """
     Process a single sentence by applying common text preprocessing steps.
     Params:
         sentence (str): The input sentence to be processed.
         stop_words (set): A set of stopwords to be removed (if applicable).
-        lemmatizer_instance (object): An instance of a lemmatizer (e.g., WordNetLemmatizer).
+        lemmatizer_instance (object): An instance of a lemmatizer (e.g., WordNetLemmatizer for English).
         remove_punctuations (bool): If True, removes all punctuations from the sentence.
+        language (str): Language of the text, either 'en' (English) or 'ru' (Russian).
 
     Returns:
         str: The processed sentence as a single string.
@@ -26,44 +39,67 @@ def process_sentence(sentence, stop_words=None, lemmatizer_instance=None, remove
     # Convert to lowercase
     sentence = sentence.lower()
 
-    # Tokenize the sentence
-    tokens = word_tokenize(sentence)
+    # Tokenize and process based on the language
+    if language == "en":
+        # Tokenize using NLTK for English
+        tokens = word_tokenize(sentence)
 
-    # Remove stopwords
-    if stop_words:
-        tokens = [word for word in tokens if word not in stop_words]
+        # Remove stopwords
+        if stop_words:
+            tokens = [word for word in tokens if word not in stop_words]
 
-    # Remove punctuations
-    if remove_punctuations:
-        tokens = [re.sub(r'[^\w\s]', '', word) for word in tokens]
-        tokens = [word for word in tokens if word.strip() != '']
+        # Remove punctuations
+        if remove_punctuations:
+            tokens = [re.sub(r"[^\w\s]", "", word) for word in tokens]
+            tokens = [word for word in tokens if word.strip() != ""]
 
-    # Apply lemmatization
-    if lemmatizer_instance:
-        tokens = [lemmatizer_instance.lemmatize(word) for word in tokens]
+        # Apply lemmatization
+        if lemmatizer_instance:
+            tokens = [lemmatizer_instance.lemmatize(word) for word in tokens]
+
+    elif language == "ru":
+        # Tokenize and lemmatize using SpaCy for Russian
+        doc = nlp_ru(sentence)
+        tokens = [token.lemma_ for token in doc if not token.is_punct]
+
+        # Remove stopwords
+        if stop_words:
+            tokens = [word for word in tokens if word not in stop_words]
+
+    else:
+        raise ValueError("Unsupported language. Use 'en' for English or 'ru' for Russian.")
 
     # Reconstruct the processed sentence
-    return ' '.join(tokens)
+    return " ".join(tokens)
 
 
-def preprocessing(text=None, stopwords=False, lemmatizer=False, punctuations=False):
+def preprocessing(
+    text=None, stopwords=False, lemmatizer=False, punctuations=False, language="en"
+):
     """
     Preprocess text data.
     Params:
-        text (dict): Dictionary where values can be strings or lists of sentences
-        stopwords (bool): Remove stopwords if True
-        lemmatizer (bool): Apply lemmatization if True
-        punctuations (bool): Remove punctuations if True
+        text (dict): Dictionary where values can be strings or lists of sentences.
+        stopwords (bool): Remove stopwords if True.
+        lemmatizer (bool): Apply lemmatization if True.
+        punctuations (bool): Remove punctuations if True.
+        language (str): Language of the text, either 'en' (English) or 'ru' (Russian).
 
     Returns:
-        dict: Preprocessed text in the same format as input
+        dict: Preprocessed text in the same format as input.
     """
     if not text:
         raise ValueError("Input text cannot be None.")
 
-    # Initialize optional components
-    stop_words = set(nltk_stopwords.words('english')) if stopwords else None
-    lemmatizer_instance = WordNetLemmatizer() if lemmatizer else None
+    # Initialize optional components based on the language
+    if language == "en":
+        stop_words = set(nltk_stopwords.words("english")) if stopwords else None
+        lemmatizer_instance = WordNetLemmatizer() if lemmatizer else None
+    elif language == "ru":
+        stop_words = stopwords_ru if stopwords else None
+        lemmatizer_instance = None  # SpaCy handles lemmatization for Russian
+    else:
+        raise ValueError("Unsupported language. Use 'en' for English or 'ru' for Russian.")
 
     processed_text = {}
 
@@ -71,18 +107,19 @@ def preprocessing(text=None, stopwords=False, lemmatizer=False, punctuations=Fal
         if isinstance(value, str):
             # Process a single string
             processed_text[key] = process_sentence(
-                value, stop_words, lemmatizer_instance, punctuations
+                value, stop_words, lemmatizer_instance, punctuations, language
             )
         elif isinstance(value, list):
             # Process a list of sentences
             processed_text[key] = [
-                process_sentence(sentence, stop_words, lemmatizer_instance, punctuations)
+                process_sentence(sentence, stop_words, lemmatizer_instance, punctuations, language)
                 for sentence in value
             ]
         else:
             raise TypeError(f"Expected str or list for key '{key}', got '{type(value).__name__}'.")
 
     return processed_text
+
 
 def construct_wans(text=None, output_dir="dos_wans", include_pos=False):
     if text is None or not isinstance(text, dict):

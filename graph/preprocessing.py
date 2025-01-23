@@ -37,7 +37,7 @@ def process_sentence(
         str: The processed sentence as a single string.
     """
     # Convert to lowercase
-    sentence = sentence.lower()
+    sentence = sentence.casefold()
 
     # Tokenize and process based on the language
     if language == "en":
@@ -51,29 +51,29 @@ def process_sentence(
         # Remove punctuations
         if remove_punctuations:
             tokens = [re.sub(r"[^\w\s]", "", word) for word in tokens]
-            tokens = [word for word in tokens if word.strip() != ""]
+            tokens = [word for word in tokens if word.strip()]
 
         # Apply lemmatization
         if lemmatizer_instance:
             tokens = [lemmatizer_instance.lemmatize(word) for word in tokens]
 
     elif language == "ru":
-        # Tokenize and process using SpaCy for Russian
+        # Tokenize using SpaCy for Russian
         doc = nlp_ru(sentence)
-        tokens = [token.text for token in doc if not token.is_punct]
+        tokens = [token.text for token in doc]  # Get raw tokens
+
+        # Remove punctuations
+        if remove_punctuations:
+            tokens = [re.sub(r"[^\w\s]", "", word) for word in tokens if not re.match(r"[^\w\s]", word)]
+            tokens = [word for word in tokens if word.strip() != ""]
 
         # Remove stopwords
         if stop_words:
             tokens = [word for word in tokens if word not in stop_words]
 
-        # Remove punctuations
-        if remove_punctuations:
-            tokens = [re.sub(r"[^\w\s]", "", word) for word in tokens]
-            tokens = [word for word in tokens if word.strip() != ""]
-
         # Apply lemmatization (only if explicitly requested)
         if lemmatizer_instance:
-            tokens = [token.lemma_ for token in doc]
+            tokens = [token.lemma_ for token in doc if token.text in tokens]
 
     else:
         raise ValueError("Unsupported language. Use 'en' for English or 'ru' for Russian.")
@@ -81,11 +81,8 @@ def process_sentence(
     # Reconstruct the processed sentence
     return " ".join(tokens)
 
-
-
 def preprocessing(
-    text=None, stopwords=False, lemmatizer=False, punctuations=False, language="en"
-):
+    text=None, stopwords=False, lemmatizer=False, punctuations=False, language="en"):
     """
     Preprocess text data.
     Params:

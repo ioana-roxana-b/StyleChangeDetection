@@ -14,7 +14,7 @@ def pipeline_wan():
     # with open("sentence.json", "w") as file:
     #     json.dump(sentences, file, indent=4)
 
-    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=False, lemmatizer=True, language='ru')
+    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=True, lemmatizer=True, language='ru')
 
     # with open("preprocessed_acts.json", "w") as file:
     #     json.dump(preprocessed_text, file, indent=4)
@@ -45,18 +45,18 @@ def pipeline_wan():
     # if tol_wan:
     #     preprocessing.plotly_visualize_wan(tol_wan, "TOL CHAPTER 1 PART ONE")
 
-    # dos_wan_rus = preprocessing.load_wan("DOS CHAPTER 1 I", input_dir="dos_wans_rus")
-    # if dos_wan_rus:
-    #     preprocessing.plotly_visualize_wan(dos_wan_rus, "DOS CHAPTER 1 I")
-    #
-    # tol_wan_rus = preprocessing.load_wan("TOL CHAPTER 1 PART ONE", input_dir="dos_wans_rus")
-    # if tol_wan_rus:
-    #     preprocessing.plotly_visualize_wan(tol_wan_rus, "TOL CHAPTER 1 PART ONE")
-    #
-    # dos_wan_rus = preprocessing.load_wan("DOS CHAPTER 1 I", input_dir="dos_wans_rus_new")
-    # if dos_wan_rus:
-    #     preprocessing.plotly_visualize_wan(dos_wan_rus, "DOS CHAPTER 1 I")
-    #
-    # tol_wan_rus = preprocessing.load_wan("TOL CHAPTER 1 PART ONE", input_dir="dos_wans_rus_new")
-    # if tol_wan_rus:
-    #     preprocessing.plotly_visualize_wan(tol_wan_rus, "TOL CHAPTER 1 PART ONE")
+    dos_wan_rus = preprocessing.load_wan("DOS CHAPTER 1 I", input_dir="dos_wans_rus")
+    if dos_wan_rus:
+        preprocessing.plotly_visualize_wan(dos_wan_rus, "DOS CHAPTER 1 I")
+
+    tol_wan_rus = preprocessing.load_wan("TOL CHAPTER 1 PART ONE", input_dir="dos_wans_rus")
+    if tol_wan_rus:
+        preprocessing.plotly_visualize_wan(tol_wan_rus, "TOL CHAPTER 1 PART ONE")
+
+    dos_wan_rus = preprocessing.load_wan("DOS CHAPTER 1 I", input_dir="dos_wans_rus_new")
+    if dos_wan_rus:
+        preprocessing.plotly_visualize_wan(dos_wan_rus, "DOS CHAPTER 1 I")
+
+    tol_wan_rus = preprocessing.load_wan("TOL CHAPTER 1 PART ONE", input_dir="dos_wans_rus_new")
+    if tol_wan_rus:
+        preprocessing.plotly_visualize_wan(tol_wan_rus, "TOL CHAPTER 1 PART ONE")

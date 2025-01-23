@@ -11,11 +11,10 @@ import networkx as nx
 import pickle
 from pyvis.network import Network
 import spacy
-from spacy.lang.ru.examples import sentences
-import stopwordsiso as stopwords
+import stopwordsiso
 
 # Load Russian stopwords using stopwords-iso
-stopwords_ru = stopwords.stopwords("ru")
+stopwords_ru = stopwordsiso.stopwords("ru")
 
 # Load SpaCy model for Russian
 nlp_ru = spacy.load("ru_core_news_md")
@@ -60,7 +59,7 @@ def process_sentence(
     elif language == "ru":
         # Tokenize using SpaCy for Russian
         doc = nlp_ru(sentence)
-        tokens = [token.text for token in doc]  # Get raw tokens
+        tokens = [token.text for token in doc]
 
         # Remove punctuations
         if remove_punctuations:
@@ -71,7 +70,7 @@ def process_sentence(
         if stop_words:
             tokens = [word for word in tokens if word not in stop_words]
 
-        # Apply lemmatization (only if explicitly requested)
+        # Apply lemmatization
         if lemmatizer_instance:
             tokens = [token.lemma_ for token in doc if token.text in tokens]
 

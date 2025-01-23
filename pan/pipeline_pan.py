@@ -36,7 +36,7 @@ def process_problem(problem_id, data_dir, truth_lookup, output_dir):
 
     # Preprocess and feature extraction (unchanged)
     sentences = text_preprocessing.split_into_phrases(documents_dict)
-    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=False, stopwords=True, lemmatizer=True)
+    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=False, stopwords=True, lemmatizer=True, language="en")
 
     # Construct WANS and extract features
     wans = preprocessing.construct_wans(

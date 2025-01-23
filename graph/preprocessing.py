@@ -58,19 +58,29 @@ def process_sentence(
             tokens = [lemmatizer_instance.lemmatize(word) for word in tokens]
 
     elif language == "ru":
-        # Tokenize and lemmatize using SpaCy for Russian
+        # Tokenize and process using SpaCy for Russian
         doc = nlp_ru(sentence)
-        tokens = [token.lemma_ for token in doc if not token.is_punct]
+        tokens = [token.text for token in doc if not token.is_punct]
 
         # Remove stopwords
         if stop_words:
             tokens = [word for word in tokens if word not in stop_words]
+
+        # Remove punctuations
+        if remove_punctuations:
+            tokens = [re.sub(r"[^\w\s]", "", word) for word in tokens]
+            tokens = [word for word in tokens if word.strip() != ""]
+
+        # Apply lemmatization (only if explicitly requested)
+        if lemmatizer_instance:
+            tokens = [token.lemma_ for token in doc]
 
     else:
         raise ValueError("Unsupported language. Use 'en' for English or 'ru' for Russian.")
 
     # Reconstruct the processed sentence
     return " ".join(tokens)
+
 
 
 def preprocessing(
@@ -97,7 +107,7 @@ def preprocessing(
         lemmatizer_instance = WordNetLemmatizer() if lemmatizer else None
     elif language == "ru":
         stop_words = stopwords_ru if stopwords else None
-        lemmatizer_instance = None  # SpaCy handles lemmatization for Russian
+        lemmatizer_instance = lemmatizer
     else:
         raise ValueError("Unsupported language. Use 'en' for English or 'ru' for Russian.")
 

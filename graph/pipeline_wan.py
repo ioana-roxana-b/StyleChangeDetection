@@ -14,7 +14,7 @@ def pipeline_wan():
     # with open("sentence.json", "w") as file:
     #     json.dump(sentences, file, indent=4)
 
-    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=True, lemmatizer=False, language='ru')
+    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=False, lemmatizer=True, language='ru')
 
     # with open("preprocessed_acts.json", "w") as file:
     #     json.dump(preprocessed_text, file, indent=4)

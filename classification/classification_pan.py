@@ -91,6 +91,7 @@ def classification(classifiers, train_features, test_features, preprocessing_met
         f1 = f1_score(y_test, y_pred, average='macro')
         auc = roc_auc_score(y_test, y_pred_proba)  # Use probabilities
         c_at_1 = compute_c_at_1(y_test, y_pred_proba)
+        pan_score = auc*c_at_1
 
         # Log metrics
         metrics.append({
@@ -100,16 +101,18 @@ def classification(classifiers, train_features, test_features, preprocessing_met
             'Recall': recall,
             'F1': f1,
             'AUC': auc,
-            'c@1': c_at_1
+            'c@1': c_at_1,
+            'PAN score': pan_score
         })
 
         print(f"\nClassifier: {c}")
-        print(f"Accuracy: {accuracy:.3f}")
-        print(f"Precision: {precision:.3f}")
-        print(f"Recall: {recall:.3f}")
-        print(f"F1 Score: {f1:.3f}")
-        print(f"AUC: {auc:.3f}")
-        print(f"c@1: {c_at_1:.3f}")
+        print(f"Accuracy: {accuracy:.2f}")
+        print(f"Precision: {precision:.2f}")
+        print(f"Recall: {recall:.2f}")
+        print(f"F1 Score: {f1:.2f}")
+        print(f"AUC: {auc:.2f}")
+        print(f"c@1: {c_at_1:.2f}")
+        print(f"PAN score: {pan_score:.2f}")
 
         # Append probabilities
         prob_scores.append((c, y_pred_proba))

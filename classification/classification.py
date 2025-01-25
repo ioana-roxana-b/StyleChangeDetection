@@ -105,11 +105,11 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
            # print("Real values: ", y_test)
            # print("Pred values: ", y_pred)
 
-            print("\nClassifier", c)
-            print("Accuracy: ", accuracy)
-            print("Precision: ", precision)
-            print("Recall: ", recall)
-            print("F1: ", f1)
+            print(f"\nClassifier: {c}")
+            print(f"Accuracy: {accuracy:.4f}")
+            print(f"Precision: {precision:.4f}")
+            print(f"Recall: {recall:.4f}")
+            print(f"F1 Score: {f1:.4f}")
 
             results_df = pd.DataFrame({
                 'Classifier': [c],

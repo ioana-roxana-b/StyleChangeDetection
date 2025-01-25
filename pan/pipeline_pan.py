@@ -36,7 +36,7 @@ def process_problem(problem_id, data_dir, truth_lookup, output_dir):
 
     # Preprocess and feature extraction (unchanged)
     sentences = text_preprocessing.split_into_phrases(documents_dict)
-    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=False, stopwords=True, lemmatizer=True, language="en")
+    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=False, lemmatizer=True, language="el")
 
     # Construct WANS and extract features
     wans = preprocessing.construct_wans(
@@ -53,7 +53,7 @@ def process_problem(problem_id, data_dir, truth_lookup, output_dir):
     # Save features
     graph_features.save_features_to_json(features, filename=os.path.join(output_dir, f"features_{problem_id}.json"))
     graph_features.extract_lexical_syntactic_features(
-        features, top_n=10, filename=os.path.join(output_dir, f"graph_features_{problem_id}.csv")
+        features, top_n=30, filename=os.path.join(output_dir, f"graph_features_{problem_id}.csv")
     )
 
     return problem_id, truth_label

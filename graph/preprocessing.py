@@ -13,12 +13,17 @@ from pyvis.network import Network
 import spacy
 import stopwordsiso
 
-# Load Russian stopwords using stopwords-iso
-stopwords_ru = stopwordsiso.stopwords("ru")
+# Load stopwords for multiple languages using stopwords-iso
+stopwords_ru = stopwordsiso.stopwords("ru")  # Russian
+stopwords_el = stopwordsiso.stopwords("el")  # Greek
+stopwords_nl = stopwordsiso.stopwords("nl")  # Dutch
+stopwords_es = stopwordsiso.stopwords("es")  # Spanish
 
-# Load SpaCy model for Russian
-nlp_ru = spacy.load("ru_core_news_md")
-
+# Load SpaCy models for additional languages
+nlp_ru = spacy.load("ru_core_news_md")  # Russian
+nlp_el = spacy.load("el_core_news_sm")  # Greek
+nlp_nl = spacy.load("nl_core_news_sm")  # Dutch
+nlp_es = spacy.load("es_core_news_md")  # Spanish
 
 def process_sentence(
     sentence, stop_words=None, lemmatizer_instance=None, remove_punctuations=False, language="en"
@@ -30,7 +35,7 @@ def process_sentence(
         stop_words (set): A set of stopwords to be removed (if applicable).
         lemmatizer_instance (object): An instance of a lemmatizer (e.g., WordNetLemmatizer for English).
         remove_punctuations (bool): If True, removes all punctuations from the sentence.
-        language (str): Language of the text, either 'en' (English) or 'ru' (Russian).
+        language (str): Language of the text, e.g., 'en', 'ru', 'el', 'nl', or 'es'.
 
     Returns:
         str: The processed sentence as a single string.
@@ -56,9 +61,15 @@ def process_sentence(
         if lemmatizer_instance:
             tokens = [lemmatizer_instance.lemmatize(word) for word in tokens]
 
-    elif language == "ru":
-        # Tokenize using SpaCy for Russian
-        doc = nlp_ru(sentence)
+    elif language in ["ru", "el", "nl", "es"]:
+        # Tokenize using SpaCy for the specified language
+        nlp = {
+            "ru": nlp_ru,
+            "el": nlp_el,
+            "nl": nlp_nl,
+            "es": nlp_es
+        }[language]
+        doc = nlp(sentence)
         tokens = [token.text for token in doc]
 
         # Remove punctuations
@@ -75,7 +86,7 @@ def process_sentence(
             tokens = [token.lemma_ for token in doc if token.text in tokens]
 
     else:
-        raise ValueError("Unsupported language. Use 'en' for English or 'ru' for Russian.")
+        raise ValueError("Unsupported language. Use 'en', 'ru', 'el', 'nl', or 'es'.")
 
     # Reconstruct the processed sentence
     return " ".join(tokens)
@@ -89,7 +100,7 @@ def preprocessing(
         stopwords (bool): Remove stopwords if True.
         lemmatizer (bool): Apply lemmatization if True.
         punctuations (bool): Remove punctuations if True.
-        language (str): Language of the text, either 'en' (English) or 'ru' (Russian).
+        language (str): Language of the text, e.g., 'en', 'ru', 'el', 'nl', or 'es'.
 
     Returns:
         dict: Preprocessed text in the same format as input.
@@ -104,8 +115,17 @@ def preprocessing(
     elif language == "ru":
         stop_words = stopwords_ru if stopwords else None
         lemmatizer_instance = lemmatizer
+    elif language == "el":
+        stop_words = stopwords_el if stopwords else None
+        lemmatizer_instance = lemmatizer
+    elif language == "nl":
+        stop_words = stopwords_nl if stopwords else None
+        lemmatizer_instance = lemmatizer
+    elif language == "es":
+        stop_words = stopwords_es if stopwords else None
+        lemmatizer_instance = lemmatizer
     else:
-        raise ValueError("Unsupported language. Use 'en' for English or 'ru' for Russian.")
+        raise ValueError("Unsupported language. Use 'en', 'ru', 'el', 'nl', or 'es'.")
 
     processed_text = {}
 

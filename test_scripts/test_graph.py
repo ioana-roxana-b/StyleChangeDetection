@@ -8,7 +8,7 @@ def test_graph():
     # Define the paths for configuration files
     classifier_config_path = f'classification_configs/graph_classifier_config.json'
 
-    data_path = f'graph_features_hviii.csv'
+    data_path = f'graph_features_rus.csv'
     data_df = pd.read_csv(data_path)
 
     # Load classifier configurations from JSON file

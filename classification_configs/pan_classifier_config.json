@@ -4,7 +4,7 @@
       "type": "s",
       "classifiers": ["random_forest"],
       "preprocessing_methods": [
-                {"method": "pca", "parameters": {"n_components": 15}}
+   {"method": "pca", "parameters": {"n_components": 15}}
       ],
       "parameters": {"n_estimators": 100},
       "dialog": false
@@ -13,7 +13,7 @@
       "type": "s",
       "classifiers": ["grad_boost"],
       "preprocessing_methods": [
-               {"method": "pca", "parameters": {"n_components": 15}}
+  {"method": "pca", "parameters": {"n_components": 15}}
       ],
       "parameters": {"n_estimators": 100},
       "dialog": false
@@ -22,7 +22,7 @@
       "type": "s",
       "classifiers": ["knn"],
       "preprocessing_methods": [
-               {"method": "pca", "parameters": {"n_components": 15}}
+  {"method": "pca", "parameters": {"n_components": 15}}
       ],
       "parameters": {"n_neighbors": 3},
       "dialog": false
@@ -31,7 +31,7 @@
       "type": "s",
       "classifiers": ["svm"],
       "preprocessing_methods": [
-               {"method": "pca", "parameters": {"n_components": 15}}
+  {"method": "pca", "parameters": {"n_components": 15}}
       ],
       "parameters": {"kernel": "sigmoid", "C": 1, "gamma": "scale"},
       "dialog": false
@@ -40,7 +40,7 @@
       "type": "s",
       "classifiers": ["naive_bayes"],
       "preprocessing_methods": [
-               {"method": "pca", "parameters": {"n_components": 15}}
+  {"method": "pca", "parameters": {"n_components": 15}}
       ],
       "parameters": {},
       "dialog": false
@@ -53,7 +53,7 @@
       "type": "s",
       "classifiers": ["random_forest"],
       "preprocessing_methods": [
-                {"method": "pca", "parameters": {"n_components": 15}}
+   {"method": "pca", "parameters": {"n_components": 15}}
       ],
       "parameters": {"n_estimators": 100},
       "dialog": false
@@ -64,7 +64,7 @@
       "type": "s",
       "classifiers": ["svm"],
       "preprocessing_methods": [
-               {"method": "pca", "parameters": {"n_components": 15}}
+  {"method": "pca", "parameters": {"n_components": 15}}
       ],
       "parameters": {"kernel": "sigmoid", "C": 1, "gamma": "scale"},
       "dialog": false

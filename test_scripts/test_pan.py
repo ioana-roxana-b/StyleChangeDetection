@@ -99,8 +99,8 @@ def process_classifier():
     Process classifier based on configuration and perform classification.
     """
 
-    train_dir = "Corpus/pan/train-14-greek-articles-corpus2"
-    test_dir = "Corpus/pan/test-14-greek-articles-corpus2"
+    train_dir = "Corpus/pan/train-14-spanish-articles-corpus2"
+    test_dir = "Corpus/pan/test-14-spanish-articles-corpus2"
     classifier_config_path = f'classification_configs/pan_classifier_config.json'
 
     # Load the classifier configuration

@@ -106,13 +106,13 @@ def classification(classifiers, train_features, test_features, preprocessing_met
         })
 
         print(f"\nClassifier: {c}")
-        print(f"Accuracy: {accuracy:.2f}")
-        print(f"Precision: {precision:.2f}")
-        print(f"Recall: {recall:.2f}")
-        print(f"F1 Score: {f1:.2f}")
-        print(f"AUC: {auc:.2f}")
-        print(f"c@1: {c_at_1:.2f}")
-        print(f"PAN score: {pan_score:.2f}")
+        print(f"Accuracy: {accuracy:.4f}")
+        print(f"Precision: {precision:.4f}")
+        print(f"Recall: {recall:.4f}")
+        print(f"F1 Score: {f1:.4f}")
+        print(f"AUC: {auc:.4f}")
+        print(f"c@1: {c_at_1:.4f}")
+        print(f"PAN score: {pan_score:.4f}")
 
         # Append probabilities
         prob_scores.append((c, y_pred_proba))

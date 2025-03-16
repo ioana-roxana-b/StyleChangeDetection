@@ -1,0 +1,10 @@
+python3 main.py \
+      --problem wan \
+      --text-name HVIII \
+      --input-text-path Corpus/Shakespeare/HVIII.txt \
+      --generate-features True \
+      --features-path Outputs/WANS/HVIII/HVIII.csv \
+      --classifier-config-path classification_configs/graph_classifier_config.json \
+      --classifier-config-key all \
+      --label 'DOS|TOL|Shakespeare|Fletcher' \
+      --language en

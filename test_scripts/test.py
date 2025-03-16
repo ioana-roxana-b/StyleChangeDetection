@@ -1,10 +1,13 @@
 import json
+import os
+
 import pandas as pd
 from classification import classification
 from features_methods.extract_all_features import create_dfs
+from graph import pipeline_wan
 
 
-def process_classifier_config(config_key, config, data_df, viz):
+def process_classifier_config(config_key, config, data_df, viz = 'tsne'):
     """
     Processes a single classifier configuration specified by a key from the JSON structure and
     performs classification using the defined parameters.
@@ -57,58 +60,26 @@ def process_classifier_config(config_key, config, data_df, viz):
         else:
             raise ValueError(f"Invalid configuration format for classifier '{classifier_name}' in '{config_key}'.")
 
-
-def dialog(text = 'WinnieThePooh', config = 'all', viz = 'tsne'):
+def test(problem, text_name, input_text_path, generate_features, features_path,
+         classifier_config_path, classifier_config_key, label, language):
     """
-    Processes dialog-based text features and performs classification using specified classifiers.
-    Params:
-        None
-    Returns:
-        None: Outputs the classification results and stores them in CSV files.
+    Process classifier based on configuration and perform classification.
     """
-    classifier_config_path = f'classification_configs/{text}_classifiers_config.json'
+    directory = os.path.dirname(features_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-    # Specify the paths for dialog data extraction and output
-    text_path = f'Corpus/project-dialogism-novel-corpus-master/data/{text}/quotation_info.csv'
-    output_file_path = f'Outputs/Q2/{text}/'
-
-    #create_dfs(text_path=text_path, output_file_path=output_file_path, dialogue=True)
-
-    # Path to the combined features file
-    data_path = f'{output_file_path}/sentence_tf_idf.csv'
-    data_df = pd.read_csv(data_path)
-
-    # Load classifier configurations from the JSON file
-    with open(classifier_config_path, 'r') as f:
-        classifiers_config = json.load(f)
-
-    # Call the function to process the loaded JSON configuration
-    process_classifier_config(f'{config}', classifiers_config, data_df, viz)
-
-def non_dialog(text='Crime_Anna', config='all', viz='tsne'):
-    """
-       Processes non-dialog-based text features and performs classification using specified classifiers.
-       Params:
-           None
-       Returns:
-           None: Outputs classification results and stores them in CSV files.
-       """
-    # Define the paths for configuration files
-    classifier_config_path = f'classification_configs/{text}_classifiers_config.json'
-
-    text_path = f'Corpus/Combined_texts/{text}.txt'
-    output_file_path = f'Outputs/Q0/{text}/'
-
-    #create_dfs(text_path=text_path, output_file_path=output_file_path)
-
-    # Path to the combined features file
-    data_path = f'{output_file_path}/chapter_features.csv'
-    data_df = pd.read_csv(data_path)
+    if generate_features and problem == 'normal':
+        create_dfs(text_path=input_text_path, output_file_path=directory)
+    elif generate_features and problem == 'dialogism':
+        create_dfs(text_path=input_text_path, output_file_path=directory, dialogue=True)
+    elif generate_features and problem == 'wan':
+        pipeline_wan.pipeline_wan(text_name, input_text_path, label, language)
+    data_df = pd.read_csv(features_path)
 
     # Load classifier configurations from JSON file
     with open(classifier_config_path, 'r') as f:
         classifiers_config = json.load(f)
 
     # Call the function to process the loaded JSON configuration
-    process_classifier_config(f'{config}', classifiers_config, data_df, viz)
-
+    process_classifier_config(classifier_config_key, classifiers_config, data_df)

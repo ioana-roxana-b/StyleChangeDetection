@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 from classification import classification_pan
+from pan import pipeline_pan
 
 def process_classifier_config(config_key, config, train_features, test_features):
     """
@@ -94,22 +95,22 @@ def load_feature_files(train_dir, test_dir):
     return train_features, test_features
 
 
-def process_classifier():
+def test_pan(train_dataset_path,test_dataset_path, train_truth_path, test_truth_path, generate_features,
+            features_path_train, features_path_test, classifier_config_path, classifier_config_key, language):
     """
     Process classifier based on configuration and perform classification.
     """
-
-    train_dir = "Corpus/pan/train-14-spanish-articles-corpus2"
-    test_dir = "Corpus/pan/test-14-spanish-articles-corpus2"
-    classifier_config_path = f'classification_configs/pan_classifier_config.json'
+    if generate_features:
+        pipeline_pan.pipeline_pan(train_dataset_path, test_dataset_path, train_truth_path, 
+                                  test_truth_path, features_path_train, features_path_test, language)
 
     # Load the classifier configuration
     with open(classifier_config_path, 'r') as f:
         classifiers_config = json.load(f)
 
     # Load feature files from train and test directories
-    train_features, test_features = load_feature_files(train_dir, test_dir)
+    train_features, test_features = load_feature_files(features_path_train, features_path_test)
 
     # Process the classifier configuration and perform classification
-    process_classifier_config('all', classifiers_config, train_features, test_features)
+    process_classifier_config(classifier_config_key, classifiers_config, train_features, test_features)
 

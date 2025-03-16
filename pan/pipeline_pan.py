@@ -3,7 +3,7 @@ import json
 from text_preprocessing import text_preprocessing
 from graph import preprocessing, graph_features
 
-def process_problem(problem_id, data_dir, truth_lookup, output_dir):
+def process_problem(problem_id, data_dir, truth_lookup, output_dir, language):
     if problem_id not in truth_lookup:
         return None
 
@@ -36,7 +36,7 @@ def process_problem(problem_id, data_dir, truth_lookup, output_dir):
 
     # Preprocess and feature extraction (unchanged)
     sentences = text_preprocessing.split_into_phrases(documents_dict)
-    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=True, lemmatizer=False, language="es")
+    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=True, lemmatizer=False, language=language)
 
     # Construct WANS and extract features
     wans = preprocessing.construct_wans(
@@ -68,7 +68,7 @@ def load_truth_file(truth_file):
             truth_lookup[problem_id] = label
     return truth_lookup
 
-def pipeline_pan(train_dir, test_dir, train_truth_file, test_truth_file, output_train_dir, output_test_dir):
+def pipeline_pan(train_dir, test_dir, train_truth_file, test_truth_file, output_train_dir, output_test_dir, language):
     # Load ground truth data for training and testing
     train_truth_lookup = load_truth_file(train_truth_file)
     test_truth_lookup = load_truth_file(test_truth_file)
@@ -79,13 +79,13 @@ def pipeline_pan(train_dir, test_dir, train_truth_file, test_truth_file, output_
 
     # Process training data
     for problem_id in os.listdir(train_dir):
-        result = process_problem(problem_id, train_dir, train_truth_lookup, output_train_dir)
+        result = process_problem(problem_id, train_dir, train_truth_lookup, output_train_dir, language)
         if result:
             train_results.append(result)
 
     # Process testing data
     for problem_id in os.listdir(test_dir):
-        result = process_problem(problem_id, test_dir, test_truth_lookup, output_test_dir)
+        result = process_problem(problem_id, test_dir, test_truth_lookup, output_test_dir, language)
         if result:
             test_results.append(result)
 

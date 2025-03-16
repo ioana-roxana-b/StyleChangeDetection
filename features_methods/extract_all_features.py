@@ -57,8 +57,8 @@ def create_dfs(text_path, output_file_path, dialogue=False):
     chapter_df, sentence_df, tf_idf_df = extract_all_features(text_path=text_path, output_path=output_file_path, dialogue=dialogue)
 
     # Combine features into a single DataFrame
-    configs.chapter_tf_idf(chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
-    #configs.sentence_tf_idf(sentence_df = sentence_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
-    #configs.sentence_chapter(sentence_df = sentence_df, chapter_df = chapter_df, output_path = output_file_path)
-    #configs.all_features(sentence_df = sentence_df, chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
+    # configs.chapter_tf_idf(chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
+    # configs.sentence_tf_idf(sentence_df = sentence_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
+    # configs.sentence_chapter(sentence_df = sentence_df, chapter_df = chapter_df, output_path = output_file_path)
+    configs.all_features(sentence_df = sentence_df, chapter_df = chapter_df, tf_idf_df = tf_idf_df, output_path = output_file_path)
 

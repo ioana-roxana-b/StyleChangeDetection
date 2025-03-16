@@ -23,18 +23,17 @@ if __name__ == '__main__':
         language = (var_config.get("language"))
         wan_config = (var_config.get("wan_config"))
 
-        test_pan.test_pan(train_dataset_path=train_dataset_path, 
-                          test_dataset_path=test_dataset_path,  
-                          train_truth_path=train_truth_path, 
-                          test_truth_path=test_truth_path,
-                          generate_features=generate_features,
-                          features_path_train=features_path_train, 
-                          features_path_test=features_path_test, 
-                          classifier_config_path=classifier_config_path,
-                          classifier_config_key=classifier_config_key,
-                          language=language,
-                          wan_config=wan_config)
-
+        test_pan.test_pan(train_dataset_path=train_dataset_path,
+                            test_dataset_path=test_dataset_path,
+                            train_truth_path=train_truth_path,
+                            test_truth_path=test_truth_path,
+                            generate_features=generate_features,
+                            features_path_train=features_path_train,
+                            features_path_test=features_path_test,
+                            classifier_config_path=classifier_config_path,
+                            classifier_config_key=classifier_config_key,
+                            language=language,
+                            wan_config=wan_config)
     else:
         var_config = vars(parse_args.parse_args())
 

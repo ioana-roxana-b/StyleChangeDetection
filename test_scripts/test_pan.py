@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 from classification import classification_pan
-from pan14 import pipeline_pan
+from pan import pipeline_pan
 
 def process_classifier_config(config_key, config, train_features, test_features):
     """

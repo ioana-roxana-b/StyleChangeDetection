@@ -40,7 +40,7 @@ def classification(classifiers, train_features, test_features, preprocessing_met
     """
     Performs classification and outputs results in answers.txt, along with evaluation metrics.
     """
-    os.makedirs("Outputs/Results", exist_ok=True)
+    os.makedirs("Outputs/Results/PAN/", exist_ok=True)
 
     # Preprocess labels
     train_features['binary_label'] = train_features['label'].str[0].map({'Y': 1, 'N': 0})

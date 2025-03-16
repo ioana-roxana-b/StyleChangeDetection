@@ -3,7 +3,7 @@ import os
 
 import pandas as pd
 from classification import classification_pan
-from pan import pipeline_pan
+from pan14 import pipeline_pan
 
 def process_classifier_config(config_key, config, train_features, test_features):
     """
@@ -96,13 +96,13 @@ def load_feature_files(train_dir, test_dir):
 
 
 def test_pan(train_dataset_path,test_dataset_path, train_truth_path, test_truth_path, generate_features,
-            features_path_train, features_path_test, classifier_config_path, classifier_config_key, language):
+            features_path_train, features_path_test, classifier_config_path, classifier_config_key, language, wan_config):
     """
     Process classifier based on configuration and perform classification.
     """
     if generate_features:
         pipeline_pan.pipeline_pan(train_dataset_path, test_dataset_path, train_truth_path, 
-                                  test_truth_path, features_path_train, features_path_test, language)
+                                  test_truth_path, features_path_train, features_path_test, language, wan_config)
 
     # Load the classifier configuration
     with open(classifier_config_path, 'r') as f:

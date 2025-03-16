@@ -3,7 +3,20 @@ import json
 from text_preprocessing import text_preprocessing
 from graph import preprocessing, graph_features
 
-def process_problem(problem_id, data_dir, truth_lookup, output_dir, language):
+def process_problem(problem_id, data_dir, truth_lookup, output_dir, language, wan_config):
+    with open("wan_configs/wan_configs.json", 'r') as f:
+        data = json.load(f)
+
+    config = data.get(wan_config, {})
+
+    if not isinstance(config, dict):
+        raise ValueError(f"The key '{wan_config}' does not point to a valid dictionary in the configuration file.")
+
+    punctuations = config['punctuations']
+    stopwords = config['stopwords']
+    lemmatizer = config['lemmatizer']
+    include_pos = config['include_pos']
+
     if problem_id not in truth_lookup:
         return None
 
@@ -36,12 +49,12 @@ def process_problem(problem_id, data_dir, truth_lookup, output_dir, language):
 
     # Preprocess and feature extraction (unchanged)
     sentences = text_preprocessing.split_into_phrases(documents_dict)
-    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=True, stopwords=True, lemmatizer=False, language=language)
+    preprocessed_text = preprocessing.preprocessing(sentences, punctuations=punctuations, stopwords=stopwords, lemmatizer=lemmatizer, language=language)
 
     # Construct WANS and extract features
     wans = preprocessing.construct_wans(
         preprocessed_text,
-        include_pos=True,
+        include_pos=include_pos,
         output_dir=os.path.join(output_dir, f"wan_{problem_id}")
     )
     features = graph_features.extract_features(wans)
@@ -68,7 +81,7 @@ def load_truth_file(truth_file):
             truth_lookup[problem_id] = label
     return truth_lookup
 
-def pipeline_pan(train_dir, test_dir, train_truth_file, test_truth_file, output_train_dir, output_test_dir, language):
+def pipeline_pan(train_dir, test_dir, train_truth_file, test_truth_file, output_train_dir, output_test_dir, language, wan_config):
     # Load ground truth data for training and testing
     train_truth_lookup = load_truth_file(train_truth_file)
     test_truth_lookup = load_truth_file(test_truth_file)
@@ -79,13 +92,13 @@ def pipeline_pan(train_dir, test_dir, train_truth_file, test_truth_file, output_
 
     # Process training data
     for problem_id in os.listdir(train_dir):
-        result = process_problem(problem_id, train_dir, train_truth_lookup, output_train_dir, language)
+        result = process_problem(problem_id, train_dir, train_truth_lookup, output_train_dir, language, wan_config)
         if result:
             train_results.append(result)
 
     # Process testing data
     for problem_id in os.listdir(test_dir):
-        result = process_problem(problem_id, test_dir, test_truth_lookup, output_test_dir, language)
+        result = process_problem(problem_id, test_dir, test_truth_lookup, output_test_dir, language, wan_config)
         if result:
             test_results.append(result)
 

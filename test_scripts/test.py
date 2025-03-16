@@ -61,7 +61,7 @@ def process_classifier_config(config_key, config, data_df, viz = 'tsne'):
             raise ValueError(f"Invalid configuration format for classifier '{classifier_name}' in '{config_key}'.")
 
 def test(problem, text_name, input_text_path, generate_features, features_path,
-         classifier_config_path, classifier_config_key, label, language):
+         classifier_config_path, classifier_config_key, label, language, wan_config):
     """
     Process classifier based on configuration and perform classification.
     """
@@ -74,7 +74,7 @@ def test(problem, text_name, input_text_path, generate_features, features_path,
     elif generate_features and problem == 'dialogism':
         create_dfs(text_path=input_text_path, output_file_path=directory, dialogue=True)
     elif generate_features and problem == 'wan':
-        pipeline_wan.pipeline_wan(text_name, input_text_path, label, language)
+        pipeline_wan.pipeline_wan(text_name, input_text_path, label, language, wan_config)
     data_df = pd.read_csv(features_path)
 
     # Load classifier configurations from JSON file

@@ -41,11 +41,11 @@ def parse_args() -> argparse.Namespace:
                         required=False,
                         default='en',
                         help='Required for wan problems')
-    parser.add_argument('--visualisation',
-                        type=bool,
+    parser.add_argument('--wan-config',
+                        type=str,
                         required=False,
-                        default=False,
-                        help='Set true if you want to visualise the output')
+                        default='C1',
+                        help='Choose a config from the wan_configs file')
 
     args = parser.parse_args()
     return args
@@ -94,6 +94,11 @@ def parse_args_pan() -> argparse.Namespace:
                         required=False,
                         default='en',
                         help='Required for wan problems')
+    parser.add_argument('--wan-config',
+                        type=str,
+                        required=False,
+                        default= 'C1',
+                        help='Choose a config from the wan_configs file')
 
     args = parser.parse_args()
     return args

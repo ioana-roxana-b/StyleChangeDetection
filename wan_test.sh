@@ -7,4 +7,5 @@ python3 main.py \
       --classifier-config-path classification_configs/graph_classifier_config.json \
       --classifier-config-key all \
       --label 'DOS|TOL|Shakespeare|Fletcher' \
-      --language en
+      --language en \
+      --wan-config C1

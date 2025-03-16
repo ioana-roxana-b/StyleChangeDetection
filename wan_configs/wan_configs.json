@@ -1,0 +1,50 @@
+{
+  "C1": {
+    "punctuations": "True",
+    "stopwords": "True",
+    "lemmatizer": "True",
+    "include_pos": "True"
+  },
+  "C2": {
+    "punctuations": "True",
+    "stopwords": "True",
+    "lemmatizer": "False",
+    "include_pos": "True"
+  },
+  "C3": {
+    "punctuations": "True",
+    "stopwords": "False",
+    "lemmatizer": "False",
+    "include_pos": "True"
+  },
+  "C4": {
+    "punctuations": "True",
+    "stopwords": "False",
+    "lemmatizer": "True",
+    "include_pos": "True"
+  },
+  "C5": {
+    "punctuations": "False",
+    "stopwords": "True",
+    "lemmatizer": "True",
+    "include_pos": "True"
+  },
+  "C6": {
+    "punctuations": "False",
+    "stopwords": "True",
+    "lemmatizer": "False",
+    "include_pos": "True"
+  },
+  "C7": {
+    "punctuations": "False",
+    "stopwords": "False",
+    "lemmatizer": "False",
+    "include_pos": "True"
+  },
+  "C8": {
+    "punctuations": "False",
+    "stopwords": "False",
+    "lemmatizer": "True",
+    "include_pos": "True"
+  }
+}

@@ -128,7 +128,7 @@ def classification(type, classifiers, data_df, preprocessing_methods = None, dia
                 print(np.unique(labels))
                 print(np.unique(pred_labels))
                 unsupervised_models.evaluate_clustering(X, labels, pred_labels)
-                visualization.visualize_clusters(X, pred_labels, y_le, class_names, viz)
+                # visualization.visualize_clusters(X, pred_labels, y_le, class_names, viz)
             elif c == 'pca':
                 """NOT GOOD"""
                 X_reduced = unsupervised_models.pca_dimension_reduction(X)

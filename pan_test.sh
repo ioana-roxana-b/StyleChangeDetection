@@ -8,4 +8,5 @@ python3 main.py \
       --features-path-test Corpus_pan/pan/test-14-spanish-articles-corpus2 \
       --classifier-config-path classification_configs/pan_classifier_config.json \
       --classifier-config-key all \
-      --language es
+      --language es \
+      --wan-config C1

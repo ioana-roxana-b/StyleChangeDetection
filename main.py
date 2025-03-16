@@ -21,6 +21,7 @@ if __name__ == '__main__':
         classifier_config_path = (var_config.get("classifier_config_path"))
         classifier_config_key = (var_config.get("classifier_config_key"))
         language = (var_config.get("language"))
+        wan_config = (var_config.get("wan_config"))
 
         test_pan.test_pan(train_dataset_path=train_dataset_path, 
                           test_dataset_path=test_dataset_path,  
@@ -31,7 +32,8 @@ if __name__ == '__main__':
                           features_path_test=features_path_test, 
                           classifier_config_path=classifier_config_path,
                           classifier_config_key=classifier_config_key,
-                          language=language)
+                          language=language,
+                          wan_config=wan_config)
 
     else:
         var_config = vars(parse_args.parse_args())
@@ -45,6 +47,7 @@ if __name__ == '__main__':
         classifier_config_key = (var_config.get("classifier_config_key"))
         label = (var_config.get("label"))
         language = (var_config.get("language"))
+        wan_config = (var_config.get("wan_config"))
 
         test.test(problem=problem,
                   text_name = text_name,
@@ -54,6 +57,5 @@ if __name__ == '__main__':
                   classifier_config_path=classifier_config_path,
                   classifier_config_key=classifier_config_key,
                   label=label,
-                  language=language)
-
-    print(var_config)
+                  language=language,
+                  wan_config=wan_config)

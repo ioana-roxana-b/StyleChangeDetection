@@ -5,9 +5,12 @@ from graph import preprocessing, graph_features
 
 def process_problem(problem_id, data_dir, truth_lookup, output_dir, language, wan_config):
     with open("wan_configs/wan_configs.json", 'r') as f:
-        data = json.load(f)
+        config = json.load(f).get(wan_config, {})
 
-    config = data.get(wan_config, {})
+        # Convert string booleans to actual booleans
+    for key in ["punctuations", "stopwords", "lemmatizer", "include_pos"]:
+        val = config.get(key, "False")
+        config[key] = str(val).lower() == "true"
 
     if not isinstance(config, dict):
         raise ValueError(f"The key '{wan_config}' does not point to a valid dictionary in the configuration file.")

@@ -24,16 +24,17 @@ nlp_ru = spacy.load("ru_core_news_md")  # Russian
 nlp_el = spacy.load("el_core_news_sm")  # Greek
 nlp_nl = spacy.load("nl_core_news_sm")  # Dutch
 nlp_es = spacy.load("es_core_news_md")  # Spanish
+nlp_en = spacy.load("en_core_web_sm")   # English
 
 def process_sentence(
-    sentence, stop_words=None, lemmatizer_instance=None, remove_punctuations=False, language="en"
+    sentence, stop_words=None, lemmatizer_instance=False, remove_punctuations=False, language="en"
 ):
     """
     Process a single sentence by applying common text preprocessing steps.
     Params:
         sentence (str): The input sentence to be processed.
         stop_words (set): A set of stopwords to be removed (if applicable).
-        lemmatizer_instance (object): An instance of a lemmatizer (e.g., WordNetLemmatizer for English).
+        lemmatizer_instance (bool): Apply lemmatization if True.
         remove_punctuations (bool): If True, removes all punctuations from the sentence.
         language (str): Language of the text, e.g., 'en', 'ru', 'el', 'nl', or 'es'.
 
@@ -43,23 +44,22 @@ def process_sentence(
     # Convert to lowercase
     sentence = sentence.casefold()
 
-    # Tokenize and process based on the language
+    # English-specific handling using spaCy
     if language == "en":
-        # Tokenize using NLTK for English
-        tokens = word_tokenize(sentence)
+        doc = nlp_en(sentence)
+        tokens = []
 
-        # Remove stopwords
-        if stop_words:
-            tokens = [word for word in tokens if word not in stop_words]
-
-        # Remove punctuations
-        if remove_punctuations:
-            tokens = [re.sub(r"[^\w\s]", "", word) for word in tokens]
-            tokens = [word for word in tokens if word.strip()]
-
-        # Apply lemmatization
-        if lemmatizer_instance:
-            tokens = [lemmatizer_instance.lemmatize(word) for word in tokens]
+        for token in doc:
+            if token.is_space:
+                continue
+            if stop_words and token.text in stop_words:
+                continue
+            if remove_punctuations and token.is_punct:
+                continue
+            if lemmatizer_instance:
+                tokens.append(token.lemma_)
+            else:
+                tokens.append(token.text)
 
     elif language in ["ru", "el", "nl", "es"]:
         # Tokenize using SpaCy for the specified language
@@ -91,8 +91,10 @@ def process_sentence(
     # Reconstruct the processed sentence
     return " ".join(tokens)
 
+
 def preprocessing(
-    text=None, stopwords=False, lemmatizer=False, punctuations=False, language="en"):
+    text=None, stopwords=False, lemmatizer=False, punctuations=False, language="en"
+):
     """
     Preprocess text data.
     Params:
@@ -111,7 +113,7 @@ def preprocessing(
     # Initialize optional components based on the language
     if language == "en":
         stop_words = set(nltk_stopwords.words("english")) if stopwords else None
-        lemmatizer_instance = WordNetLemmatizer() if lemmatizer else None
+        lemmatizer_instance = lemmatizer
     elif language == "ru":
         stop_words = stopwords_ru if stopwords else None
         lemmatizer_instance = lemmatizer

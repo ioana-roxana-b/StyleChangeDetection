@@ -15,10 +15,9 @@ def parse_args() -> argparse.Namespace:
                         required=False,
                         help='Path to the text to be analyzed')
     parser.add_argument('--generate-features',
-                        type=bool,
-                        required=False,
+                        type=lambda x: x.lower() == 'true',
                         default=False,
-                        help='Set True if there is no feature set generated for this problem')
+                        help='Set to True or False explicitly')
     parser.add_argument('--features-path',
                         type=str,
                         required=True,
@@ -69,10 +68,9 @@ def parse_args_pan() -> argparse.Namespace:
                         required=False,
                         help='Path to the test dataset ground truth for PAN')
     parser.add_argument('--generate-features',
-                        type=bool,
-                        required=False,
+                        type=lambda x: x.lower() == 'true',
                         default=False,
-                        help='Set True if there is no feature set generated for this problem')
+                        help='Set to True or False explicitly')
     parser.add_argument('--features-path-train',
                         type=str,
                         required=True,

@@ -12,7 +12,7 @@ The goal of this project is to develop and evaluate methods for detecting style 
 - **classification_configs/**: Configuration files for different classifiers used in the project.
 - **features_methods/**: Modules for feature engineering and extraction, including TF-IDF based features.
 - **feature_configs/**: Configuration files for feature extraction at different levels (chapter, sentence).
-- **graph/**: Tools for graph-based analysis and features, potentially for visualizing or modeling text relationships.
+- **graph/**: Tools for graph-based analysis and features, and modelling text relationships.
 - **models/**: Contains implementations of supervised and unsupervised models for style change detection, along with visualization tools.
 - **text_preprocessing/**: Scripts for cleaning and preparing text data for analysis.
 - **Outputs/**: Directory for storing results and outputs from the models.
